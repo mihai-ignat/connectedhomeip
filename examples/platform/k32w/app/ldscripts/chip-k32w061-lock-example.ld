@@ -71,7 +71,7 @@ __top_RAM0      = MEM_RAM0_BASE + MEM_RAM0_SIZE; /* 87K bytes */
  * - Other allocations: 4096
  * TOTAL = 34256
  */
-HEAP_SIZE = DEFINED(HEAP_SIZE) ? HEAP_SIZE : 0x85D0;
+HEAP_SIZE = DEFINED(HEAP_SIZE) ? HEAP_SIZE : 0xF000;
 
 /*** flash memory characteristics definitions required for OTA ***/
 m_flash_start   = 0x00000000;
@@ -94,7 +94,7 @@ INT_STORAGE_SIZE                               = INT_STORAGE_END - INT_STORAGE_S
 
 FREESCALE_PROD_DATA_BASE_ADDR                  = m_fsl_prodInfo_start;
 INT_STORAGE_SECTOR_SIZE                        = m_sector_size;
-m_app_size                                     = 0x90000;
+m_app_size                                     = 0x9D800; /* 630K: to accommodate all libs in debug */
 
 __ram_vector_table__                           = 1;
 vector_table_size                              = 0x120;
@@ -221,7 +221,6 @@ SECTIONS
          _heap = .;
         KEEP(*(.heap*))
         PROVIDE(end = .);
-         . += HEAP_SIZE;
          . = ALIGN(4);
         __end__ = .;
          _end_heap = .;

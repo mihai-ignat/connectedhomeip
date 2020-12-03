@@ -17,7 +17,7 @@
  *
  */
 
-#include "FreeRtosMbedtlsMutex.h"
+#include "FreeRtosMbedtlsUtils.h"
 
 #include "FreeRTOS.h"
 #include "semphr.h"
@@ -61,3 +61,9 @@ void freertos_mbedtls_mutex_free(void)
 {
     mbedtls_threading_free_alt();
 }
+
+void *pvPortCallocRtos(size_t num, size_t size)
+{
+    return pvPortMalloc(num * size);
+}
+
