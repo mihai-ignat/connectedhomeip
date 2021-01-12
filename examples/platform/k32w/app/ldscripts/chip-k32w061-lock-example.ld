@@ -53,7 +53,7 @@ MEMORY
      boot code */
   Flash640 (rx) : ORIGIN = 0, LENGTH = 0x00a0000            /* 640K bytes (alias Flash) */
   RAM0 (rwx)    : ORIGIN = 0x4000400,  LENGTH = 0x0015c00   /* 87K bytes (alias RAM) */
-  RAM1 (rwx)    : ORIGIN = 0x4020000,      LENGTH = 0x10000 /* 64K bytes (alias RAM2) */
+  RAM1 (rwx)    : ORIGIN = 0x4020000,  LENGTH = 0x10000 /* 64K bytes (alias RAM2) */
 }
 
 /* Define a symbol for the top of each memory region */
@@ -83,7 +83,7 @@ m_fsl_prodInfo_size = m_sector_size;
 m_fsl_prodInfo_end                             = m_flash_size - 17 * m_sector_size - 1;
 m_fsl_prodInfo_start                           = m_fsl_prodInfo_end - m_fsl_prodInfo_size + 1;
 
-NV_STORAGE_MAX_SECTORS                         = 32;
+NV_STORAGE_MAX_SECTORS                         = 16;
 NV_STORAGE_SIZE                                = NV_STORAGE_MAX_SECTORS * m_sector_size;
 NV_STORAGE_START_ADDRESS                       = m_fsl_prodInfo_start - 1;
 NV_STORAGE_END_ADDRESS                         = NV_STORAGE_START_ADDRESS - NV_STORAGE_SIZE + 1;
@@ -94,7 +94,7 @@ INT_STORAGE_SIZE                               = INT_STORAGE_END - INT_STORAGE_S
 
 FREESCALE_PROD_DATA_BASE_ADDR                  = m_fsl_prodInfo_start;
 INT_STORAGE_SECTOR_SIZE                        = m_sector_size;
-m_app_size                                     = 0x9D800; /* 630K: to accommodate all libs in debug */
+m_app_size                                     = 0xA0000; /* 640K: to accommodate all libs in debug */
 
 __ram_vector_table__                           = 1;
 vector_table_size                              = 0x120;

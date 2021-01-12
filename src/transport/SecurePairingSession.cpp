@@ -384,6 +384,7 @@ CHIP_ERROR SecurePairingSession::SendPBKDFParamResponse()
     static_assert(CHAR_BIT == 8, "Assuming sizeof() returns octets here and for sizeof(mPoint)");
     size_t resplen  = kPBKDFParamRandomNumberSize + sizeof(uint64_t) + sizeof(uint32_t) + mSaltLength;
     uint16_t u16len = 0;
+    uint8_t index;
 
     size_t sizeof_point = sizeof(mPoint);
 
@@ -423,6 +424,10 @@ CHIP_ERROR SecurePairingSession::SendPBKDFParamResponse()
     SuccessOrExit(err);
 
     mNextExpectedMsg = Protocols::SecureChannel::MsgType::PASE_Spake2p1;
+
+    ChipLogDetail(DeviceLayer, "SendPBKDFParamResponse. Bytes: \n");
+            for (index = 0; index < resp->DataLength(); index++)
+            	ChipLogDetail(DeviceLayer, "resp[%i]=%x", index, resp->Start()[index]);
 
     err = AttachHeaderAndSend(Protocols::SecureChannel::MsgType::PBKDFParamResponse, std::move(resp));
     SuccessOrExit(err);
@@ -541,12 +546,19 @@ CHIP_ERROR SecurePairingSession::HandleMsg1_and_SendMsg2(const PacketHeader & he
 
     err = mSpake2p.BeginVerifier(reinterpret_cast<const uint8_t *>(""), 0, reinterpret_cast<const uint8_t *>(""), 0, &mWS[0][0],
                                  kSpake2p_WS_Length, mPoint, sizeof(mPoint));
+
     SuccessOrExit(err);
 
     err = mSpake2p.ComputeRoundOne(Y, &Y_len);
     SuccessOrExit(err);
 
     err = mSpake2p.ComputeRoundTwo(buf, buf_len, verifier, &verifier_len);
+
+    if (err != 0)
+          ChipLogDetail(Ble, "HandleMsg1_and_SendMsg2. mSpake2p.ComputeRoundTwo ERROR");
+      else
+          ChipLogDetail(Ble, "HandleMsg1_and_SendMsg2. mSpake2p.ComputeRoundTwo SUCCESS");
+
     SuccessOrExit(err);
 
     mPeerKeyId  = header.GetEncryptionKeyID();
@@ -745,6 +757,7 @@ CHIP_ERROR SecurePairingSession::HandlePeerMessage(const PacketHeader & packetHe
     CHIP_ERROR err      = CHIP_NO_ERROR;
     uint16_t headerSize = 0;
     PayloadHeader payloadHeader;
+    uint8_t index = 0;
 
     VerifyOrExit(!msg.IsNull(), err = CHIP_ERROR_INVALID_ARGUMENT);
 
@@ -758,9 +771,14 @@ CHIP_ERROR SecurePairingSession::HandlePeerMessage(const PacketHeader & packetHe
 
     mPeerAddress = peerAddress;
 
+
     switch (static_cast<Protocols::SecureChannel::MsgType>(payloadHeader.GetMessageType()))
     {
     case Protocols::SecureChannel::MsgType::PBKDFParamRequest:
+    	ChipLogDetail(DeviceLayer, "HandlePeerMessage. HandlePBKDFParamRequest, bytes: \n");
+        for (index = 0; index < msg->DataLength(); index++)
+        	ChipLogDetail(DeviceLayer, "msg[%i]=%x", index, msg->Start()[index]);
+
         err = HandlePBKDFParamRequest(packetHeader, msg);
         break;
 
@@ -769,6 +787,11 @@ CHIP_ERROR SecurePairingSession::HandlePeerMessage(const PacketHeader & packetHe
         break;
 
     case Protocols::SecureChannel::MsgType::PASE_Spake2p1:
+
+    	ChipLogDetail(DeviceLayer, "HandlePeerMessage. HandleMsg1_and_SendMsg2, bytes: \n");
+        for (index = 0; index < msg->DataLength(); index++)
+        	ChipLogDetail(DeviceLayer, "msg[%i]=%x", index, msg->Start()[index]);
+
         err = HandleMsg1_and_SendMsg2(packetHeader, msg);
         break;
 

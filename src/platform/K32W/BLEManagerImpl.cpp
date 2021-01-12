@@ -113,13 +113,13 @@ static EventGroupHandle_t bleAppTaskLoopEvent;
 static uint8_t device_id;
 static uint16_t mFlags;
 
-const uint8_t ShortUUID_CHIPoBLEService[]  = { 0xAF, 0xFE };
-const ChipBleUUID ChipUUID_CHIPoBLEChar_RX = { { 0x18, 0xEE, 0x2E, 0xF5, 0x26, 0x3D, 0x45,
-                                                 0x59, 0x95, 0x9F, 0x4F, 0x9C, 0x42, 0x9F,
-                                                 0x9D, 0x11 } };
-const ChipBleUUID ChipUUID_CHIPoBLEChar_TX = { { 0x18, 0xEE, 0x2E, 0xF5, 0x26, 0x3D, 0x45,
-                                                 0x59, 0x95, 0x9F, 0x4F, 0x9C, 0x42, 0x9F,
-                                                 0x9D, 0x12 } };
+static const uint8_t ShortUUID_CHIPoBLEService[]  =  { 0xAF, 0xFE };
+static const ChipBleUUID ChipUUID_CHIPoBLEChar_RX = {{ 0x18, 0xEE, 0x2E, 0xF5, 0x26, 0x3D, 0x45,
+                                                       0x59, 0x95, 0x9F, 0x4F, 0x9C, 0x42, 0x9F,
+                                                       0x9D, 0x11 } };
+static const ChipBleUUID ChipUUID_CHIPoBLEChar_TX = {{ 0x18, 0xEE, 0x2E, 0xF5, 0x26, 0x3D, 0x45,
+                                                       0x59, 0x95, 0x9F, 0x4F, 0x9C, 0x42, 0x9F,
+                                                       0x9D, 0x12 } };
 } //namespace
 
 BLEManagerImpl BLEManagerImpl::sInstance;
@@ -369,11 +369,11 @@ CHIP_ERROR BLEManagerImpl::_SetDeviceName(const char * deviceName)
         SetFlag(mFlags, kFlag_DeviceNameSet, true);
         ChipLogProgress(DeviceLayer, "Setting device name to : \"%s\"", deviceName);
 
-        if (gBleSuccess_c != GattDb_WriteAttribute(value_device_name, kMaxDeviceNameLength,
-                                                  (const unsigned char*)mDeviceName))
-        {
-            return CHIP_ERROR_INVALID_ARGUMENT;
-        }
+        //if (gBleSuccess_c != GattDb_WriteAttribute(value_device_name, kMaxDeviceNameLength,
+        //                                          (const unsigned char*)mDeviceName))
+        //{
+        //    return CHIP_ERROR_INVALID_ARGUMENT;
+        //}
     }
     else
     {
@@ -500,9 +500,15 @@ bool BLEManagerImpl::SendIndication(BLE_CONNECTION_OBJECT conId, const ChipBleUU
     CHIP_ERROR err = CHIP_NO_ERROR;
     uint16_t cId  = (UUIDsMatch(&ChipUUID_CHIPoBLEChar_TX, charId) ? value_chipoble_tx : 0);
     ChipDeviceEvent event;
+    uint8_t index = 0;
 
     if (cId != 0)
     {
+        ChipLogProgress(DeviceLayer, "BLEManagerImpl::SendIndication(...). BLE bytes send into the air: \n");
+
+        for (index = 0; index < data->DataLength(); index++)
+        	ChipLogDetail(DeviceLayer, "data[%i]=%x\n", index, data->Start()[index]);
+
         if (blekw_send_event(conId, cId, data->Start(), data->DataLength()) != BLE_OK)
         {
             err = CHIP_ERROR_SENDING_BLOCKED;
@@ -810,11 +816,11 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
         snprintf(mDeviceName, kMaxDeviceNameLength, "%s%04u",
                 CHIP_DEVICE_CONFIG_BLE_DEVICE_NAME_PREFIX, discriminator);
 
-        if (gBleSuccess_c != GattDb_WriteAttribute(value_device_name, kMaxDeviceNameLength,
-                                                   (const unsigned char*)mDeviceName))
-        {
-            return CHIP_ERROR_INCORRECT_STATE;
-        }
+        //if (gBleSuccess_c != GattDb_WriteAttribute(value_device_name, kMaxDeviceNameLength,
+        //                                           (const unsigned char*)mDeviceName))
+        //{
+        //    return CHIP_ERROR_INCORRECT_STATE;
+        //}
     }
 
     /**************** Prepare advertising data *******************************************/
@@ -865,7 +871,7 @@ CHIP_ERROR BLEManagerImpl::ConfigureAdvertisingData(void)
     adv_params.ownAddressType = gBleAddrTypePublic_c;
     adv_params.peerAddressType = gBleAddrTypePublic_c;
     memset(adv_params.peerAddress, 0, gcBleDeviceAddressSize_c);
-    adv_params.channelMap = (gapAdvertisingChannelMapFlags_t)(gAdvChanMapFlag37_c | gAdvChanMapFlag38_c | gAdvChanMapFlag39_c);
+    adv_params.channelMap = (gapAdvertisingChannelMapFlags_t)(gAdvChanMapFlag37_c); //| gAdvChanMapFlag38_c | gAdvChanMapFlag39_c);
     adv_params.filterPolicy = gProcessAll_c;
     adv_params.minInterval = adv_params.maxInterval = advInterval;
 
@@ -1155,9 +1161,10 @@ void BLEManagerImpl::HandleRXCharWrite(blekw_msg_t* msg)
     blekw_att_written_data_t*   att_wr_data = (blekw_att_written_data_t*)msg->data.data;
     uint16_t writeLen = att_wr_data->length;
     uint8_t * data    = att_wr_data->data;
+    uint8_t index = 0;
 
     // Copy the data to a PacketBuffer.
-    buf = PacketBuffer::New(0);
+    buf = PacketBuffer::NewWithAvailableSize(writeLen);
     VerifyOrExit(!buf.IsNull(), err = CHIP_ERROR_NO_MEMORY);
     VerifyOrExit(buf->AvailableDataLength() >= writeLen, err = CHIP_ERROR_BUFFER_TOO_SMALL);
     memcpy(buf->Start(), data, writeLen);
@@ -1166,6 +1173,11 @@ void BLEManagerImpl::HandleRXCharWrite(blekw_msg_t* msg)
     ChipLogDetail(DeviceLayer, "Write request/command received for"
                   "CHIPoBLE RX characteristic (con %" PRIu16 ", len %" PRIu16 ")",
                   att_wr_data->device_id, buf->DataLength());
+
+    ChipLogDetail(DeviceLayer, "BLEManagerImpl::HandleRXCharWrite(...). BLE bytes received");
+
+    for (index = 0; index < buf->DataLength(); index++)
+    	ChipLogDetail(DeviceLayer, "data[%i]=%x\n", index, buf->Start()[index]);
 
     // Post an event to the CHIP queue to deliver the data into the CHIP stack.
     {
@@ -1307,11 +1319,14 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
     case gEvtMtuChanged_c:
         {
 			uint16_t tempMtu = 0;
+
+            ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: mtu changed \n");
 			(void)Gatt_GetMtu(deviceId, &tempMtu);
 			blekw_msg_add_u16(BLE_KW_MSG_MTU_CHANGED, tempMtu);
         }
         break;
     case gEvtAttributeWritten_c:
+        ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: att written \n");
         blekw_msg_add_att_written(BLE_KW_MSG_ATT_WRITTEN,
                                   deviceId,
                                   pServerEvent->eventData.attributeWrittenEvent.handle,
@@ -1319,6 +1334,7 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
                                   pServerEvent->eventData.attributeWrittenEvent.cValueLength);
         break;
     case gEvtLongCharacteristicWritten_c:
+        ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: long char written \n");
         blekw_msg_add_att_written(BLE_KW_MSG_ATT_LONG_WRITTEN,
                                   deviceId,
                                   pServerEvent->eventData.longCharWrittenEvent.handle,
@@ -1326,12 +1342,15 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
                                   pServerEvent->eventData.longCharWrittenEvent.cValueLength);
         break;
     case gEvtAttributeRead_c:
+        ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: attribute read \n");
         blekw_msg_add_att_read(BLE_KW_MSG_ATT_READ, deviceId,
                                pServerEvent->eventData.attributeReadEvent.handle);
         break;
     case gEvtCharacteristicCccdWritten_c:
         {
             uint16_t cccd_val = pServerEvent->eventData.charCccdWrittenEvent.newCccd;
+
+            ChipLogProgress(DeviceLayer,  "char cccd written \n");
             blekw_msg_add_att_written(BLE_KW_MSG_ATT_CCCD_WRITTEN,
                                       deviceId,
                                       pServerEvent->eventData.charCccdWrittenEvent.handle,
@@ -1341,6 +1360,7 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
         break;
     case gEvtHandleValueConfirmation_c:
         /* Set the local synchronization event */
+        ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: value confirmation \n");
         OSA_EventSet(event_msg, CHIP_BLE_KW_EVNT_INDICATION_CONFIRMED);
         break;
 
@@ -1348,6 +1368,7 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
         if(pServerEvent->eventData.procedureError.procedureType == gSendIndication_c)
         {
             /* Set the local synchronization event */
+            ChipLogProgress(DeviceLayer,  "send indication \n");
             OSA_EventSet(event_msg, CHIP_BLE_KW_EVNT_INDICATION_FAILED);
         }
         else
@@ -1393,7 +1414,10 @@ CHIP_ERROR BLEManagerImpl::blekw_msg_add_att_written(blekw_msg_type_t type,
     FLib_MemCpy(att_wr_data->data, data, length);
 
     /* Put message in the queue */
-    MSG_Queue(&blekw_msg_list, msg);
+    if (gListOk_c != MSG_Queue(&blekw_msg_list, msg))
+    {
+    	assert(0);
+    }
 
     /* Notify BLE-APP Task to serve the BLE subsystem */
     blekw_new_data_received_notification(LOOP_EV_BLE);
@@ -1414,6 +1438,7 @@ CHIP_ERROR BLEManagerImpl::blekw_msg_add_att_read(blekw_msg_type_t type,
     if (!msg)
     {
         return CHIP_ERROR_NO_MEMORY;
+        assert(0);
     }
 
     msg->type = type;
@@ -1423,7 +1448,10 @@ CHIP_ERROR BLEManagerImpl::blekw_msg_add_att_read(blekw_msg_type_t type,
     att_rd_data->handle = handle;
 
     /* Put message in the queue */
-    MSG_Queue(&blekw_msg_list, msg);
+    if (gListOk_c != MSG_Queue(&blekw_msg_list, msg))
+    {
+    	assert(0);
+    }
 
     /* Notify BLE-APP Task to serve the BLE subsystem */
     blekw_new_data_received_notification(LOOP_EV_BLE);

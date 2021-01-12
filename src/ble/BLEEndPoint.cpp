@@ -51,7 +51,7 @@
 // clang-format off
 
 // Define below to enable extremely verbose, BLE end point-specific debug logging.
-#undef CHIP_BLE_END_POINT_DEBUG_LOGGING_ENABLED
+#define CHIP_BLE_END_POINT_DEBUG_LOGGING_ENABLED
 
 #ifdef CHIP_BLE_END_POINT_DEBUG_LOGGING_ENABLED
 #define ChipLogDebugBleEndPoint(MOD, MSG, ...) ChipLogError(MOD, MSG, ## __VA_ARGS__)
@@ -640,12 +640,12 @@ void BLEEndPoint::QueueTx(PacketBufferHandle data, PacketType_t type)
     if (mSendQueue.IsNull())
     {
         mSendQueue = std::move(data);
-        ChipLogDebugBleEndPoint(Ble, "%s: Set data as new mSendQueue %p, type %d", __FUNCTION__, mSendQueue, type);
+        //ChipLogDebugBleEndPoint(Ble, "%s: Set data as new mSendQueue %p, type %d", __FUNCTION__, mSendQueue, type);
     }
     else
     {
         mSendQueue->AddToEnd(std::move(data));
-        ChipLogDebugBleEndPoint(Ble, "%s: Append data to mSendQueue %p, type %d", __FUNCTION__, mSendQueue, type);
+        //ChipLogDebugBleEndPoint(Ble, "%s: Append data to mSendQueue %p, type %d", __FUNCTION__, mSendQueue, type);
     }
 
     QueueTxUnlock();
@@ -999,23 +999,7 @@ BLE_ERROR BLEEndPoint::DriveSending()
          !GetFlag(mTimerStateFlags, kTimerState_SendAckTimerRunning) && mAckToSend.IsNull()) ||
         (mRemoteReceiveWindowSize == 0) || (GetFlag(mConnStateFlags, kConnState_GattOperationInFlight)))
     {
-#ifdef CHIP_BLE_END_POINT_DEBUG_LOGGING_ENABLED
-        if (mRemoteReceiveWindowSize <= BTP_WINDOW_NO_ACK_SEND_THRESHOLD &&
-            !GetFlag(mTimerStateFlags, kTimerState_SendAckTimerRunning) && mAckToSend == NULL)
-        {
-            ChipLogDebugBleEndPoint(Ble, "NO SEND: receive window almost closed, and no ack to send");
-        }
 
-        if (mRemoteReceiveWindowSize == 0)
-        {
-            ChipLogDebugBleEndPoint(Ble, "NO SEND: remote receive window closed");
-        }
-
-        if (GetFlag(mConnStateFlags, kConnState_GattOperationInFlight))
-        {
-            ChipLogDebugBleEndPoint(Ble, "NO SEND: Gatt op in flight");
-        }
-#endif
 
         // Can't send anything.
         ExitNow();
