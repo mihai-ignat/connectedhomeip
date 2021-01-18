@@ -131,7 +131,7 @@ template("k32w_sdk") {
       "ENABLE_RAM_VECTOR_TABLE=1",
       "gTMR_Enabled_d=1",
       "gTimestamp_Enabled_d=0",
-      "gMainThreadStackSize_c=4096",
+      "gMainThreadStackSize_c=6024",
       "K32W_LOG_ENABLED=1",
       "CHIP_ENABLE_OPENTHREAD=1",
       "PoolsDetails_c=_block_size_ 32 _number_of_blocks_ 6 _pool_id_(0) _eol_ _block_size_ 512 _number_of_blocks_ 2 _pool_id_(0) _eol_ _block_size_ 768 _number_of_blocks_ 1 _pool_id_(0) _eol_",

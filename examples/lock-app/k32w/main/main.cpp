@@ -129,7 +129,6 @@ extern "C" void main_task(void const * argument)
         goto exit;
     }
 
-#if 0
     // Start OpenThread task
     ret = ThreadStackMgrImpl().StartThreadTask();
     if (ret != CHIP_NO_ERROR)
@@ -137,8 +136,6 @@ extern "C" void main_task(void const * argument)
         K32W_LOG("Error during ThreadStackMgrImpl().StartThreadTask()");
         goto exit;
     }
-
-#endif
 
     ret = GetAppTask().StartAppTask();
     if (ret != CHIP_NO_ERROR)

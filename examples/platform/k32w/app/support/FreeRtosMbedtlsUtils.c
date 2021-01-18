@@ -24,6 +24,9 @@
 
 #include <assert.h>
 
+#include <stdio.h>
+#include <string.h>
+
 static inline void mutex_init(mbedtls_threading_mutex_t * p_mutex)
 {
     assert(p_mutex != NULL);
@@ -64,6 +67,14 @@ void freertos_mbedtls_mutex_free(void)
 
 void *pvPortCallocRtos(size_t num, size_t size)
 {
-    return pvPortMalloc(num * size);
-}
+	size_t totalAllocSize = (size_t)(num * size);
 
+    void *p = pvPortMalloc(totalAllocSize);
+
+    if (p)
+    {
+        memset(p, 0, totalAllocSize);
+    }
+
+    return p;
+}

@@ -26,6 +26,8 @@
 /* this file behaves like a config.h, comes first */
 #include <platform/internal/CHIPDeviceLayerInternal.h>
 
+#include <crypto/CHIPCryptoPAL.h>
+
 #if CHIP_DEVICE_CONFIG_ENABLE_CHIPOBLE
 
 #include <ble/CHIPBleServiceData.h>
@@ -390,7 +392,10 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
     case DeviceEventType::kCHIPoBLESubscribe: {
         ChipDeviceEvent connEstEvent;
 
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLESubscribe");
+#endif
+
         HandleSubscribeReceived(event->CHIPoBLESubscribe.ConId,
                                 &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_TX);
         connEstEvent.Type = DeviceEventType::kCHIPoBLEConnectionEstablished;
@@ -399,14 +404,22 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
     break;
 
     case DeviceEventType::kCHIPoBLEUnsubscribe: {
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEUnsubscribe");
+#endif
+
         HandleUnsubscribeReceived(event->CHIPoBLEUnsubscribe.ConId,
                                   &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_TX);
     }
     break;
 
     case DeviceEventType::kCHIPoBLEWriteReceived: {
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEWriteReceived");
+#endif
+
         HandleWriteReceived(event->CHIPoBLEWriteReceived.ConId, &CHIP_BLE_SVC_ID,
                             &ChipUUID_CHIPoBLEChar_RX,
                             PacketBufferHandle::Adopt(event->CHIPoBLEWriteReceived.Data));
@@ -414,21 +427,42 @@ void BLEManagerImpl::_OnPlatformEvent(const ChipDeviceEvent * event)
     break;
 
     case DeviceEventType::kCHIPoBLEConnectionError: {
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEConnectionError");
+#endif
+
         HandleConnectionError(event->CHIPoBLEConnectionError.ConId,
                               event->CHIPoBLEConnectionError.Reason);
     }
     break;
 
     case DeviceEventType::kCHIPoBLEIndicateConfirm: {
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer, "_OnPlatformEvent kCHIPoBLEIndicateConfirm");
+#endif
+
         HandleIndicationConfirmation(event->CHIPoBLEIndicateConfirm.ConId,
                                      &CHIP_BLE_SVC_ID, &ChipUUID_CHIPoBLEChar_TX);
     }
     break;
 
+#if CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
+    case DeviceEventType::kServiceProvisioningChange:
+         ChipLogProgress(DeviceLayer, "_OnPlatformEvent kServiceProvisioningChange");
+
+         ClearFlag(mFlags, kFlag_AdvertisingEnabled);
+         PlatformMgr().ScheduleWork(DriveBLEState, 0);
+    break;
+#endif // CHIP_DEVICE_CONFIG_CHIPOBLE_DISABLE_ADVERTISING_WHEN_PROVISIONED
+
     default:
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer, "_OnPlatformEvent default:  event->Type = %d", event->Type);
+#endif
+
         break;
     }
 }
@@ -503,7 +537,10 @@ bool BLEManagerImpl::SendIndication(BLE_CONNECTION_OBJECT conId, const ChipBleUU
 
     if (cId != 0)
     {
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer, "BLEManagerImpl::SendIndication(...). BLE bytes send into the air: \n");
+#endif
 
         if (blekw_send_event(conId, cId, data->Start(), data->DataLength()) != BLE_OK)
         {
@@ -531,7 +568,9 @@ BLEManagerImpl::ble_err_t BLEManagerImpl::blekw_send_event(int8_t connection_han
 {
     osaEventFlags_t         event_mask;
 
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
     ChipLogProgress(DeviceLayer, "Trying to send event.");
+#endif
 
     if (connection_handle < 0 || handle <= 0)
     {
@@ -946,6 +985,7 @@ void BLEManagerImpl::DriveBLEState(void)
     {
         err = StopAdvertising();
         SuccessOrExit(err);
+        ChipLogProgress(DeviceLayer, "Stopped Advertising");
     }
 
 exit:
@@ -1070,8 +1110,10 @@ void BLEManagerImpl::HandleWriteEvent(blekw_msg_t* msg)
     blekw_att_written_data_t* att_wr_data = (blekw_att_written_data_t*)msg->data.data;
     attErrorCode_t status = gAttErrCodeNoError_c;
 
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
     ChipLogProgress(DeviceLayer, "Attribute write request(device: %d,handle: %d).",
 				    att_wr_data->device_id, att_wr_data->handle);
+#endif
 
 	blekw_start_connection_timeout();
 
@@ -1116,8 +1158,10 @@ void BLEManagerImpl::HandleTXCharCCCDWrite(blekw_msg_t* msg)
 	 */
 	indicationsEnabled = (*data);
 
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
 	ChipLogProgress(DeviceLayer, "CHIPoBLE %s received", indicationsEnabled ?
                     "subscribe" : "unsubscribe");
+#endif
 
 	if (indicationsEnabled)
 	{
@@ -1165,11 +1209,13 @@ void BLEManagerImpl::HandleRXCharWrite(blekw_msg_t* msg)
     memcpy(buf->Start(), data, writeLen);
     buf->SetDataLength(writeLen);
 
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
     ChipLogDetail(DeviceLayer, "Write request/command received for"
                   "CHIPoBLE RX characteristic (con %" PRIu16 ", len %" PRIu16 ")",
                   att_wr_data->device_id, buf->DataLength());
 
     ChipLogDetail(DeviceLayer, "BLEManagerImpl::HandleRXCharWrite(...). BLE bytes received");
+#endif
 
     // Post an event to the CHIP queue to deliver the data into the CHIP stack.
     {
@@ -1312,13 +1358,20 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
         {
 			uint16_t tempMtu = 0;
 
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
             ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: mtu changed \n");
+#endif
+
 			(void)Gatt_GetMtu(deviceId, &tempMtu);
 			blekw_msg_add_u16(BLE_KW_MSG_MTU_CHANGED, tempMtu);
         }
         break;
     case gEvtAttributeWritten_c:
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: att written \n");
+#endif
+
         blekw_msg_add_att_written(BLE_KW_MSG_ATT_WRITTEN,
                                   deviceId,
                                   pServerEvent->eventData.attributeWrittenEvent.handle,
@@ -1326,7 +1379,11 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
                                   pServerEvent->eventData.attributeWrittenEvent.cValueLength);
         break;
     case gEvtLongCharacteristicWritten_c:
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: long char written \n");
+#endif
+
         blekw_msg_add_att_written(BLE_KW_MSG_ATT_LONG_WRITTEN,
                                   deviceId,
                                   pServerEvent->eventData.longCharWrittenEvent.handle,
@@ -1334,7 +1391,11 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
                                   pServerEvent->eventData.longCharWrittenEvent.cValueLength);
         break;
     case gEvtAttributeRead_c:
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: attribute read \n");
+#endif
+
         blekw_msg_add_att_read(BLE_KW_MSG_ATT_READ, deviceId,
                                pServerEvent->eventData.attributeReadEvent.handle);
         break;
@@ -1342,7 +1403,10 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
         {
             uint16_t cccd_val = pServerEvent->eventData.charCccdWrittenEvent.newCccd;
 
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
             ChipLogProgress(DeviceLayer,  "char cccd written \n");
+#endif
+
             blekw_msg_add_att_written(BLE_KW_MSG_ATT_CCCD_WRITTEN,
                                       deviceId,
                                       pServerEvent->eventData.charCccdWrittenEvent.handle,
@@ -1352,7 +1416,11 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
         break;
     case gEvtHandleValueConfirmation_c:
         /* Set the local synchronization event */
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
         ChipLogProgress(DeviceLayer,  "blekw_gatt_server_cb: value confirmation \n");
+#endif
+
         OSA_EventSet(event_msg, CHIP_BLE_KW_EVNT_INDICATION_CONFIRMED);
         break;
 
@@ -1360,7 +1428,11 @@ void BLEManagerImpl::blekw_gatt_server_cb(deviceId_t deviceId, gattServerEvent_t
         if(pServerEvent->eventData.procedureError.procedureType == gSendIndication_c)
         {
             /* Set the local synchronization event */
+
+#if CHIP_DEVICE_CHIP0BLE_DEBUG
             ChipLogProgress(DeviceLayer,  "send indication \n");
+#endif
+
             OSA_EventSet(event_msg, CHIP_BLE_KW_EVNT_INDICATION_FAILED);
         }
         else
