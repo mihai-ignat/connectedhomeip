@@ -53,24 +53,13 @@ MEMORY
      boot code */
   Flash640 (rx) : ORIGIN = 0, LENGTH = 0x00a0000            /* 640K bytes (alias Flash) */
   RAM0 (rwx)    : ORIGIN = 0x4000400,  LENGTH = 0x0015c00   /* 87K bytes (alias RAM) */
-  RAM1 (rwx)    : ORIGIN = 0x4020000,  LENGTH = 0x10000 /* 64K bytes (alias RAM2) */
+  RAM1 (rwx)    : ORIGIN = 0x4020000,  LENGTH = 0x10000     /* 64K bytes (alias RAM2) */
 }
 
 /* Define a symbol for the top of each memory region */
 __top_RAM0      = MEM_RAM0_BASE + MEM_RAM0_SIZE; /* 87K bytes */
 
-/* Heap requirements:
- * - PDM: 12 * NV_STORAGE_MAX_SECTORS (64) = 768
- * - LWIP: TCPIP_THREAD_STACKSIZE = 4096
- * - FreeRTOS Tasks (4) :
- *                - Weave Task = 8192
- *                - Thread Task = 8192
- *                - App Task 4096
- *                - Timer Task: 720
- * - Mbedtls: 8096
- * - Other allocations: 4096
- * TOTAL = 34256
- */
+/* first implementation: second RAM bank is dedicated entirely to heap */
 HEAP_SIZE = DEFINED(HEAP_SIZE) ? HEAP_SIZE : 0xF000;
 
 /*** flash memory characteristics definitions required for OTA ***/

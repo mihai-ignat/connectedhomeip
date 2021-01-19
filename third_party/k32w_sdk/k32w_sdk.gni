@@ -102,7 +102,6 @@ template("k32w_sdk") {
       "${k32w_sdk_root}/middleware/wireless/framework/PDM/Library/libPDM.a",
       "${k32w_sdk_root}/middleware/wireless/framework/SecLib/lib_crypto_m4.a",
       "${k32w_sdk_root}/middleware/wireless/framework/XCVR/lib/libRadio.a",
-      
     ]
 
     defines = [
