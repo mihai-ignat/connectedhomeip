@@ -51,9 +51,8 @@ typedef void (*InitFunc)(void);
 extern InitFunc __init_array_start;
 extern InitFunc __init_array_end;
 
-/* needed for FreeRtos Heap 2 */
+/* needed for FreeRtos Heap 4 */
 uint8_t __attribute__((section (".heap"))) ucHeap[0xF000];
-//static const volatile uint8_t freeRTOSMemoryScheme = 2;
 
 extern "C" void main_task(void const * argument)
 {

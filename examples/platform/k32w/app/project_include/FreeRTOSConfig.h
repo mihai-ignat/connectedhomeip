@@ -64,7 +64,7 @@
 #define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H 1
 
 /* Used memory allocation (heap_x.c) */
-#define configFRTOS_MEMORY_SCHEME 2
+#define configFRTOS_MEMORY_SCHEME 4
 
 /* Memory allocation related definitions. */
 #define configSUPPORT_STATIC_ALLOCATION 0
