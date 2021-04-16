@@ -47,8 +47,8 @@ CHIP_ERROR NFCManagerImpl::_StartTagEmulation(const char * payload, size_t paylo
 {
 	sInstance.smartPoster.headerNdef    = NFC_NDEF_RECORD_HEADER_SMART_POSTER;
 	sInstance.smartPoster.lenRecordType = NFC_NDEF_RECORD_TYPE_LEN;
-	sInstance.smartPoster.lenPayload    = sizeof(sInstance.smartPoster.recordName) +
-	                                      sizeof(sInstance.smartPoster.uriCode) +
+	sInstance.smartPoster.lenPayload    = //sizeof(sInstance.smartPoster.recordName) +
+	                                      //sizeof(sInstance.smartPoster.uriCode) +
 									      sizeof(sInstance.smartPoster.uri);
 	sInstance.smartPoster.recordName    = NFC_NDEF_RECORD_NAME;
 	sInstance.smartPoster.uriCode       = NFC_NDEF_URI_CODE;
@@ -76,7 +76,7 @@ CHIP_ERROR NFCManagerImpl::_StopTagEmulation()
 NFCManagerImpl::eAppNtagError NFCManagerImpl::AppNtagInitEepromSmartPoster(void)
 {
     eAppNtagError ntagErr = E_APP_NTAG_NO_ERROR;
-    bool_t isConfigured = FALSE;
+    //bool_t isConfigured = FALSE;
     uint8_t byte0 = 0;
     uint8_t i = 0;
     bool_t i2cAddrFound = FALSE;
@@ -120,16 +120,16 @@ NFCManagerImpl::eAppNtagError NFCManagerImpl::AppNtagInitEepromSmartPoster(void)
             }
         }
 
-        isConfigured = AppNtagIsEepromSmartPosterConfigured(&ntagErr);
-        if (ntagErr != E_APP_NTAG_NO_ERROR)
-        {
-            break;
-        }
+        //isConfigured = AppNtagIsEepromSmartPosterConfigured(&ntagErr);
+        //if (ntagErr != E_APP_NTAG_NO_ERROR)
+        //{
+        //    break;
+        //}
 
-        if (!isConfigured)
-        {
+        //if (!isConfigured)
+        //{
             ntagErr = AppNtagEepromWriteSmartPoster();
-        }
+        //}
     } while (0);
 
     /* Stop I2C */
@@ -174,8 +174,7 @@ bool NFCManagerImpl::AppNtagSmartPosterEepromWrite(NTAG_HANDLE_T ntagHandleInsta
             addrToWrite += 4;
         }
 
-        /* TODO */
-        if (NTAG_WriteBytes(sInstance.ntagDriverHandleInstance, addrToWrite, (uint8_t *)&(sInstance.smartPoster), ndefSize))
+        if (NTAG_WriteBytes(sInstance.ntagDriverHandleInstance, addrToWrite, (uint8_t *)(&sInstance.smartPoster), ndefSize))
         {
             break;
         }
