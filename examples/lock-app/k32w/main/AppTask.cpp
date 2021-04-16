@@ -490,6 +490,17 @@ void AppTask::BleHandler(AppEvent * aEvent)
         {
             K32W_LOG("OpenDefaultPairingWindow() failed");
         }
+
+#ifdef CONFIG_CHIP_NFC_COMMISSIONING
+        if (NFCMgr().IsTagEmulationStarted())
+        {
+        	K32W_LOG("NFC Tag emulation is already started");
+        }
+        else
+        {
+            ShareQRCodeOverNFC(chip::RendezvousInformationFlags(chip::RendezvousInformationFlag::kBLE));
+        }
+#endif
     }
 }
 
