@@ -47,9 +47,7 @@ CHIP_ERROR NFCManagerImpl::_StartTagEmulation(const char * payload, size_t paylo
 {
 	sInstance.smartPoster.headerNdef    = NFC_NDEF_RECORD_HEADER_SMART_POSTER;
 	sInstance.smartPoster.lenRecordType = NFC_NDEF_RECORD_TYPE_LEN;
-	sInstance.smartPoster.lenPayload    = //sizeof(sInstance.smartPoster.recordName) +
-	                                      //sizeof(sInstance.smartPoster.uriCode) +
-									      sizeof(sInstance.smartPoster.uri);
+	sInstance.smartPoster.lenPayload    = sizeof(sInstance.smartPoster.uri) + sizeof(sInstance.smartPoster.uriCode);
 	sInstance.smartPoster.recordName    = NFC_NDEF_RECORD_NAME;
 	sInstance.smartPoster.uriCode       = NFC_NDEF_URI_CODE;
 	memcpy(sInstance.smartPoster.uri, payload, payloadLength);
