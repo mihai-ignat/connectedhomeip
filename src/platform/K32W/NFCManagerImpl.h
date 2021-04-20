@@ -30,6 +30,14 @@
 namespace chip {
 namespace DeviceLayer {
 
+namespace {
+        #define NFC_NDEF_RECORD_HEADER_SMART_POSTER 0xD1 /* MB=1, ME=1, TNF=1 */
+        #define NFC_NDEF_RECORD_TYPE_LEN            0x01
+        #define NFC_NDEF_RECORD_NAME                'U'
+        #define NFC_NDEF_URI_CODE                   0x00
+    	#define NFC_NDEF_MAX_PAYLOAD_LEN			40 /* check if 40 is ok */
+    }
+
 class NFCManagerImpl final : public NFCManager
 {
     friend class NFCManager;
@@ -69,12 +77,12 @@ private:
         uint8_t lenPayload;
         uint8_t recordName;
         uint8_t uriCode;
-        uint8_t uri[19];
+        uint8_t uri[NFC_NDEF_MAX_PAYLOAD_LEN];
     } NfcSmartPosterNdef_t;
 
     static eAppNtagError AppNtagInitEepromSmartPoster(void);
     static bool          AppNtagIsEepromSmartPosterConfigured(eAppNtagError *pNtagError);
-    static bool          AppNtagSmartPosterEepromWrite(NTAG_HANDLE_T ntagHandleInstance);
+    static bool          AppNtagSmartPosterEepromWrite(void);
     static eAppNtagError AppNtagEepromWriteSmartPoster(void);
     static eAppNtagError AppNtagLockWriteAccess(void);
     static eAppNtagError AppNtagUnlockWriteAccess(void);

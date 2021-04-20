@@ -22,16 +22,10 @@
 #include <support/CodeUtils.h>
 #include <support/SafeInt.h>
 #include <support/logging/CHIPLogging.h>
+#include <support/CHIPPlatformMemory.h>
 
 namespace chip {
 namespace DeviceLayer {
-
-namespace {
-    #define NFC_NDEF_RECORD_HEADER_SMART_POSTER 0xD1 /* MB=1, ME=1, TNF=1 */
-    #define NFC_NDEF_RECORD_TYPE_LEN            0x01
-    #define NFC_NDEF_RECORD_NAME                'U'
-    #define NFC_NDEF_URI_CODE                   0x00
-}
 
 NFCManagerImpl NFCManagerImpl::sInstance;
 
@@ -47,10 +41,18 @@ CHIP_ERROR NFCManagerImpl::_StartTagEmulation(const char * payload, size_t paylo
 {
 	sInstance.smartPoster.headerNdef    = NFC_NDEF_RECORD_HEADER_SMART_POSTER;
 	sInstance.smartPoster.lenRecordType = NFC_NDEF_RECORD_TYPE_LEN;
-	sInstance.smartPoster.lenPayload    = sizeof(sInstance.smartPoster.uri) + sizeof(sInstance.smartPoster.uriCode);
+	sInstance.smartPoster.lenPayload    = payloadLength + sizeof(sInstance.smartPoster.uriCode);
 	sInstance.smartPoster.recordName    = NFC_NDEF_RECORD_NAME;
 	sInstance.smartPoster.uriCode       = NFC_NDEF_URI_CODE;
-	memcpy(sInstance.smartPoster.uri, payload, payloadLength);
+
+	if(payloadLength > NFC_NDEF_MAX_PAYLOAD_LEN)
+	{
+		return CHIP_ERROR_INTERNAL;
+	}
+	else
+	{
+		memcpy(sInstance.smartPoster.uri, payload, payloadLength);
+	}
 
     if (AppNtagInitEepromSmartPoster() != E_APP_NTAG_NO_ERROR)
     {
@@ -66,15 +68,30 @@ CHIP_ERROR NFCManagerImpl::_StartTagEmulation(const char * payload, size_t paylo
 
 CHIP_ERROR NFCManagerImpl::_StopTagEmulation()
 {
-	/* TODO: maybe erase EEPROM */
 
-    return CHIP_NO_ERROR;
+	/* zero all the fields except  within the NfcSmartPosterNdef_t structure */
+	sInstance.smartPoster.headerNdef    = 0x00;
+	sInstance.smartPoster.lenRecordType = 0x00;
+	sInstance.smartPoster.lenPayload    = 0;
+	sInstance.smartPoster.recordName    = '\0';
+	sInstance.smartPoster.uriCode       = 0x00;
+
+	eAppNtagError ntagErr = E_APP_NTAG_NO_ERROR;
+	ntagErr = AppNtagEepromWriteSmartPoster();
+	if (ntagErr != E_APP_NTAG_NO_ERROR)
+	{
+		return CHIP_ERROR_INTERNAL;
+	}
+
+	/* call driver function to close ntagDriverHandleInstance */
+	NTAG_CloseDevice(sInstance.ntagDriverHandleInstance);
+
+	return CHIP_NO_ERROR;
 }
 
 NFCManagerImpl::eAppNtagError NFCManagerImpl::AppNtagInitEepromSmartPoster(void)
 {
     eAppNtagError ntagErr = E_APP_NTAG_NO_ERROR;
-    //bool_t isConfigured = FALSE;
     uint8_t byte0 = 0;
     uint8_t i = 0;
     bool_t i2cAddrFound = FALSE;
@@ -118,16 +135,8 @@ NFCManagerImpl::eAppNtagError NFCManagerImpl::AppNtagInitEepromSmartPoster(void)
             }
         }
 
-        //isConfigured = AppNtagIsEepromSmartPosterConfigured(&ntagErr);
-        //if (ntagErr != E_APP_NTAG_NO_ERROR)
-        //{
-        //    break;
-        //}
-
-        //if (!isConfigured)
-        //{
             ntagErr = AppNtagEepromWriteSmartPoster();
-        //}
+
     } while (0);
 
     /* Stop I2C */
@@ -136,20 +145,42 @@ NFCManagerImpl::eAppNtagError NFCManagerImpl::AppNtagInitEepromSmartPoster(void)
     return ntagErr;
 }
 
-bool NFCManagerImpl::AppNtagSmartPosterEepromWrite(NTAG_HANDLE_T ntagHandleInstance)
+bool NFCManagerImpl::AppNtagSmartPosterEepromWrite(void)
 {
     bool wasWritten = FALSE;
-    uint32_t ndefSize = sizeof(sInstance.smartPoster);
+
+
+    /* DORU, EU ACUM MI-AM DAT SEAMA. LEN PAYLOAD E ZERO CAND VREM SA DAM WRITE DE ZERO PESTE TOT, DECI NU POT SA CALCULEZ NDEFSIZE..
+     * DECI NU E OK MOMENTAN */
+
+    uint32_t ndefSize = sizeof(sInstance.smartPoster.headerNdef) + sizeof(sInstance.smartPoster.lenRecordType) +
+    		sizeof(sInstance.smartPoster.lenPayload) + sizeof(sInstance.smartPoster.recordName) +
+			sizeof(sInstance.smartPoster.uri);
+
+    //uint32_t ndefSize = sizeof(sInstance.smartPoster);
+
     uint32_t addrToWrite = NTAG_I2C_BLOCK_SIZE;
     uint8_t buf[4];
-    uint8_t terminatorTLV = 0xFE;
+    memset(buf, 0, sizeof(buf));
+    uint8_t terminatorTLV;
+    if(sInstance.smartPoster.lenPayload == 0)
+    {
+    	terminatorTLV =  0x00;
+    }
+    else
+    {
+    	terminatorTLV = 0xFE;
+    }
 
     do
     {
         if (ndefSize < 0xFF)
         {
-            buf[0] = 0x3;
-            buf[1] = ndefSize;
+        	if(sInstance.smartPoster.lenPayload > 0)
+        	{
+        		buf[0] = 0x3;
+        		buf[1] = ndefSize;
+        	}
             if (NTAG_WriteBytes(sInstance.ntagDriverHandleInstance, addrToWrite, buf, 2))
             {
                 break;
@@ -159,12 +190,15 @@ bool NFCManagerImpl::AppNtagSmartPosterEepromWrite(NTAG_HANDLE_T ntagHandleInsta
         }
         else if (ndefSize <= 0xFFFF)
         {
-            buf[0] = 0x3;
-            buf[1] = 0xFF;
-            buf[2] = (uint8_t) (ndefSize & 0x0000FF00) >> 8;
-            buf[3] = (uint8_t)(ndefSize & 0x000000FF);
+        	if(sInstance.smartPoster.lenPayload > 0)
+        	{
+        		buf[0] = 0x3;
+				buf[1] = 0xFF;
+				buf[2] = (uint8_t) (ndefSize & 0x0000FF00) >> 8;
+				buf[3] = (uint8_t)(ndefSize & 0x000000FF);
+        	}
 
-            if (NTAG_WriteBytes(ntagHandleInstance, addrToWrite, buf, 4))
+            if (NTAG_WriteBytes(sInstance.ntagDriverHandleInstance, addrToWrite, buf, 4))
             {
                 break;
             }
@@ -172,6 +206,10 @@ bool NFCManagerImpl::AppNtagSmartPosterEepromWrite(NTAG_HANDLE_T ntagHandleInsta
             addrToWrite += 4;
         }
 
+        if(sInstance.smartPoster.lenPayload == 0)
+        {
+        	memset((uint8_t *)(&sInstance.smartPoster), 0, ndefSize);
+        }
         if (NTAG_WriteBytes(sInstance.ntagDriverHandleInstance, addrToWrite, (uint8_t *)(&sInstance.smartPoster), ndefSize))
         {
             break;
@@ -234,7 +272,7 @@ NFCManagerImpl::eAppNtagError NFCManagerImpl::AppNtagEepromWriteSmartPoster(void
         }
 
         /* Write the smart poster value */
-        if (!AppNtagSmartPosterEepromWrite(sInstance.ntagDriverHandleInstance))
+        if (!AppNtagSmartPosterEepromWrite())
         {
             ntagErr = E_APP_NTAG_WRITE_ERROR;
             break;
