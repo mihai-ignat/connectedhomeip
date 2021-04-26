@@ -80,18 +80,6 @@ void GenericThreadStackManagerImpl_OpenThread<ImplClass>::OnOpenThreadStateChang
     event.ThreadStateChange.ChildNodesChanged = (flags & (OT_CHANGED_THREAD_CHILD_ADDED | OT_CHANGED_THREAD_CHILD_REMOVED)) != 0;
     event.ThreadStateChange.OpenThread.Flags  = flags;
 
-#if CHIP_DEVICE_CONFIG_ENABLE_THREAD_SRP_CLIENT
-    if (event.ThreadStateChange.AddressChanged)
-    {
-        const otSrpClientHostInfo * hostInfo =
-            otSrpClientGetHostInfo(static_cast<GenericThreadStackManagerImpl_OpenThread *>(context)->Impl()->OTInstance());
-        if (hostInfo && hostInfo->mName)
-        {
-            static_cast<GenericThreadStackManagerImpl_OpenThread *>(context)->Impl()->_SetupSrpHost(hostInfo->mName);
-        }
-    }
-#endif
-
     PlatformMgr().PostEvent(&event);
 }
 
@@ -162,6 +150,33 @@ void GenericThreadStackManagerImpl_OpenThread<ImplClass>::_OnPlatformEvent(const
     if (event->Type == DeviceEventType::kThreadStateChange)
     {
         Impl()->LockThreadStack();
+
+
+        ChipLogProgress(DeviceLayer, "Thread State CHange \n!");
+
+#if CHIP_DEVICE_CONFIG_ENABLE_THREAD_SRP_CLIENT
+        if (event->ThreadStateChange.AddressChanged)
+        {
+        	ChipLogProgress(DeviceLayer, "Address Change CHange \n!");
+            const otSrpClientHostInfo * hostInfo = otSrpClientGetHostInfo(Impl()->OTInstance());
+
+            if (!hostInfo)
+            {
+            	ChipLogProgress(DeviceLayer, "NO host info \n!");
+            }
+
+            if (!hostInfo->mName)
+		    {
+			    ChipLogProgress(DeviceLayer, "No hostname \n!");
+		    }
+
+            if (hostInfo && hostInfo->mName)
+            {
+            	ChipLogProgress(DeviceLayer, "SetupSrpHost \n!");
+                Impl()->_SetupSrpHost(hostInfo->mName);
+            }
+        }
+#endif
 
 #if CHIP_DETAIL_LOGGING
 
@@ -1016,6 +1031,11 @@ void GenericThreadStackManagerImpl_OpenThread<ImplClass>::OnSrpClientNotificatio
                 otService = next;
             } while (otService);
         }
+
+        ChipDeviceEvent event;
+        event.Type = DeviceEventType::kSrpClientRequestComplete;
+        PlatformMgr().PostEvent(&event);
+
         break;
     }
     case OT_ERROR_PARSE:
