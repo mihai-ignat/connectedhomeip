@@ -105,7 +105,7 @@ CHIP_ERROR AdvertiseOperational()
 
     auto & mdnsAdvertiser = chip::Mdns::ServiceAdvertiser::Instance();
 
-    ChipLogProgress(Discovery, "Advertise operational node %" PRIX64 "-%" PRIX64, advertiseParameters.GetPeerId().GetFabricId(),
+    ChipLogProgress(Discovery, "Advertise operational node %" PRIX32 "-%" PRIX32, advertiseParameters.GetPeerId().GetFabricId(),
                     advertiseParameters.GetPeerId().GetNodeId());
     return mdnsAdvertiser.Advertise(advertiseParameters);
 }
