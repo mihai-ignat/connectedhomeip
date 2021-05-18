@@ -67,23 +67,18 @@ m_flash_start   = 0x00000000;
 m_flash_end     = 0x0009FFFF;
 m_flash_size    = 0x000A0000;
 m_sector_size   = 512;
-m_fsl_prodInfo_size = m_sector_size;
-
-m_fsl_prodInfo_end                             = m_flash_size - 17 * m_sector_size - 1;
-m_fsl_prodInfo_start                           = m_fsl_prodInfo_end - m_fsl_prodInfo_size + 1;
 
 NV_STORAGE_MAX_SECTORS                         = 63;
 NV_STORAGE_SIZE                                = NV_STORAGE_MAX_SECTORS * m_sector_size;
-NV_STORAGE_START_ADDRESS                       = m_fsl_prodInfo_start - 1;
+NV_STORAGE_START_ADDRESS                       = m_flash_size - 17 * m_sector_size - 1;
 NV_STORAGE_END_ADDRESS                         = NV_STORAGE_START_ADDRESS - NV_STORAGE_SIZE + 1;
 
-INT_STORAGE_END                                = NV_STORAGE_START_ADDRESS - 1;
+INT_STORAGE_END                                = NV_STORAGE_END_ADDRESS - 1;
 INT_STORAGE_START                              = 0x48000;
 INT_STORAGE_SIZE                               = INT_STORAGE_END - INT_STORAGE_START;
 
-FREESCALE_PROD_DATA_BASE_ADDR                  = m_fsl_prodInfo_start;
 INT_STORAGE_SECTOR_SIZE                        = m_sector_size;
-m_app_size                                     = 0xA0000; /* 640K: to accommodate all libs in debug */
+m_app_size                                     = 0x97E00; /* 607.5K */
 
 __ram_vector_table__                           = 1;
 vector_table_size                              = 0x120;
@@ -329,4 +324,5 @@ SECTIONS
 
     __StackLimit = _vStackTop - STACK_SIZE;
     ASSERT(__StackLimit >= _end_boot_resume_stack, "Possible stack corruption with data/bss/boot_stack")
+    ASSERT(_etext < INT_STORAGE_END, "Application does not fit into flash!")
 }
