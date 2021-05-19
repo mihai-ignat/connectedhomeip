@@ -21,7 +21,7 @@
 // ================================================================================
 
 #include "openthread/platform/logging.h"
-#include "openthread/platform/uart.h"
+#include <utils/uart.h>
 #include <mbedtls/platform.h>
 #include <openthread-system.h>
 #include <openthread/cli.h>

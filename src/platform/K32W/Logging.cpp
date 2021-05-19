@@ -15,7 +15,7 @@
 
 #if CHIP_DEVICE_CONFIG_ENABLE_THREAD
 #include <openthread/platform/logging.h>
-#include <openthread/platform/uart.h>
+#include <utils/uart.h>
 #endif // CHIP_DEVICE_CONFIG_ENABLE_THREAD
 
 extern "C" void K32WWriteBlocking(const uint8_t * aBuf, uint32_t len);

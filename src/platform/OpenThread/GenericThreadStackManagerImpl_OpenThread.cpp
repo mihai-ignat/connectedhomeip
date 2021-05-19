@@ -814,7 +814,7 @@ CHIP_ERROR GenericThreadStackManagerImpl_OpenThread<ImplClass>::DoInit(otInstanc
     }
 
 #if !defined(__ZEPHYR__) && !defined(ENABLE_CHIP_SHELL) && !defined(PW_RPC_ENABLED)
-    otCliUartInit(otInst);
+    //otCliUartInit(otInst);
 #endif
 
     mOTInst = otInst;

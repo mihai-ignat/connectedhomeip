@@ -14,13 +14,25 @@
 
 import("//build_overrides/jlink.gni")
 import("//build_overrides/openthread.gni")
+import("//build_overrides/ot_nxp.gni")
 
+import("//build_overrides/chip.gni")
+import("${chip_root}/src/platform/device.gni")
+
+if (chip_device_platform == "k32w") {
+    openthread_repo_root =  "${openthread_nxp_root}/openthread"
+}
+else
+{
+    openthread_repo_root = "${openthread_root}"
+}
+    
 config("libopenthread-platform_config") {
-  include_dirs = [ "${openthread_root}/examples/platforms" ]
+  include_dirs = [ "${openthread_repo_root}/examples/platforms" ]
 }
 
 copy("copy_openthread_system") {
-  sources = [ "${openthread_root}/examples/platforms/openthread-system.h" ]
+  sources = [ "${openthread_repo_root}/examples/platforms/openthread-system.h" ]
 
   outputs =
       [ "${root_gen_dir}/include/openthread/platform/{{source_file_part}}" ]
@@ -33,7 +45,7 @@ source_set("openthread_system") {
 }
 
 source_set("libopenthread-platform") {
-  sources = [ "${openthread_root}/examples/platforms/openthread-system.h" ]
+  sources = [ "${openthread_repo_root}/examples/platforms/openthread-system.h" ]
 
   public_deps = [ ":openthread_system" ]
 
@@ -42,19 +54,19 @@ source_set("libopenthread-platform") {
 
 static_library("libopenthread-platform-utils") {
   sources = [
-    "${openthread_root}/examples/platforms/utils/code_utils.h",
-    "${openthread_root}/examples/platforms/utils/debug_uart.c",
-    "${openthread_root}/examples/platforms/utils/encoding.h",
-    "${openthread_root}/examples/platforms/utils/logging_rtt.c",
-    "${openthread_root}/examples/platforms/utils/logging_rtt.h",
-    "${openthread_root}/examples/platforms/utils/mac_frame.h",
-    "${openthread_root}/examples/platforms/utils/settings.h",
-    "${openthread_root}/examples/platforms/utils/settings_ram.c",
-    "${openthread_root}/examples/platforms/utils/soft_source_match_table.c",
-    "${openthread_root}/examples/platforms/utils/soft_source_match_table.h",
+    "${openthread_repo_root}/examples/platforms/utils/code_utils.h",
+    "${openthread_repo_root}/examples/platforms/utils/debug_uart.c",
+    "${openthread_repo_root}/examples/platforms/utils/encoding.h",
+    "${openthread_repo_root}/examples/platforms/utils/logging_rtt.c",
+    "${openthread_repo_root}/examples/platforms/utils/logging_rtt.h",
+    "${openthread_repo_root}/examples/platforms/utils/mac_frame.h",
+    "${openthread_repo_root}/examples/platforms/utils/settings.h",
+    "${openthread_repo_root}/examples/platforms/utils/settings_ram.c",
+    "${openthread_repo_root}/examples/platforms/utils/soft_source_match_table.c",
+    "${openthread_repo_root}/examples/platforms/utils/soft_source_match_table.h",
   ]
   public_deps = [
-    "${openthread_root}/src/core:libopenthread_core_headers",
+    "${openthread_repo_root}/src/core:libopenthread_core_headers",
     "${segger_rtt_root}:segger_rtt",
   ]
 

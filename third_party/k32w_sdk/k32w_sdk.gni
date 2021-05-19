@@ -119,11 +119,12 @@ template("k32w_sdk") {
       "gPWR_LDOMEM_0_9V_PD=0",
       "SDK_DEBUGCONSOLE=1",
       "NO_SYSCORECLK_UPD=0",
-      "USE_RTOS=1",
+      "USE_SDK_OSA=0",
       "FSL_RTOS_FREE_RTOS=1",
       "gTotalHeapSize_c=0xF000",
       "gUartDebugConsole_d=1",
       "gUsePdm_d=1",
+      "gSerialManagerMaxInterfaces_c=2",
       "gLEDSupported_d",
       "gKeyBoardSupported_d",
       "gPdmNbSegments=63",
@@ -153,7 +154,7 @@ template("k32w_sdk") {
       "OPENTHREAD_CONFIG_IP6_SLAAC_ENABLE=1",
 
       #TODO: move this define in a MBEDTLS specific GN file
-      "MBEDTLS_FREESCALE_FREERTOS_CALLOC_ALT=1",
+      #"MBEDTLS_FREESCALE_FREERTOS_CALLOC_ALT=1",
     ]
 
     if (chip_mdns == "platform") {
@@ -165,7 +166,6 @@ template("k32w_sdk") {
 
     if (chip_with_se05x == 1) {
       defines += [
-        "MBEDTLS_FREESCALE_FREERTOS_CALLOC_ALT=1",
         "gMainThreadStackSize_c=14048",
       ]
     } else {
@@ -264,6 +264,8 @@ template("k32w_sdk") {
       "${k32w_sdk_root}/middleware/wireless/framework/RNG/Source/RNG.c",
       "${k32w_sdk_root}/middleware/wireless/framework/Reset/Reset.c",
       "${k32w_sdk_root}/middleware/wireless/framework/SecLib/SecLib.c",
+      "${k32w_sdk_root}/middleware/wireless/framework/SerialManager/Source/SerialManager.c",
+      "${k32w_sdk_root}/middleware/wireless/framework/SerialManager/Source/UART_Serial_Adapter.c",
       "${k32w_sdk_root}/middleware/wireless/framework/TimersManager/Source/TMR_Adapter.c",
       "${k32w_sdk_root}/middleware/wireless/framework/TimersManager/Source/TimersManager.c",
       "${k32w_sdk_root}/middleware/wireless/framework/XCVR/DK6/fsl_xcvr.c",
