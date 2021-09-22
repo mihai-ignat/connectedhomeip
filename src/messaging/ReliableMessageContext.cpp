@@ -156,18 +156,14 @@ uint64_t ReliableMessageContext::GetActiveRetransmitTimeoutTick()
  *  @retval  #CHIP_NO_ERROR                             if the context was removed.
  *
  */
-CHIP_ERROR ReliableMessageContext::HandleRcvdAck(uint32_t AckMsgId)
+void ReliableMessageContext::HandleRcvdAck(uint32_t AckMsgId)
 {
-    CHIP_ERROR err = CHIP_NO_ERROR;
-
     // Msg is an Ack; Check Retrans Table and remove message context
     if (!GetReliableMessageMgr()->CheckAndRemRetransTable(this, AckMsgId))
     {
 #if !defined(NDEBUG)
-        ChipLogError(ExchangeManager, "CHIP MsgId:%08" PRIX32 " not in RetransTable", AckMsgId);
+        ChipLogDetail(ExchangeManager, "CHIP MessageCounter:%08" PRIX32 " not in RetransTable", AckMsgId);
 #endif
-        err = CHIP_ERROR_INVALID_ACK_ID;
-        // Optionally call an application callback with this error.
     }
     else
     {
@@ -175,8 +171,6 @@ CHIP_ERROR ReliableMessageContext::HandleRcvdAck(uint32_t AckMsgId)
         ChipLogDetail(ExchangeManager, "Removed CHIP MsgId:%08" PRIX32 " from RetransTable", AckMsgId);
 #endif
     }
-
-    return err;
 }
 
 CHIP_ERROR ReliableMessageContext::HandleNeedsAck(uint32_t messageId, BitFlags<MessageFlagValues> messageFlags)

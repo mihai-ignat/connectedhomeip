@@ -110,7 +110,8 @@ CHIP_ERROR ExchangeMessageDispatch::OnMessageReceived(const Header::Flags & head
     {
         if (!msgFlags.Has(MessageFlagValues::kDuplicateMessage) && payloadHeader.IsAckMsg() && payloadHeader.GetAckId().HasValue())
         {
-            ReturnErrorOnFailure(reliableMessageContext->HandleRcvdAck(payloadHeader.GetAckId().Value()));
+            //ReturnErrorOnFailure(reliableMessageContext->HandleRcvdAck(payloadHeader.GetAckId().Value()));
+            reliableMessageContext->HandleRcvdAck(payloadHeader.GetAckId().Value());
         }
 
         if (payloadHeader.NeedsAck())
