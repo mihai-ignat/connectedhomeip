@@ -2704,6 +2704,18 @@ public class ChipClusters {
       readRebootCountAttribute(chipClusterPtr, callback);
     }
 
+    public void readUpTimeAttribute(LongAttributeCallback callback) {
+      readUpTimeAttribute(chipClusterPtr, callback);
+    }
+
+    public void readTotalOperationalHoursAttribute(LongAttributeCallback callback) {
+      readTotalOperationalHoursAttribute(chipClusterPtr, callback);
+    }
+
+    public void readBootReasonsAttribute(IntegerAttributeCallback callback) {
+      readBootReasonsAttribute(chipClusterPtr, callback);
+    }
+
     public void readClusterRevisionAttribute(IntegerAttributeCallback callback) {
       readClusterRevisionAttribute(chipClusterPtr, callback);
     }
@@ -2712,6 +2724,14 @@ public class ChipClusters {
         long chipClusterPtr, NetworkInterfacesAttributeCallback callback);
 
     private native void readRebootCountAttribute(
+        long chipClusterPtr, IntegerAttributeCallback callback);
+
+    private native void readUpTimeAttribute(long chipClusterPtr, LongAttributeCallback callback);
+
+    private native void readTotalOperationalHoursAttribute(
+        long chipClusterPtr, LongAttributeCallback callback);
+
+    private native void readBootReasonsAttribute(
         long chipClusterPtr, IntegerAttributeCallback callback);
 
     private native void readClusterRevisionAttribute(
@@ -2904,10 +2924,21 @@ public class ChipClusters {
       identifyQuery(chipClusterPtr, callback);
     }
 
+    public void triggerEffect(
+        DefaultClusterCallback callback, int effectIdentifier, int effectVariant) {
+      triggerEffect(chipClusterPtr, callback, effectIdentifier, effectVariant);
+    }
+
     private native void identify(
         long chipClusterPtr, DefaultClusterCallback callback, int identifyTime);
 
     private native void identifyQuery(long chipClusterPtr, IdentifyQueryResponseCallback callback);
+
+    private native void triggerEffect(
+        long chipClusterPtr,
+        DefaultClusterCallback callback,
+        int effectIdentifier,
+        int effectVariant);
 
     public interface IdentifyQueryResponseCallback {
       void onSuccess(int timeout);
@@ -2923,6 +2954,10 @@ public class ChipClusters {
       writeIdentifyTimeAttribute(chipClusterPtr, callback, value);
     }
 
+    public void readIdentifyTypeAttribute(IntegerAttributeCallback callback) {
+      readIdentifyTypeAttribute(chipClusterPtr, callback);
+    }
+
     public void readClusterRevisionAttribute(IntegerAttributeCallback callback) {
       readClusterRevisionAttribute(chipClusterPtr, callback);
     }
@@ -2932,6 +2967,9 @@ public class ChipClusters {
 
     private native void writeIdentifyTimeAttribute(
         long chipClusterPtr, DefaultClusterCallback callback, int value);
+
+    private native void readIdentifyTypeAttribute(
+        long chipClusterPtr, IntegerAttributeCallback callback);
 
     private native void readClusterRevisionAttribute(
         long chipClusterPtr, IntegerAttributeCallback callback);
@@ -4498,6 +4536,14 @@ public class ChipClusters {
 
     private native void resetWatermarks(long chipClusterPtr, DefaultClusterCallback callback);
 
+    public void readCurrentHeapFreeAttribute(LongAttributeCallback callback) {
+      readCurrentHeapFreeAttribute(chipClusterPtr, callback);
+    }
+
+    public void readCurrentHeapUsedAttribute(LongAttributeCallback callback) {
+      readCurrentHeapUsedAttribute(chipClusterPtr, callback);
+    }
+
     public void readCurrentHeapHighWatermarkAttribute(LongAttributeCallback callback) {
       readCurrentHeapHighWatermarkAttribute(chipClusterPtr, callback);
     }
@@ -4505,6 +4551,12 @@ public class ChipClusters {
     public void readClusterRevisionAttribute(IntegerAttributeCallback callback) {
       readClusterRevisionAttribute(chipClusterPtr, callback);
     }
+
+    private native void readCurrentHeapFreeAttribute(
+        long chipClusterPtr, LongAttributeCallback callback);
+
+    private native void readCurrentHeapUsedAttribute(
+        long chipClusterPtr, LongAttributeCallback callback);
 
     private native void readCurrentHeapHighWatermarkAttribute(
         long chipClusterPtr, LongAttributeCallback callback);

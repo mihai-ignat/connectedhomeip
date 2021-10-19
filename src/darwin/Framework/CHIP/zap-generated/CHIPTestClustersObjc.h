@@ -332,6 +332,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface CHIPTestGeneralDiagnostics : CHIPGeneralDiagnostics
 
 - (void)writeAttributeRebootCountWithValue:(uint16_t)value responseHandler:(ResponseHandler)responseHandler;
+- (void)writeAttributeUpTimeWithValue:(uint64_t)value responseHandler:(ResponseHandler)responseHandler;
+- (void)writeAttributeTotalOperationalHoursWithValue:(uint32_t)value responseHandler:(ResponseHandler)responseHandler;
+- (void)writeAttributeBootReasonsWithValue:(uint8_t)value responseHandler:(ResponseHandler)responseHandler;
 - (void)writeAttributeClusterRevisionWithValue:(uint16_t)value responseHandler:(ResponseHandler)responseHandler;
 
 @end
@@ -363,6 +366,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface CHIPTestIdentify : CHIPIdentify
 
+- (void)writeAttributeIdentifyTypeWithValue:(uint8_t)value responseHandler:(ResponseHandler)responseHandler;
 - (void)writeAttributeClusterRevisionWithValue:(uint16_t)value responseHandler:(ResponseHandler)responseHandler;
 
 @end
@@ -590,6 +594,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface CHIPTestSoftwareDiagnostics : CHIPSoftwareDiagnostics
 
+- (void)writeAttributeCurrentHeapFreeWithValue:(uint64_t)value responseHandler:(ResponseHandler)responseHandler;
+- (void)writeAttributeCurrentHeapUsedWithValue:(uint64_t)value responseHandler:(ResponseHandler)responseHandler;
 - (void)writeAttributeCurrentHeapHighWatermarkWithValue:(uint64_t)value responseHandler:(ResponseHandler)responseHandler;
 - (void)writeAttributeClusterRevisionWithValue:(uint16_t)value responseHandler:(ResponseHandler)responseHandler;
 
