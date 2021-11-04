@@ -165,15 +165,15 @@ void ReliableMessageContext::HandleRcvdAck(uint32_t ackMessageCounter)
         // This can happen quite easily due to a packet with a piggyback ack
         // being lost and retransmitted.
 #if !defined(NDEBUG)
-        ChipLogDetail(ExchangeManager,
-                      "CHIP MessageCounter:" ChipLogFormatMessageCounter " not in RetransTable on exchange " ChipLogFormatExchange,
-                      ackMessageCounter, ChipLogValueExchange(GetExchangeContext()));
+        //ChipLogDetail(ExchangeManager,
+        //              "CHIP MessageCounter:" ChipLogFormatMessageCounter " not in RetransTable on exchange " ChipLogFormatExchange,
+        //              ackMessageCounter, ChipLogValueExchange(GetExchangeContext()));
 #endif
     }
     else
     {
 #if !defined(NDEBUG)
-        ChipLogDetail(ExchangeManager, "Removed CHIP MessageCounter:%08" PRIX32 " from RetransTable", ackMessageCounter);
+        //ChipLogDetail(ExchangeManager, "Removed CHIP MessageCounter:%08" PRIX32 " from RetransTable", ackMessageCounter);
 #endif
     }
 }
