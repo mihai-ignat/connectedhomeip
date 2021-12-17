@@ -291,7 +291,10 @@ CHIP_ERROR ChipCertificateSet::VerifySignature(const ChipCertificateData * cert,
 
     memcpy(caPublicKey, caCert->mPublicKey.data(), caCert->mPublicKey.size());
 
+    ChipLogDetail(SecureChannel, "Before ECDSA_validate_hash_signature");
     ReturnErrorOnFailure(caPublicKey.ECDSA_validate_hash_signature(cert->mTBSHash, chip::Crypto::kSHA256_Hash_Length, signature));
+    ChipLogDetail(SecureChannel, "Before ECDSA_validate_hash_signature");
+
 
     return CHIP_NO_ERROR;
 }
@@ -411,7 +414,10 @@ CHIP_ERROR ChipCertificateSet::ValidateCert(const ChipCertificateData * cert, Va
 
     // Verify signature of the current certificate against public key of the CA certificate. If signature verification
     // succeeds, the current certificate is valid.
+    ChipLogDetail(SecureChannel, "Before VerifySignature");
     err = VerifySignature(cert, caCert);
+    ChipLogDetail(SecureChannel, "After VerifySignature");
+
     SuccessOrExit(err);
 
 exit:

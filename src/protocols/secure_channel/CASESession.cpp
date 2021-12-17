@@ -543,38 +543,59 @@ CHIP_ERROR CASESession::SendSigma2()
 {
     VerifyOrReturnError(mFabricInfo != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
+	ChipLogDetail(SecureChannel, "Preparing to send Sigma2 msg");
+
     ByteSpan icaCert;
+
+	ChipLogDetail(SecureChannel, "Before GetICACert");
     ReturnErrorOnFailure(mFabricInfo->GetICACert(icaCert));
+	ChipLogDetail(SecureChannel, "After GetICACert");
 
     ByteSpan nocCert;
+	ChipLogDetail(SecureChannel, "Before GetNOCCert");
     ReturnErrorOnFailure(mFabricInfo->GetNOCCert(nocCert));
+	ChipLogDetail(SecureChannel, "After GetNOCCert");
 
+	ChipLogDetail(SecureChannel, "Before GetTrustedRootId");
     mTrustedRootId = mFabricInfo->GetTrustedRootId();
+	ChipLogDetail(SecureChannel, "After GetTrustedRootId");
     VerifyOrReturnError(!mTrustedRootId.empty(), CHIP_ERROR_INTERNAL);
 
     // Fill in the random value
+	ChipLogDetail(SecureChannel, "Before DRBG_get_bytes");
     uint8_t msg_rand[kSigmaParamRandomNumberSize];
     ReturnErrorOnFailure(DRBG_get_bytes(&msg_rand[0], sizeof(msg_rand)));
+    ChipLogDetail(SecureChannel, "After DRBG_get_bytes");
 
+ChipLogDetail(SecureChannel, "Before mEphemeralKey.Initialize()");
     // Generate an ephemeral keypair
 #ifdef ENABLE_HSM_CASE_EPHEMERAL_KEY
     mEphemeralKey.SetKeyId(CASE_EPHEMERAL_KEY);
 #endif
     ReturnErrorOnFailure(mEphemeralKey.Initialize());
+ChipLogDetail(SecureChannel, "After mEphemeralKey.Initialize()");
 
+	ChipLogDetail(SecureChannel, "Before mEphemeralKey.ECDH_derive_secret");
     // Generate a Shared Secret
     ReturnErrorOnFailure(mEphemeralKey.ECDH_derive_secret(mRemotePubKey, mSharedSecret));
+    ChipLogDetail(SecureChannel, "After mEphemeralKey.ECDH_derive_secret");
 
     uint8_t msg_salt[kIPKSize + kSigmaParamRandomNumberSize + kP256_PublicKey_Length + kSHA256_Hash_Length];
 
     MutableByteSpan saltSpan(msg_salt);
+
+    ChipLogDetail(SecureChannel, "Before ConstructSaltSigma2");
     ReturnErrorOnFailure(ConstructSaltSigma2(ByteSpan(msg_rand), mEphemeralKey.Pubkey(), ByteSpan(mIPK), saltSpan));
+    ChipLogDetail(SecureChannel, "After ConstructSaltSigma2");
 
     HKDF_sha_crypto mHKDF;
     uint8_t sr2k[CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES];
+
+	ChipLogDetail(SecureChannel, "Before HKDF_SHA256");
     ReturnErrorOnFailure(mHKDF.HKDF_SHA256(mSharedSecret, mSharedSecret.Length(), saltSpan.data(), saltSpan.size(), kKDFSR2Info,
                                            kKDFInfoLength, sr2k, CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES));
 
+	ChipLogDetail(SecureChannel, "After HKDF_SHA256");
     // Construct Sigma2 TBS Data
     size_t msg_r2_signed_len =
         EstimateTLVStructOverhead(nocCert.size(), icaCert.size(), kP256_PublicKey_Length, kP256_PublicKey_Length);
@@ -589,8 +610,11 @@ CHIP_ERROR CASESession::SendSigma2()
     VerifyOrReturnError(mFabricInfo->GetOperationalKey() != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
     P256ECDSASignature tbsData2Signature;
+
+	ChipLogDetail(SecureChannel, "Before ECDSA_sign_msg");
     ReturnErrorOnFailure(
         mFabricInfo->GetOperationalKey()->ECDSA_sign_msg(msg_R2_Signed.Get(), msg_r2_signed_len, tbsData2Signature));
+	ChipLogDetail(SecureChannel, "After ECDSA_sign_msg");
 
     msg_R2_Signed.Free();
 
@@ -624,11 +648,13 @@ CHIP_ERROR CASESession::SendSigma2()
     msg_r2_signed_enc_len = static_cast<size_t>(tlvWriter.GetLengthWritten());
 
     // Generate the encrypted data blob
+	ChipLogDetail(SecureChannel, "Before AES_CCM_encrypt");
     ReturnErrorOnFailure(AES_CCM_encrypt(msg_R2_Encrypted.Get(), msg_r2_signed_enc_len, nullptr, 0, sr2k,
                                          CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES, kTBEData2_Nonce, kTBEDataNonceLength,
                                          msg_R2_Encrypted.Get(), msg_R2_Encrypted.Get() + msg_r2_signed_enc_len,
                                          CHIP_CRYPTO_AEAD_MIC_LENGTH_BYTES));
 
+    ChipLogDetail(SecureChannel, "After AES_CCM_encrypt");
     // Construct Sigma2 Msg
     size_t data_len = EstimateTLVStructOverhead(kSigmaParamRandomNumberSize, sizeof(uint16_t), kP256_PublicKey_Length,
                                                 msg_r2_signed_enc_len + CHIP_CRYPTO_AEAD_MIC_LENGTH_BYTES);
@@ -946,19 +972,25 @@ CHIP_ERROR CASESession::SendSigma3()
     // Generate S3K key
     {
         MutableByteSpan saltSpan(msg_salt);
+        ChipLogDetail(SecureChannel, "Before ConstructSaltSigma3");
         err = ConstructSaltSigma3(ByteSpan(mIPK), saltSpan);
+        ChipLogDetail(SecureChannel, "After ConstructSaltSigma3");
         SuccessOrExit(err);
 
         HKDF_sha_crypto mHKDF;
+        ChipLogDetail(SecureChannel, "Before mHKDF.HKDF_SHA256");
         err = mHKDF.HKDF_SHA256(mSharedSecret, mSharedSecret.Length(), saltSpan.data(), saltSpan.size(), kKDFSR3Info,
                                 kKDFInfoLength, sr3k, CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES);
+        ChipLogDetail(SecureChannel, "After mHKDF.HKDF_SHA256");
         SuccessOrExit(err);
     }
 
     // Generated Encrypted data blob
+    ChipLogDetail(SecureChannel, "Before AES_CCM_encrypt");
     err = AES_CCM_encrypt(msg_R3_Encrypted.Get(), msg_r3_encrypted_len, nullptr, 0, sr3k, CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES,
                           kTBEData3_Nonce, kTBEDataNonceLength, msg_R3_Encrypted.Get(),
                           msg_R3_Encrypted.Get() + msg_r3_encrypted_len, CHIP_CRYPTO_AEAD_MIC_LENGTH_BYTES);
+    ChipLogDetail(SecureChannel, "After AES_CCM_encrypt");
     SuccessOrExit(err);
 
     // Generate Sigma3 Msg
@@ -1064,18 +1096,23 @@ CHIP_ERROR CASESession::HandleSigma3(System::PacketBufferHandle && msg)
         SuccessOrExit(err);
 
         HKDF_sha_crypto mHKDF;
+        ChipLogDetail(SecureChannel, "Before mHKDF.HKDF_SHA256");
         err = mHKDF.HKDF_SHA256(mSharedSecret, mSharedSecret.Length(), saltSpan.data(), saltSpan.size(), kKDFSR3Info,
                                 kKDFInfoLength, sr3k, CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES);
+        ChipLogDetail(SecureChannel, "After mHKDF.HKDF_SHA256");
         SuccessOrExit(err);
     }
 
     SuccessOrExit(err = mCommissioningHash.AddData(ByteSpan{ buf, bufLen }));
 
     // Step 2 - Decrypt data blob
+    ChipLogDetail(SecureChannel, "Before AES_CCM_decrypt");
     SuccessOrExit(err = AES_CCM_decrypt(msg_R3_Encrypted.Get(), msg_r3_encrypted_len, nullptr, 0,
                                         msg_R3_Encrypted.Get() + msg_r3_encrypted_len, CHIP_CRYPTO_AEAD_MIC_LENGTH_BYTES, sr3k,
                                         CHIP_CRYPTO_SYMMETRIC_KEY_LENGTH_BYTES, kTBEData3_Nonce, kTBEDataNonceLength,
                                         msg_R3_Encrypted.Get()));
+    ChipLogDetail(SecureChannel, "After AES_CCM_decrypt");
+
 
     decryptedDataTlvReader.Init(msg_R3_Encrypted.Get(), msg_r3_encrypted_len);
     containerType = TLV::kTLVType_Structure;
@@ -1096,7 +1133,9 @@ CHIP_ERROR CASESession::HandleSigma3(System::PacketBufferHandle && msg)
     // Step 5/6
     // Validate initiator identity located in msg->Start()
     // Constructing responder identity
+    ChipLogDetail(SecureChannel, "Before Validate_and_RetrieveResponderID");
     SuccessOrExit(err = Validate_and_RetrieveResponderID(initiatorNOC, initiatorICAC, remoteCredential));
+    ChipLogDetail(SecureChannel, "After Validate_and_RetrieveResponderID");
 
     // Step 4 - Construct Sigma3 TBS Data
     msg_r3_signed_len = EstimateTLVStructOverhead(sizeof(uint16_t), initiatorNOC.size(), initiatorICAC.size(),
@@ -1119,7 +1158,9 @@ CHIP_ERROR CASESession::HandleSigma3(System::PacketBufferHandle && msg)
     //        current flow of code, a malicious node can trigger a DoS style attack on the device.
     //        The same change should be made in Sigma2 processing.
     // Step 7 - Validate Signature
+    ChipLogDetail(SecureChannel, "Before ECDSA_validate_msg_signature");
     SuccessOrExit(err = remoteCredential.ECDSA_validate_msg_signature(msg_R3_Signed.Get(), msg_r3_signed_len, tbsData3Signature));
+    ChipLogDetail(SecureChannel, "After ECDSA_validate_msg_signature");
 
     SuccessOrExit(err = mCommissioningHash.Finish(messageDigestSpan));
 
@@ -1474,14 +1515,19 @@ CHIP_ERROR CASESession::OnMessageReceived(ExchangeContext * ec, const PayloadHea
     case kInitialized:
         if (msgType == Protocols::SecureChannel::MsgType::CASE_Sigma1)
         {
+
+        	ChipLogDetail(SecureChannel, "Before HandleSigma1_and_SendSigma2");
             err = HandleSigma1_and_SendSigma2(std::move(msg));
+        	ChipLogDetail(SecureChannel, "After HandleSigma1_and_SendSigma2");
         }
         break;
     case kSentSigma1:
         switch (static_cast<Protocols::SecureChannel::MsgType>(payloadHeader.GetMessageType()))
         {
         case Protocols::SecureChannel::MsgType::CASE_Sigma2:
+        	ChipLogDetail(SecureChannel, "Before HandleSigma2_and_SendSigma3");
             err = HandleSigma2_and_SendSigma3(std::move(msg));
+            ChipLogDetail(SecureChannel, "After HandleSigma2_and_SendSigma3");
             break;
 
         case Protocols::SecureChannel::MsgType::CASE_Sigma2Resume:
@@ -1501,7 +1547,9 @@ CHIP_ERROR CASESession::OnMessageReceived(ExchangeContext * ec, const PayloadHea
         switch (static_cast<Protocols::SecureChannel::MsgType>(payloadHeader.GetMessageType()))
         {
         case Protocols::SecureChannel::MsgType::CASE_Sigma3:
+        	ChipLogDetail(SecureChannel, "Before HandleSigma3");
             err = HandleSigma3(std::move(msg));
+        	ChipLogDetail(SecureChannel, "After HandleSigma3");
             break;
 
         case MsgType::StatusReport:

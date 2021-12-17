@@ -500,9 +500,11 @@ CHIP_ERROR P256Keypair::ECDSA_sign_hash(const uint8_t * hash, const size_t hash_
     result = mbedtls_ecdsa_from_keypair(&ecdsa_ctxt, keypair);
     VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
 
+    ChipLogError(Crypto, "before mbedtls_ecdsa_sign");
     result =
         mbedtls_ecdsa_sign(&ecdsa_ctxt.grp, &r, &s, &ecdsa_ctxt.d, Uint8::to_const_uchar(hash), hash_length, CryptoRNG, nullptr);
     VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
+    ChipLogError(Crypto, "after mbedtls_ecdsa_sign");
 
     VerifyOrExit((mbedtls_mpi_size(&r) <= kP256_FE_Length) || (mbedtls_mpi_size(&s) <= kP256_FE_Length),
                  error = CHIP_ERROR_INTERNAL);
@@ -581,7 +583,10 @@ CHIP_ERROR P256PublicKey::ECDSA_validate_hash_signature(const uint8_t * hash, co
     result = mbedtls_mpi_read_binary(&s, Uint8::to_const_uchar(signature.ConstBytes()) + kP256_FE_Length, kP256_FE_Length);
     VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
 
+    ChipLogError(Crypto, "before mbedtls_ecdsa_verify");
     result = mbedtls_ecdsa_verify(&ecdsa_ctxt.grp, Uint8::to_const_uchar(hash), hash_length, &ecdsa_ctxt.Q, &r, &s);
+    ChipLogError(Crypto, "after mbedtls_ecdsa_verify");
+
     VerifyOrExit(result == 0, error = CHIP_ERROR_INVALID_SIGNATURE);
 
 exit:
@@ -661,8 +666,10 @@ CHIP_ERROR P256Keypair::Initialize()
     mbedtls_ecp_keypair * keypair = to_keypair(&mKeypair);
     mbedtls_ecp_keypair_init(keypair);
 
+    ChipLogError(Crypto, "before mbedtls_ecp_gen_key");
     result = mbedtls_ecp_gen_key(group, keypair, CryptoRNG, nullptr);
     VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
+    ChipLogError(Crypto, "after mbedtls_ecp_gen_key");
 
     result = mbedtls_ecp_point_write_binary(&keypair->grp, &keypair->Q, MBEDTLS_ECP_PF_UNCOMPRESSED, &pubkey_size,
                                             Uint8::to_uchar(mPublicKey), mPublicKey.Length());
@@ -796,7 +803,10 @@ CHIP_ERROR P256Keypair::NewCertificateSigningRequest(uint8_t * out_csr, size_t &
     result = mbedtls_x509write_csr_set_subject_name(&csr, "O=CSR");
     VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
 
+
+    ChipLogError(Crypto, "before mbedtls_x509write_csr_der");
     result = mbedtls_x509write_csr_der(&csr, out_csr, csr_length, CryptoRNG, nullptr);
+    ChipLogError(Crypto, "after mbedtls_x509write_csr_der");
     VerifyOrExit(result > 0, error = CHIP_ERROR_INTERNAL);
 
     out_length = (size_t) result;

@@ -275,10 +275,15 @@ CHIP_ERROR FabricInfo::VerifyCredentials(const ByteSpan & noc, const ByteSpan & 
     //        The FindValidCert() algorithm will need updates to achieve this refactor.
     constexpr uint8_t kMaxNumCertsInOpCreds = 3;
 
+    ChipLogDetail(SecureChannel, "Before VerifyCredentials");
+
     ChipCertificateSet certificates;
     ReturnErrorOnFailure(certificates.Init(kMaxNumCertsInOpCreds));
 
+    ChipLogDetail(SecureChannel, "Before certificates.LoadCert");
     ReturnErrorOnFailure(certificates.LoadCert(mRootCert, BitFlags<CertDecodeFlags>(CertDecodeFlags::kIsTrustAnchor)));
+    ChipLogDetail(SecureChannel, "After certificates.LoadCert");
+
 
     if (!icac.empty())
     {
@@ -293,10 +298,15 @@ CHIP_ERROR FabricInfo::VerifyCredentials(const ByteSpan & noc, const ByteSpan & 
     const ChipCertificateData * resultCert = nullptr;
     // FindValidCert() checks the certificate set constructed by loading noc, icac and mRootCert.
     // It confirms that the certs link correctly (noc -> icac -> mRootCert), and have been correctly signed.
+
+    ChipLogDetail(SecureChannel, "Before certificates.FindValidCert");
     ReturnErrorOnFailure(certificates.FindValidCert(nocSubjectDN, nocSubjectKeyId, context, &resultCert));
+    ChipLogDetail(SecureChannel, "After certificates.FindValidCert");
 
     NodeId nodeId;
+    ChipLogDetail(SecureChannel, "Before ExtractNodeIdFabricIdFromOpCert");
     ReturnErrorOnFailure(ExtractNodeIdFabricIdFromOpCert(certificates.GetLastCert()[0], &nodeId, &fabricId));
+    ChipLogDetail(SecureChannel, "After ExtractNodeIdFabricIdFromOpCert");
 
     if (!icac.empty())
     {
@@ -308,8 +318,11 @@ CHIP_ERROR FabricInfo::VerifyCredentials(const ByteSpan & noc, const ByteSpan & 
     }
 
     ReturnErrorOnFailure(GetCompressedId(fabricId, nodeId, &nocPeerId));
+    ChipLogDetail(SecureChannel, "Before P256PublicKey");
     nocPubkey = P256PublicKey(certificates.GetLastCert()[0].mPublicKey);
+    ChipLogDetail(SecureChannel, "After P256PublicKey");
 
+    ChipLogDetail(SecureChannel, "After VerifyCredentials");
     return CHIP_NO_ERROR;
 }
 

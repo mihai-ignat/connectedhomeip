@@ -733,6 +733,7 @@ bool emberAfOperationalCredentialsClusterOpCSRRequestCallback(app::CommandHandle
         SuccessOrExit(err = gFabricBeingCommissioned.SetEphemeralKey(&keypair));
     }
 
+    emberAfPrintln(EMBER_AF_PRINT_DEBUG, "Before NewCertificateSigningRequest");
     err = gFabricBeingCommissioned.GetOperationalKey()->NewCertificateSigningRequest(csr.Get(), csrLength);
     emberAfPrintln(EMBER_AF_PRINT_DEBUG, "OpCreds: NewCertificateSigningRequest returned %" CHIP_ERROR_FORMAT, err.Format());
     SuccessOrExit(err);
