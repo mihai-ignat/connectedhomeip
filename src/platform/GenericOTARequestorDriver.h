@@ -44,6 +44,7 @@ public:
 
     bool CanConsent() override;
     uint16_t GetMaxDownloadBlockSize() override;
+    void SetMaxDownloadBlockSize(uint16_t maxDownloadBlockSize) override;
 
     void HandleError(UpdateFailureState state, CHIP_ERROR error) override;
     void UpdateAvailable(const UpdateDescription & update, System::Clock::Seconds32 delay) override;
@@ -59,6 +60,7 @@ protected:
 
     OTARequestorInterface * mRequestor           = nullptr;
     OTAImageProcessorInterface * mImageProcessor = nullptr;
+    uint16_t maxDownloadBlockSize                = 1024;
 };
 
 } // namespace DeviceLayer

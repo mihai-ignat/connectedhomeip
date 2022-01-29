@@ -28,8 +28,18 @@ patch --binary -d "$NXP_K32W061_SDK_ROOT"/middleware/wireless/framework/SecLib -
 convert_to_dos "$NXP_K32W061_SDK_ROOT"/middleware/wireless/framework/OtaSupport/Source/OtaUtils.c
 patch --binary -d "$NXP_K32W061_SDK_ROOT"/middleware/wireless/framework/OtaSupport/Source -p1 <"$SOURCE_DIR/OtaUtils_c.patch"
 
+convert_to_dos "$NXP_K32W061_SDK_ROOT"/middleware/wireless/framework/OtaSupport/Source/OtaSupport.c
+patch --binary -d "$NXP_K32W061_SDK_ROOT"/middleware/wireless/framework/OtaSupport/Source -p1 <"$SOURCE_DIR/OtaSupport_c.patch"
+
 convert_to_dos "$NXP_K32W061_SDK_ROOT"/middleware/wireless/bluetooth/host/interface/ble_utils.h
 patch --binary -d "$NXP_K32W061_SDK_ROOT"/middleware/wireless/bluetooth/host/interface -p1 <"$SOURCE_DIR/ble_utils_h.patch"
+
+convert_to_dos "$NXP_K32W061_SDK_ROOT"/middleware/wireless/framework/Flash/External/Source/Eeprom_MX25R8035F.c
+patch --binary -d "$NXP_K32W061_SDK_ROOT"/middleware/wireless/framework/Flash/External/Source -p1 <"$SOURCE_DIR/Eeprom_MX25R8035F_c.patch"
+
+convert_to_dos "$NXP_K32W061_SDK_ROOT"/tools/imagetool/sign_images.sh
+patch --binary -d "$NXP_K32W061_SDK_ROOT"/tools/imagetool/ -p1 <"$SOURCE_DIR/sign_images_sh.patch"
+dos2unix "$NXP_K32W061_SDK_ROOT"/tools/imagetool/sign_images.sh
 
 echo "K32W SDK MR3 QP1 was patched!"
 exit 0

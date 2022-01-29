@@ -33,6 +33,7 @@ public:
     CHIP_ERROR Apply() override;
     CHIP_ERROR Abort() override;
     CHIP_ERROR ProcessBlock(ByteSpan & block) override;
+    void TriggerNewRequestForData();
 
     void SetOTADownloader(OTADownloader * downloader) { mDownloader = downloader; }
 
@@ -42,6 +43,7 @@ private:
     static void HandleFinalize(intptr_t context);
     static void HandleAbort(intptr_t context);
     static void HandleProcessBlock(intptr_t context);
+    static void HandleBlockEraseComplete(uint32_t);
 
     /**
      * Called to allocate memory for mBlock if necessary and set it to block

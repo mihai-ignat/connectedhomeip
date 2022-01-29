@@ -44,6 +44,7 @@ public:
     static void AppTaskMain(void * pvParameter);
 
     void PostTurnOnActionRequest(int32_t aActor, LightingManager::Action_t aAction);
+    void PostOTAResume();
     void PostEvent(const AppEvent * event);
 
     void UpdateClusterState(void);
@@ -66,6 +67,7 @@ private:
     static void OTAHandler(AppEvent * aEvent);
     static void BleHandler(AppEvent * aEvent);
     static void LightActionEventHandler(AppEvent * aEvent);
+    static void OTAResumeEventHandler(AppEvent * aEvent);
     static void ResetActionEventHandler(AppEvent * aEvent);
     static void InstallEventHandler(AppEvent * aEvent);
 
