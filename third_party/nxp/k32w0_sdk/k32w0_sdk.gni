@@ -121,7 +121,6 @@ template("k32w0_sdk") {
       "${k32w0_sdk_root}/middleware/wireless/framework/SecLib/lib_crypto_m4.a",
       "${k32w0_sdk_root}/middleware/wireless/framework/XCVR/lib/libRadio.a",
     ]
-
     defines = [
       "gPWR_CpuClk_48MHz=1",
       "gMainThreadPriority_c=5",
@@ -130,7 +129,7 @@ template("k32w0_sdk") {
       "CPU_JN518X_REV=2",
       "JENNIC_CHIP_FAMILY_NAME=_JN518x",
       "gPWR_LDOMEM_0_9V_PD=0",
-      "SDK_DEBUGCONSOLE=1",
+      "SDK_DEBUGCONSOLE=DEBUGCONSOLE_REDIRECT_TO_SDK",
       "NO_SYSCORECLK_UPD=0",
       "USE_RTOS=1",
       "USE_SDK_OSA=0",
@@ -146,6 +145,9 @@ template("k32w0_sdk") {
       "gOTA_externalFlash_d=1",
       "gEepromPostedOperations_d=1",
       "gOtaEepromPostedOperations_d=1",
+      "gOtaVerifyWrite_d=0",
+      "gExternalFlashIsCiphered_d=1",
+      "gBootData_None_c=1",
       "PROGRAM_PAGE_SZ=256",
       "gKeyBoardSupported_d",
       "gPdmNbSegments=63",
@@ -159,7 +161,7 @@ template("k32w0_sdk") {
       "K32W_LOG_ENABLED=1",
       "CHIP_ENABLE_OPENTHREAD=1",
       "gOtaMemPoolId_c=1",
-      "PoolsDetails_c=_block_size_ 32 _number_of_blocks_ 6 _pool_id_(0) _eol_ _block_size_ 256 _number_of_blocks_ 3 _pool_id_(0) _eol_ _block_size_ 512 _number_of_blocks_ 2 _pool_id_(0) _eol_ _block_size_ 768 _number_of_blocks_ 1 _pool_id_(0) _eol_ _block_size_ 268  _number_of_blocks_ 4 _pool_id_(gOtaMemPoolId_c) _eol_",
+      "PoolsDetails_c=_block_size_ 32 _number_of_blocks_ 6 _pool_id_(0) _eol_ _block_size_ 256 _number_of_blocks_ 3 _pool_id_(0) _eol_ _block_size_ 512 _number_of_blocks_ 2 _pool_id_(0) _eol_ _block_size_ 768 _number_of_blocks_ 1 _pool_id_(0) _eol_ _block_size_ 268  _number_of_blocks_ 8 _pool_id_(gOtaMemPoolId_c) _eol_",
       "SUPPORT_FOR_15_4=1",
       "gAppMaxConnections_c=1",
       "gAppUseBonding_d=0",

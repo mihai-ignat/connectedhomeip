@@ -43,7 +43,12 @@ bool GenericOTARequestorDriver::CanConsent()
 
 uint16_t GenericOTARequestorDriver::GetMaxDownloadBlockSize()
 {
-    return 1024;
+    return maxDownloadBlockSize;
+}
+
+void GenericOTARequestorDriver::SetMaxDownloadBlockSize(uint16_t blockSize)
+{
+	maxDownloadBlockSize = blockSize;
 }
 
 void GenericOTARequestorDriver::HandleError(UpdateFailureState state, CHIP_ERROR error)

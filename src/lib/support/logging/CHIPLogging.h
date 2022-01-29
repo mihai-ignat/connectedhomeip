@@ -357,7 +357,7 @@ bool IsCategoryEnabled(uint8_t category);
  * have the exchange id and initiator/responder boolean, not an actual exchange,
  * so we want to have a helper for that case too.
  */
-#define ChipLogFormatExchangeId "%" PRIu16 "%c"
+#define ChipLogFormatExchangeId "%i" "%c"
 #define ChipLogValueExchangeId(id, isInitiator) id, ((isInitiator) ? 'i' : 'r')
 #define ChipLogFormatExchange ChipLogFormatExchangeId
 #define ChipLogValueExchange(ec) ChipLogValueExchangeId((ec)->GetExchangeId(), (ec)->IsInitiator())
@@ -382,7 +382,7 @@ bool IsCategoryEnabled(uint8_t category);
 /**
  * Logging helpers for message types, so we format them consistently.
  */
-#define ChipLogFormatMessageType "0x%" PRIx8
+#define ChipLogFormatMessageType "0x%x"
 
 } // namespace Logging
 } // namespace chip

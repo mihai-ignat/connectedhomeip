@@ -22,9 +22,14 @@
 #include "OtaSupport.h"
 #include "OtaUtils.h"
 
+#include "AppTask.h"
+
 extern "C" void ResetMCU(void);
 
 namespace chip {
+
+/*  TODO: to be computed from the OTA image header */
+constexpr uint32_t imageSize = 628092;
 
 CHIP_ERROR OTAImageProcessorImpl::PrepareDownload()
 {
@@ -35,6 +40,7 @@ CHIP_ERROR OTAImageProcessorImpl::PrepareDownload()
     }
 
     DeviceLayer::PlatformMgr().ScheduleWork(HandlePrepareDownload, reinterpret_cast<intptr_t>(this));
+
     return CHIP_NO_ERROR;
 }
 
@@ -79,6 +85,14 @@ CHIP_ERROR OTAImageProcessorImpl::ProcessBlock(ByteSpan & block)
     return CHIP_NO_ERROR;
 }
 
+void OTAImageProcessorImpl::TriggerNewRequestForData()
+{
+	if (mDownloader)
+	{
+		this->mDownloader->FetchNextData();
+	}
+}
+
 void OTAImageProcessorImpl::HandlePrepareDownload(intptr_t context)
 {
     auto * imageProcessor = reinterpret_cast<OTAImageProcessorImpl *>(context);
@@ -95,7 +109,7 @@ void OTAImageProcessorImpl::HandlePrepareDownload(intptr_t context)
 
     if (gOtaSuccess_c == OTA_ClientInit())
     {
-        if (gOtaSuccess_c == OTA_StartImage(imageProcessor->mParams.imageFile.size()))
+        if (gOtaSuccess_c == OTA_StartImage(imageSize))
         {
             imageProcessor->mDownloader->OnPreparedForDownload(CHIP_NO_ERROR);
         }
@@ -129,7 +143,7 @@ void OTAImageProcessorImpl::HandleProcessBlock(intptr_t context)
     }
 
     /* Will start an erase of 4K if necessary */
-    if (gOtaSuccess_c == OTA_MakeHeadRoomForNextBlock(imageProcessor->mBlock.size(), NULL, 0))
+    if (gOtaSuccess_c == OTA_MakeHeadRoomForNextBlock(imageProcessor->mBlock.size(), HandleBlockEraseComplete, 0))
     {
         if (gOtaSuccess_c ==
             OTA_PushImageChunk(imageProcessor->mBlock.data(), (uint16_t) imageProcessor->mBlock.size(), NULL, NULL))
@@ -183,6 +197,10 @@ void OTAImageProcessorImpl::HandleFinalize(intptr_t context)
         OTA_SetNewImageFlag();
         ResetMCU();
     }
+    else
+    {
+        ChipLogError(SoftwareUpdate, "Image authentication error");
+    }
 
     imageProcessor->ReleaseBlock();
 }
@@ -196,6 +214,11 @@ CHIP_ERROR OTAImageProcessorImpl::ReleaseBlock()
 
     mBlock = MutableByteSpan();
     return CHIP_NO_ERROR;
+}
+
+void OTAImageProcessorImpl::HandleBlockEraseComplete(uint32_t)
+{
+	GetAppTask().PostOTAResume();
 }
 
 } // namespace chip
