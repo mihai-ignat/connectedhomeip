@@ -271,11 +271,7 @@ void AppTask::AppTaskMain(void * pvParameter)
         if (gDownloader.GetState() == OTADownloader::State::kInProgress)
         {
             OTA_TransactionResume();
-
-            if (!EEPROM_isBusy())
-            {
-                gDownloader.FetchNextData();
-            }
+            gImageProcessor.TriggerNewRequestForData();
         }
     }
 }

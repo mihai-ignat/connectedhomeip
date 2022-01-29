@@ -33,6 +33,7 @@ public:
     CHIP_ERROR Apply() override;
     CHIP_ERROR Abort() override;
     CHIP_ERROR ProcessBlock(ByteSpan & block) override;
+    void TriggerNewRequestForData();
 
     void SetOTADownloader(OTADownloader * downloader) { mDownloader = downloader; }
 
@@ -55,6 +56,8 @@ private:
 
     OTADownloader * mDownloader;
     MutableByteSpan mBlock;
+
+    bool firstBlockReceived;
 };
 
 } // namespace chip

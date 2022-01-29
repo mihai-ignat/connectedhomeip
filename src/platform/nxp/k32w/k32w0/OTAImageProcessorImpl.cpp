@@ -75,8 +75,18 @@ CHIP_ERROR OTAImageProcessorImpl::ProcessBlock(ByteSpan & block)
         ChipLogError(SoftwareUpdate, "Cannot set block data: %" CHIP_ERROR_FORMAT, err.Format());
     }
 
+    firstBlockReceived = true;
+
     DeviceLayer::PlatformMgr().ScheduleWork(HandleProcessBlock, reinterpret_cast<intptr_t>(this));
     return CHIP_NO_ERROR;
+}
+
+void OTAImageProcessorImpl::TriggerNewRequestForData()
+{
+	if (mDownloader && firstBlockReceived && !EEPROM_isBusy())
+	{
+		this->mDownloader->FetchNextData();
+	}
 }
 
 void OTAImageProcessorImpl::HandlePrepareDownload(intptr_t context)
@@ -95,7 +105,7 @@ void OTAImageProcessorImpl::HandlePrepareDownload(intptr_t context)
 
     if (gOtaSuccess_c == OTA_ClientInit())
     {
-        if (gOtaSuccess_c == OTA_StartImage(imageProcessor->mParams.imageFile.size()))
+        if (gOtaSuccess_c == OTA_StartImage(32840))
         {
             imageProcessor->mDownloader->OnPreparedForDownload(CHIP_NO_ERROR);
         }
@@ -182,6 +192,10 @@ void OTAImageProcessorImpl::HandleFinalize(intptr_t context)
         /* Set the necessary information to inform the SSBL that a new image is available */
         OTA_SetNewImageFlag();
         ResetMCU();
+    }
+    else
+    {
+        ChipLogError(SoftwareUpdate, "Image authentication error");
     }
 
     imageProcessor->ReleaseBlock();
