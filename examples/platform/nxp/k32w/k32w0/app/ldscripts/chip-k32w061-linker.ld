@@ -65,6 +65,7 @@ MEMORY
   /* Define each memory region. RAM0 definition leaves the first 1kB for the
      boot code */
   Flash640 (rx) : ORIGIN = m_app_start, LENGTH = m_app_size
+  ExtFlash (rx) : ORIGIN = 0x10000000, LENGTH = 0x100000
   RAM0 (rwx)    : ORIGIN = 0x4000400,  LENGTH = 0x0015c00   /* 87K bytes (alias RAM) */
   RAM1 (rwx)    : ORIGIN = 0x4020000,  LENGTH = 0x10000     /* 64K bytes (alias RAM2) */
 }
@@ -189,7 +190,23 @@ SECTIONS
         *(SORT(.dtors.*))
         *(.dtors)
 
+        /**(.rodata .rodata.* .constdata .constdata.*)*/
+
+        . = ALIGN(4);
+    } > Flash640
+    
+    .rodata : ALIGN(256)
+    {
+        FILL(0xff)
+
         *(.rodata .rodata.* .constdata .constdata.*)
+        . = ALIGN(256);
+    } > ExtFlash
+    
+    .rodata_hash : ALIGN(0x40)
+    {
+        FILL(0xff)
+        KEEP(*(.rodata_hash));
 
         . = ALIGN(4);
     } > Flash640

@@ -33,12 +33,14 @@
 #include <app-common/zap-generated/cluster-id.h>
 #include <app/util/attribute-storage.h>
 
+#if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
 /* OTA related includes */
 #include "OTAImageProcessorImpl.h"
 #include "OtaSupport.h"
 #include "platform/GenericOTARequestorDriver.h"
 #include "src/app/clusters/ota-requestor/BDXDownloader.h"
 #include "src/app/clusters/ota-requestor/OTARequestor.h"
+#endif
 
 #include "Keyboard.h"
 #include "LED.h"
@@ -84,6 +86,7 @@ using namespace chip;
 AppTask AppTask::sAppTask;
 
 /* OTA related variables */
+#if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
 static OTARequestor gRequestorCore;
 DeviceLayer::GenericOTARequestorDriver gRequestorUser;
 static BDXDownloader gDownloader;
@@ -91,6 +94,7 @@ static OTAImageProcessorImpl gImageProcessor;
 
 static NodeId providerNodeId           = 2;
 static FabricIndex providerFabricIndex = 1;
+#endif
 
 CHIP_ERROR AppTask::StartAppTask()
 {
@@ -121,6 +125,7 @@ CHIP_ERROR AppTask::Init()
     SetDeviceAttestationCredentialsProvider(Examples::GetExampleDACProvider());
 #endif
 
+#if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
     // Initialize and interconnect the Requestor and Image Processor objects -- START
     SetRequestorInstance(&gRequestorCore);
 
@@ -139,6 +144,7 @@ CHIP_ERROR AppTask::Init()
     // Connect the gDownloader and Image Processor objects
     gDownloader.SetImageProcessorDelegate(&gImageProcessor);
     // Initialize and interconnect the Requestor and Image Processor objects -- END
+#endif
 
     // QR code will be used with CHIP Tool
     PrintOnboardingCodes(chip::RendezvousInformationFlags(chip::RendezvousInformationFlag::kBLE));
@@ -268,11 +274,13 @@ void AppTask::AppTaskMain(void * pvParameter)
 
         HandleKeyboard();
 
+#if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
         if (gDownloader.GetState() == OTADownloader::State::kInProgress)
         {
             OTA_TransactionResume();
             gImageProcessor.TriggerNewRequestForData();
         }
+#endif
     }
 }
 
@@ -483,6 +491,7 @@ void AppTask::OTAHandler(AppEvent * aEvent)
     if (aEvent->ButtonEvent.PinNo != OTA_BUTTON)
         return;
 
+#if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
     if (sAppTask.mFunction != kFunction_NoneSelected)
     {
         K32W_LOG("Another function is scheduled. Could not initiate OTA!");
@@ -493,6 +502,7 @@ void AppTask::OTAHandler(AppEvent * aEvent)
     gRequestorCore.TestModeSetProviderParameters(providerNodeId, providerFabricIndex, chip::kRootEndpointId);
 
     static_cast<OTARequestor *>(GetRequestorInstance())->TriggerImmediateQuery();
+#endif
 }
 
 void AppTask::BleHandler(AppEvent * aEvent)
