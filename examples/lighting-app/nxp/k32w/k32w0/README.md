@@ -23,7 +23,11 @@ network.
 -   [Device UI](#device-ui)
 -   [Building](#building)
 -   [Flashing and debugging](#flashdebug)
--   [Testing the example](#testing-the-example)
+-   [OTA](#ota)
+    -    [Writing the SSBL](#ssbl)
+    -    [Writing the PSECT](#psect)
+    -    [Writing the application](#appwrite)
+    -    [OTA Testing](#otatesting)
 
 <hr>
 
@@ -222,9 +226,115 @@ All you have to do is to replace the Openthread binaries from the above
 documentation with _out/debug/chip-k32w061-light-example.bin_ if DK6Programmer
 is used or with _out/debug/chip-k32w061-light-example_ if MCUXpresso is used.
 
-## Testing the example
+<a name="ota"></a>
 
-The app can be deployed against any generic OpenThread Border Router. See the
-guide
-[Commissioning NXP K32W using Android CHIPTool](../../../docs/guides/nxp_k32w_android_commissioning.md)
-for step-by-step instructions.
+## OTA
+
+The internal flash needs to be prepared for the OTA process. First 16K of the internal flash needs to be populated 
+with a Secondary Stage Bootloader (SSBL) related data while the last 8.5K of flash space is holding image directory
+related data (PSECT). The space between these two zones will be filled by the application.
+
+<a name="ssbl"></a>
+
+### Writing the SSBL
+
+The SSBL can ge generated from one of the SDK demo examples. The SDK demo example needs to be compiled inside MCUXpresso
+with the define _PDM_EXT_FLASH_.
+The SSBL demo application can be imported from the _Quickstart panel_: _Import SDK example(s)_ -> select _wireless->framework->ssbl_ application.
+
+![SSBL Application Select](../../../../platform/nxp/k32w/k32w0/doc/images/ssbl_select.JPG)
+ 
+The SSBL project must be compiled using the PDM_EXT_FLASH define.
+
+![PDM_EXT_FLASH](../../../../platform/nxp/k32w/k32w0/doc/images/pdm_ext_flash.JPG)
+ 
+Once compiled, the required ssbl file is called k32w061dk6_ssbl.bin
+
+![SSBL_BIN](../../../../platform/nxp/k32w/k32w0/doc/images/ssbl_bin.JPG)
+
+Before writing the SSBL, it it recommanded to fully erase the internal flash:
+```
+DK6Programmer.exe -V 5 -P 1000000 -s <COM_PORT> -e Flash
+```
+
+k32w061dk6_ssbl.bin must be written at address 0 in the internal flash:
+```
+DK6Programmer.exe -V2 -s <COM_PORT> -P 1000000 -Y -p FLASH@0x00="k32w061dk6_ssbl.bin"
+```
+<a name="psect"></a>
+
+### Writing the PSECT
+First, image directory 0 must be written:
+```
+DK6Programmer.exe -V5 -s <COM port> -P 1000000 -w image_dir_0=0000000010000000
+```
+Here is the interpretation of the fiels:
+```
+00000000 -> start address 0x00000000
+1000     -> size = 0x0010 pages of 512-bytes (= 8kB)
+00       -> not bootable (only used by the SSBL to support SSBL update)
+00       -> SSBL Image Type
+```
+
+Second, image directory 1 must be written:
+```
+DK6Programmer.exe -V5 -s <COM port> -P 1000000 -w image_dir_1=00400000CD040101
+```
+Here is the interpretation of the fiels:
+```
+00400000 -> start address 0x00004000 
+CD04     -> 0x4CD pages of 512-bytes (= 614,5kB) 
+01       -> bootable flag 
+01       -> image type for the application
+```
+
+<a name="appwrite"></a>
+
+### Writing the application
+Before writing the application, _src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp_ must be provisioned with
+the size of the OTA image (e.g.: the lighting application binary file - chip-k32w061-light-example.bin - can be used as OTA image).
+
+DK6Programmer can be used for flashing the application:
+```
+DK6Programmer.exe -V2 -s <COM_PORT> -P 1000000 -Y -p FLASH@0x4000="chip-k32w061-light-example.bin"
+```
+
+If debugging is needed, MCUXpresso can be used then for flashing the application. Please make sure that the application is written
+at address 0x4000:
+
+![FLASH_LOCATION](../../../../platform/nxp/k32w/k32w0/doc/images/flash_location.JPG)
+
+<a name="otatesting"></a>
+
+### OTA Testing
+The lighting application binary file (chip-k32w061-light-example.bin) can be used as OTA image. For the moment,
+the size of the OTA image must be hard-coded inside _src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp_
+
+For rapid testing, test event setup topology can be used. For the moment, we recommand running the Linux OTA
+provider application to a device different than the one running the OTBR (more details [here](https://csamembers.slack.com/archives/C02HUSNLN4S/p1641999791014600)).
+
+Build the Linux OTA provider application:
+```
+scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/debug chip_config_network_layer_ble=false
+```
+
+Build Linux chip-tool:
+```
+scripts/examples/gn_build_example.sh examples/chip-tool out/
+```
+
+Provision the OTA provider application and assign node id _1_:
+```
+rm -r /tmp/chip_*
+./out/chip-tool pairing onnetwork 1 20202021
+```
+
+Provision the device and assign node id _2_:
+```
+./out/chip-tool pairing ble-thread 2 hex:<operationalDataset> 20202021   3840
+```
+
+Start the OTA process:
+```
+./out/chip-tool otasoftwareupdaterequestor announce-ota-provider 1 0 0 0 2 0
+```
