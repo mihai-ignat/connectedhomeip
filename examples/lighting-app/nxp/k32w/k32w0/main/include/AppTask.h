@@ -77,6 +77,13 @@ private:
     static void ThreadProvisioningHandler(const chip::DeviceLayer::ChipDeviceEvent * event, intptr_t arg);
     void StartTimer(uint32_t aTimeoutInMs);
 
+#if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
+    static void InitOTA(intptr_t arg);
+    static void StartOTAQuery(intptr_t arg);
+#endif
+
+    static void UpdateClusterStateInternal(intptr_t arg);
+
     enum Function_t
     {
         kFunction_NoneSelected   = 0,
