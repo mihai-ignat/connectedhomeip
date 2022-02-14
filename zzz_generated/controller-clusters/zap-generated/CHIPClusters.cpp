@@ -34,15 +34,16 @@ namespace Controller {
 // TODO(#4503): length should be passed to commands when byte string is in argument list.
 // TODO(#4503): Commands should take group id as an argument.
 
+
 // AccessControl Cluster Commands
 
+
 // AccountLogin Cluster Commands
-CHIP_ERROR AccountLoginCluster::GetSetupPINRequest(Callback::Cancelable * onSuccessCallback,
-                                                   Callback::Cancelable * onFailureCallback, chip::CharSpan tempAccountIdentifier)
+CHIP_ERROR AccountLoginCluster::GetSetupPINRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::CharSpan tempAccountIdentifier)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -53,8 +54,7 @@ CHIP_ERROR AccountLoginCluster::GetSetupPINRequest(Callback::Cancelable * onSucc
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, AccountLogin::Commands::GetSetupPINRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -71,19 +71,17 @@ CHIP_ERROR AccountLoginCluster::GetSetupPINRequest(Callback::Cancelable * onSucc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR AccountLoginCluster::LoginRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                             chip::CharSpan tempAccountIdentifier, chip::CharSpan setupPIN)
+CHIP_ERROR AccountLoginCluster::LoginRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::CharSpan tempAccountIdentifier, chip::CharSpan setupPIN)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -94,8 +92,7 @@ CHIP_ERROR AccountLoginCluster::LoginRequest(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, AccountLogin::Commands::LoginRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -114,8 +111,7 @@ CHIP_ERROR AccountLoginCluster::LoginRequest(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -123,9 +119,9 @@ exit:
 
 CHIP_ERROR AccountLoginCluster::LogoutRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -136,8 +132,7 @@ CHIP_ERROR AccountLoginCluster::LogoutRequest(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, AccountLogin::Commands::LogoutRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -152,21 +147,20 @@ CHIP_ERROR AccountLoginCluster::LogoutRequest(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // AdministratorCommissioning Cluster Commands
-CHIP_ERROR AdministratorCommissioningCluster::OpenBasicCommissioningWindow(Callback::Cancelable * onSuccessCallback,
-                                                                           Callback::Cancelable * onFailureCallback,
-                                                                           uint16_t commissioningTimeout)
+CHIP_ERROR AdministratorCommissioningCluster::OpenBasicCommissioningWindow(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t commissioningTimeout)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -174,12 +168,10 @@ CHIP_ERROR AdministratorCommissioningCluster::OpenBasicCommissioningWindow(Callb
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         AdministratorCommissioning::Commands::OpenBasicCommissioningWindow::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, AdministratorCommissioning::Commands::OpenBasicCommissioningWindow::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -196,22 +188,17 @@ CHIP_ERROR AdministratorCommissioningCluster::OpenBasicCommissioningWindow(Callb
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR AdministratorCommissioningCluster::OpenCommissioningWindow(Callback::Cancelable * onSuccessCallback,
-                                                                      Callback::Cancelable * onFailureCallback,
-                                                                      uint16_t commissioningTimeout, chip::ByteSpan PAKEVerifier,
-                                                                      uint16_t discriminator, uint32_t iterations,
-                                                                      chip::ByteSpan salt, uint16_t passcodeID)
+CHIP_ERROR AdministratorCommissioningCluster::OpenCommissioningWindow(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t commissioningTimeout, chip::ByteSpan PAKEVerifier, uint16_t discriminator, uint32_t iterations, chip::ByteSpan salt, uint16_t passcodeID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -219,12 +206,10 @@ CHIP_ERROR AdministratorCommissioningCluster::OpenCommissioningWindow(Callback::
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         AdministratorCommissioning::Commands::OpenCommissioningWindow::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, AdministratorCommissioning::Commands::OpenCommissioningWindow::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -251,19 +236,17 @@ CHIP_ERROR AdministratorCommissioningCluster::OpenCommissioningWindow(Callback::
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR AdministratorCommissioningCluster::RevokeCommissioning(Callback::Cancelable * onSuccessCallback,
-                                                                  Callback::Cancelable * onFailureCallback)
+CHIP_ERROR AdministratorCommissioningCluster::RevokeCommissioning(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -271,12 +254,10 @@ CHIP_ERROR AdministratorCommissioningCluster::RevokeCommissioning(Callback::Canc
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         AdministratorCommissioning::Commands::RevokeCommissioning::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, AdministratorCommissioning::Commands::RevokeCommissioning::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -291,23 +272,23 @@ CHIP_ERROR AdministratorCommissioningCluster::RevokeCommissioning(Callback::Canc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // ApplicationBasic Cluster Commands
 
+
 // ApplicationLauncher Cluster Commands
-CHIP_ERROR ApplicationLauncherCluster::HideAppRequest(Callback::Cancelable * onSuccessCallback,
-                                                      Callback::Cancelable * onFailureCallback, uint16_t catalogVendorId,
-                                                      chip::CharSpan applicationId)
+CHIP_ERROR ApplicationLauncherCluster::HideAppRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t catalogVendorId, chip::CharSpan applicationId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -318,8 +299,7 @@ CHIP_ERROR ApplicationLauncherCluster::HideAppRequest(Callback::Cancelable * onS
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ApplicationLauncher::Commands::HideAppRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -338,20 +318,17 @@ CHIP_ERROR ApplicationLauncherCluster::HideAppRequest(Callback::Cancelable * onS
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ApplicationLauncherCluster::LaunchAppRequest(Callback::Cancelable * onSuccessCallback,
-                                                        Callback::Cancelable * onFailureCallback, chip::CharSpan data,
-                                                        uint16_t catalogVendorId, chip::CharSpan applicationId)
+CHIP_ERROR ApplicationLauncherCluster::LaunchAppRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::CharSpan data, uint16_t catalogVendorId, chip::CharSpan applicationId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -359,12 +336,10 @@ CHIP_ERROR ApplicationLauncherCluster::LaunchAppRequest(Callback::Cancelable * o
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         ApplicationLauncher::Commands::LaunchAppRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ApplicationLauncher::Commands::LaunchAppRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -385,20 +360,17 @@ CHIP_ERROR ApplicationLauncherCluster::LaunchAppRequest(Callback::Cancelable * o
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ApplicationLauncherCluster::StopAppRequest(Callback::Cancelable * onSuccessCallback,
-                                                      Callback::Cancelable * onFailureCallback, uint16_t catalogVendorId,
-                                                      chip::CharSpan applicationId)
+CHIP_ERROR ApplicationLauncherCluster::StopAppRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t catalogVendorId, chip::CharSpan applicationId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -409,8 +381,7 @@ CHIP_ERROR ApplicationLauncherCluster::StopAppRequest(Callback::Cancelable * onS
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ApplicationLauncher::Commands::StopAppRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -429,20 +400,20 @@ CHIP_ERROR ApplicationLauncherCluster::StopAppRequest(Callback::Cancelable * onS
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // AudioOutput Cluster Commands
-CHIP_ERROR AudioOutputCluster::RenameOutputRequest(Callback::Cancelable * onSuccessCallback,
-                                                   Callback::Cancelable * onFailureCallback, uint8_t index, chip::CharSpan name)
+CHIP_ERROR AudioOutputCluster::RenameOutputRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t index, chip::CharSpan name)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -453,8 +424,7 @@ CHIP_ERROR AudioOutputCluster::RenameOutputRequest(Callback::Cancelable * onSucc
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, AudioOutput::Commands::RenameOutputRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -473,19 +443,17 @@ CHIP_ERROR AudioOutputCluster::RenameOutputRequest(Callback::Cancelable * onSucc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR AudioOutputCluster::SelectOutputRequest(Callback::Cancelable * onSuccessCallback,
-                                                   Callback::Cancelable * onFailureCallback, uint8_t index)
+CHIP_ERROR AudioOutputCluster::SelectOutputRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t index)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -496,8 +464,7 @@ CHIP_ERROR AudioOutputCluster::SelectOutputRequest(Callback::Cancelable * onSucc
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, AudioOutput::Commands::SelectOutputRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -514,20 +481,20 @@ CHIP_ERROR AudioOutputCluster::SelectOutputRequest(Callback::Cancelable * onSucc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // BarrierControl Cluster Commands
-CHIP_ERROR BarrierControlCluster::BarrierControlGoToPercent(Callback::Cancelable * onSuccessCallback,
-                                                            Callback::Cancelable * onFailureCallback, uint8_t percentOpen)
+CHIP_ERROR BarrierControlCluster::BarrierControlGoToPercent(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t percentOpen)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -535,12 +502,10 @@ CHIP_ERROR BarrierControlCluster::BarrierControlGoToPercent(Callback::Cancelable
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         BarrierControl::Commands::BarrierControlGoToPercent::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BarrierControl::Commands::BarrierControlGoToPercent::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -557,19 +522,17 @@ CHIP_ERROR BarrierControlCluster::BarrierControlGoToPercent(Callback::Cancelable
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BarrierControlCluster::BarrierControlStop(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback)
+CHIP_ERROR BarrierControlCluster::BarrierControlStop(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -580,8 +543,7 @@ CHIP_ERROR BarrierControlCluster::BarrierControlStop(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BarrierControl::Commands::BarrierControlStop::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -596,19 +558,20 @@ CHIP_ERROR BarrierControlCluster::BarrierControlStop(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // Basic Cluster Commands
 CHIP_ERROR BasicCluster::MfgSpecificPing(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -619,8 +582,7 @@ CHIP_ERROR BasicCluster::MfgSpecificPing(Callback::Cancelable * onSuccessCallbac
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Basic::Commands::MfgSpecificPing::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -635,22 +597,23 @@ CHIP_ERROR BasicCluster::MfgSpecificPing(Callback::Cancelable * onSuccessCallbac
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // BinaryInputBasic Cluster Commands
 
+
 // Binding Cluster Commands
-CHIP_ERROR BindingCluster::Bind(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                chip::NodeId nodeId, chip::GroupId groupId, chip::EndpointId endpointId, chip::ClusterId clusterId)
+CHIP_ERROR BindingCluster::Bind(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::NodeId nodeId, chip::GroupId groupId, chip::EndpointId endpointId, chip::ClusterId clusterId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -661,8 +624,7 @@ CHIP_ERROR BindingCluster::Bind(Callback::Cancelable * onSuccessCallback, Callba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Binding::Commands::Bind::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -685,20 +647,17 @@ CHIP_ERROR BindingCluster::Bind(Callback::Cancelable * onSuccessCallback, Callba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BindingCluster::Unbind(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                  chip::NodeId nodeId, chip::GroupId groupId, chip::EndpointId endpointId,
-                                  chip::ClusterId clusterId)
+CHIP_ERROR BindingCluster::Unbind(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::NodeId nodeId, chip::GroupId groupId, chip::EndpointId endpointId, chip::ClusterId clusterId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -709,8 +668,7 @@ CHIP_ERROR BindingCluster::Unbind(Callback::Cancelable * onSuccessCallback, Call
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Binding::Commands::Unbind::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -733,22 +691,23 @@ CHIP_ERROR BindingCluster::Unbind(Callback::Cancelable * onSuccessCallback, Call
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // BooleanState Cluster Commands
 
+
 // BridgedActions Cluster Commands
-CHIP_ERROR BridgedActionsCluster::DisableAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint16_t actionID, uint32_t invokeID)
+CHIP_ERROR BridgedActionsCluster::DisableAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -759,8 +718,7 @@ CHIP_ERROR BridgedActionsCluster::DisableAction(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::DisableAction::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -779,20 +737,17 @@ CHIP_ERROR BridgedActionsCluster::DisableAction(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::DisableActionWithDuration(Callback::Cancelable * onSuccessCallback,
-                                                            Callback::Cancelable * onFailureCallback, uint16_t actionID,
-                                                            uint32_t invokeID, uint32_t duration)
+CHIP_ERROR BridgedActionsCluster::DisableActionWithDuration(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID, uint32_t duration)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -800,12 +755,10 @@ CHIP_ERROR BridgedActionsCluster::DisableActionWithDuration(Callback::Cancelable
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         BridgedActions::Commands::DisableActionWithDuration::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::DisableActionWithDuration::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -826,19 +779,17 @@ CHIP_ERROR BridgedActionsCluster::DisableActionWithDuration(Callback::Cancelable
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::EnableAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                               uint16_t actionID, uint32_t invokeID)
+CHIP_ERROR BridgedActionsCluster::EnableAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -849,8 +800,7 @@ CHIP_ERROR BridgedActionsCluster::EnableAction(Callback::Cancelable * onSuccessC
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::EnableAction::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -869,20 +819,17 @@ CHIP_ERROR BridgedActionsCluster::EnableAction(Callback::Cancelable * onSuccessC
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::EnableActionWithDuration(Callback::Cancelable * onSuccessCallback,
-                                                           Callback::Cancelable * onFailureCallback, uint16_t actionID,
-                                                           uint32_t invokeID, uint32_t duration)
+CHIP_ERROR BridgedActionsCluster::EnableActionWithDuration(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID, uint32_t duration)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -890,12 +837,10 @@ CHIP_ERROR BridgedActionsCluster::EnableActionWithDuration(Callback::Cancelable 
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         BridgedActions::Commands::EnableActionWithDuration::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::EnableActionWithDuration::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -916,19 +861,17 @@ CHIP_ERROR BridgedActionsCluster::EnableActionWithDuration(Callback::Cancelable 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::InstantAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint16_t actionID, uint32_t invokeID)
+CHIP_ERROR BridgedActionsCluster::InstantAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -939,8 +882,7 @@ CHIP_ERROR BridgedActionsCluster::InstantAction(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::InstantAction::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -959,20 +901,17 @@ CHIP_ERROR BridgedActionsCluster::InstantAction(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::InstantActionWithTransition(Callback::Cancelable * onSuccessCallback,
-                                                              Callback::Cancelable * onFailureCallback, uint16_t actionID,
-                                                              uint32_t invokeID, uint16_t transitionTime)
+CHIP_ERROR BridgedActionsCluster::InstantActionWithTransition(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID, uint16_t transitionTime)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -980,12 +919,10 @@ CHIP_ERROR BridgedActionsCluster::InstantActionWithTransition(Callback::Cancelab
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         BridgedActions::Commands::InstantActionWithTransition::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::InstantActionWithTransition::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1006,19 +943,17 @@ CHIP_ERROR BridgedActionsCluster::InstantActionWithTransition(Callback::Cancelab
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::PauseAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                              uint16_t actionID, uint32_t invokeID)
+CHIP_ERROR BridgedActionsCluster::PauseAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1029,8 +964,7 @@ CHIP_ERROR BridgedActionsCluster::PauseAction(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::PauseAction::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1049,20 +983,17 @@ CHIP_ERROR BridgedActionsCluster::PauseAction(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::PauseActionWithDuration(Callback::Cancelable * onSuccessCallback,
-                                                          Callback::Cancelable * onFailureCallback, uint16_t actionID,
-                                                          uint32_t invokeID, uint32_t duration)
+CHIP_ERROR BridgedActionsCluster::PauseActionWithDuration(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID, uint32_t duration)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1070,12 +1001,10 @@ CHIP_ERROR BridgedActionsCluster::PauseActionWithDuration(Callback::Cancelable *
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         BridgedActions::Commands::PauseActionWithDuration::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::PauseActionWithDuration::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1096,19 +1025,17 @@ CHIP_ERROR BridgedActionsCluster::PauseActionWithDuration(Callback::Cancelable *
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::ResumeAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                               uint16_t actionID, uint32_t invokeID)
+CHIP_ERROR BridgedActionsCluster::ResumeAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1119,8 +1046,7 @@ CHIP_ERROR BridgedActionsCluster::ResumeAction(Callback::Cancelable * onSuccessC
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::ResumeAction::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1139,19 +1065,17 @@ CHIP_ERROR BridgedActionsCluster::ResumeAction(Callback::Cancelable * onSuccessC
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::StartAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                              uint16_t actionID, uint32_t invokeID)
+CHIP_ERROR BridgedActionsCluster::StartAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1162,8 +1086,7 @@ CHIP_ERROR BridgedActionsCluster::StartAction(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::StartAction::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1182,20 +1105,17 @@ CHIP_ERROR BridgedActionsCluster::StartAction(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::StartActionWithDuration(Callback::Cancelable * onSuccessCallback,
-                                                          Callback::Cancelable * onFailureCallback, uint16_t actionID,
-                                                          uint32_t invokeID, uint32_t duration)
+CHIP_ERROR BridgedActionsCluster::StartActionWithDuration(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID, uint32_t duration)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1203,12 +1123,10 @@ CHIP_ERROR BridgedActionsCluster::StartActionWithDuration(Callback::Cancelable *
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         BridgedActions::Commands::StartActionWithDuration::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::StartActionWithDuration::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1229,19 +1147,17 @@ CHIP_ERROR BridgedActionsCluster::StartActionWithDuration(Callback::Cancelable *
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR BridgedActionsCluster::StopAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                             uint16_t actionID, uint32_t invokeID)
+CHIP_ERROR BridgedActionsCluster::StopAction(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t actionID, uint32_t invokeID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1252,8 +1168,7 @@ CHIP_ERROR BridgedActionsCluster::StopAction(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, BridgedActions::Commands::StopAction::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1272,23 +1187,23 @@ CHIP_ERROR BridgedActionsCluster::StopAction(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // BridgedDeviceBasic Cluster Commands
 
+
 // Channel Cluster Commands
-CHIP_ERROR ChannelCluster::ChangeChannelByNumberRequest(Callback::Cancelable * onSuccessCallback,
-                                                        Callback::Cancelable * onFailureCallback, uint16_t majorNumber,
-                                                        uint16_t minorNumber)
+CHIP_ERROR ChannelCluster::ChangeChannelByNumberRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t majorNumber, uint16_t minorNumber)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1296,12 +1211,10 @@ CHIP_ERROR ChannelCluster::ChangeChannelByNumberRequest(Callback::Cancelable * o
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         Channel::Commands::ChangeChannelByNumberRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Channel::Commands::ChangeChannelByNumberRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1320,19 +1233,17 @@ CHIP_ERROR ChannelCluster::ChangeChannelByNumberRequest(Callback::Cancelable * o
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ChannelCluster::ChangeChannelRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                chip::CharSpan match)
+CHIP_ERROR ChannelCluster::ChangeChannelRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::CharSpan match)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1343,8 +1254,7 @@ CHIP_ERROR ChannelCluster::ChangeChannelRequest(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Channel::Commands::ChangeChannelRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1361,19 +1271,17 @@ CHIP_ERROR ChannelCluster::ChangeChannelRequest(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ChannelCluster::SkipChannelRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                              uint16_t count)
+CHIP_ERROR ChannelCluster::SkipChannelRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t count)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1384,8 +1292,7 @@ CHIP_ERROR ChannelCluster::SkipChannelRequest(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Channel::Commands::SkipChannelRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1402,21 +1309,20 @@ CHIP_ERROR ChannelCluster::SkipChannelRequest(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // ColorControl Cluster Commands
-CHIP_ERROR ColorControlCluster::ColorLoopSet(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                             uint8_t updateFlags, uint8_t action, uint8_t direction, uint16_t time,
-                                             uint16_t startHue, uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::ColorLoopSet(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t updateFlags, uint8_t action, uint8_t direction, uint16_t time, uint16_t startHue, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1427,8 +1333,7 @@ CHIP_ERROR ColorControlCluster::ColorLoopSet(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::ColorLoopSet::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1457,19 +1362,17 @@ CHIP_ERROR ColorControlCluster::ColorLoopSet(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::EnhancedMoveHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint8_t moveMode, uint16_t rate, uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::EnhancedMoveHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t moveMode, uint16_t rate, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1480,8 +1383,7 @@ CHIP_ERROR ColorControlCluster::EnhancedMoveHue(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::EnhancedMoveHue::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1504,20 +1406,17 @@ CHIP_ERROR ColorControlCluster::EnhancedMoveHue(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::EnhancedMoveToHue(Callback::Cancelable * onSuccessCallback,
-                                                  Callback::Cancelable * onFailureCallback, uint16_t enhancedHue, uint8_t direction,
-                                                  uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::EnhancedMoveToHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t enhancedHue, uint8_t direction, uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1528,8 +1427,7 @@ CHIP_ERROR ColorControlCluster::EnhancedMoveToHue(Callback::Cancelable * onSucce
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::EnhancedMoveToHue::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1554,21 +1452,17 @@ CHIP_ERROR ColorControlCluster::EnhancedMoveToHue(Callback::Cancelable * onSucce
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::EnhancedMoveToHueAndSaturation(Callback::Cancelable * onSuccessCallback,
-                                                               Callback::Cancelable * onFailureCallback, uint16_t enhancedHue,
-                                                               uint8_t saturation, uint16_t transitionTime, uint8_t optionsMask,
-                                                               uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::EnhancedMoveToHueAndSaturation(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t enhancedHue, uint8_t saturation, uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1576,12 +1470,10 @@ CHIP_ERROR ColorControlCluster::EnhancedMoveToHueAndSaturation(Callback::Cancela
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         ColorControl::Commands::EnhancedMoveToHueAndSaturation::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::EnhancedMoveToHueAndSaturation::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1606,20 +1498,17 @@ CHIP_ERROR ColorControlCluster::EnhancedMoveToHueAndSaturation(Callback::Cancela
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::EnhancedStepHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint8_t stepMode, uint16_t stepSize, uint16_t transitionTime, uint8_t optionsMask,
-                                                uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::EnhancedStepHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t stepMode, uint16_t stepSize, uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1630,8 +1519,7 @@ CHIP_ERROR ColorControlCluster::EnhancedStepHue(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::EnhancedStepHue::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1656,19 +1544,17 @@ CHIP_ERROR ColorControlCluster::EnhancedStepHue(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::MoveColor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                          int16_t rateX, int16_t rateY, uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::MoveColor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, int16_t rateX, int16_t rateY, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1679,8 +1565,7 @@ CHIP_ERROR ColorControlCluster::MoveColor(Callback::Cancelable * onSuccessCallba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::MoveColor::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1703,21 +1588,17 @@ CHIP_ERROR ColorControlCluster::MoveColor(Callback::Cancelable * onSuccessCallba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::MoveColorTemperature(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback, uint8_t moveMode, uint16_t rate,
-                                                     uint16_t colorTemperatureMinimum, uint16_t colorTemperatureMaximum,
-                                                     uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::MoveColorTemperature(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t moveMode, uint16_t rate, uint16_t colorTemperatureMinimum, uint16_t colorTemperatureMaximum, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1728,8 +1609,7 @@ CHIP_ERROR ColorControlCluster::MoveColorTemperature(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::MoveColorTemperature::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1756,19 +1636,17 @@ CHIP_ERROR ColorControlCluster::MoveColorTemperature(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::MoveHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                        uint8_t moveMode, uint8_t rate, uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::MoveHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t moveMode, uint8_t rate, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1779,8 +1657,7 @@ CHIP_ERROR ColorControlCluster::MoveHue(Callback::Cancelable * onSuccessCallback
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::MoveHue::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1803,19 +1680,17 @@ CHIP_ERROR ColorControlCluster::MoveHue(Callback::Cancelable * onSuccessCallback
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::MoveSaturation(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                               uint8_t moveMode, uint8_t rate, uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::MoveSaturation(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t moveMode, uint8_t rate, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1826,8 +1701,7 @@ CHIP_ERROR ColorControlCluster::MoveSaturation(Callback::Cancelable * onSuccessC
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::MoveSaturation::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1850,20 +1724,17 @@ CHIP_ERROR ColorControlCluster::MoveSaturation(Callback::Cancelable * onSuccessC
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::MoveToColor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                            uint16_t colorX, uint16_t colorY, uint16_t transitionTime, uint8_t optionsMask,
-                                            uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::MoveToColor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t colorX, uint16_t colorY, uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1874,8 +1745,7 @@ CHIP_ERROR ColorControlCluster::MoveToColor(Callback::Cancelable * onSuccessCall
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::MoveToColor::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1900,20 +1770,17 @@ CHIP_ERROR ColorControlCluster::MoveToColor(Callback::Cancelable * onSuccessCall
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::MoveToColorTemperature(Callback::Cancelable * onSuccessCallback,
-                                                       Callback::Cancelable * onFailureCallback, uint16_t colorTemperature,
-                                                       uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::MoveToColorTemperature(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t colorTemperature, uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1921,12 +1788,10 @@ CHIP_ERROR ColorControlCluster::MoveToColorTemperature(Callback::Cancelable * on
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         ColorControl::Commands::MoveToColorTemperature::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::MoveToColorTemperature::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1949,20 +1814,17 @@ CHIP_ERROR ColorControlCluster::MoveToColorTemperature(Callback::Cancelable * on
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::MoveToHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                          uint8_t hue, uint8_t direction, uint16_t transitionTime, uint8_t optionsMask,
-                                          uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::MoveToHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t hue, uint8_t direction, uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -1973,8 +1835,7 @@ CHIP_ERROR ColorControlCluster::MoveToHue(Callback::Cancelable * onSuccessCallba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::MoveToHue::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -1999,20 +1860,17 @@ CHIP_ERROR ColorControlCluster::MoveToHue(Callback::Cancelable * onSuccessCallba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::MoveToHueAndSaturation(Callback::Cancelable * onSuccessCallback,
-                                                       Callback::Cancelable * onFailureCallback, uint8_t hue, uint8_t saturation,
-                                                       uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::MoveToHueAndSaturation(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t hue, uint8_t saturation, uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2020,12 +1878,10 @@ CHIP_ERROR ColorControlCluster::MoveToHueAndSaturation(Callback::Cancelable * on
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         ColorControl::Commands::MoveToHueAndSaturation::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::MoveToHueAndSaturation::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2050,20 +1906,17 @@ CHIP_ERROR ColorControlCluster::MoveToHueAndSaturation(Callback::Cancelable * on
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::MoveToSaturation(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                 uint8_t saturation, uint16_t transitionTime, uint8_t optionsMask,
-                                                 uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::MoveToSaturation(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t saturation, uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2074,8 +1927,7 @@ CHIP_ERROR ColorControlCluster::MoveToSaturation(Callback::Cancelable * onSucces
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::MoveToSaturation::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2098,20 +1950,17 @@ CHIP_ERROR ColorControlCluster::MoveToSaturation(Callback::Cancelable * onSucces
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::StepColor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                          int16_t stepX, int16_t stepY, uint16_t transitionTime, uint8_t optionsMask,
-                                          uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::StepColor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, int16_t stepX, int16_t stepY, uint16_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2122,8 +1971,7 @@ CHIP_ERROR ColorControlCluster::StepColor(Callback::Cancelable * onSuccessCallba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::StepColor::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2148,21 +1996,17 @@ CHIP_ERROR ColorControlCluster::StepColor(Callback::Cancelable * onSuccessCallba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::StepColorTemperature(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback, uint8_t stepMode, uint16_t stepSize,
-                                                     uint16_t transitionTime, uint16_t colorTemperatureMinimum,
-                                                     uint16_t colorTemperatureMaximum, uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::StepColorTemperature(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t stepMode, uint16_t stepSize, uint16_t transitionTime, uint16_t colorTemperatureMinimum, uint16_t colorTemperatureMaximum, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2173,8 +2017,7 @@ CHIP_ERROR ColorControlCluster::StepColorTemperature(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::StepColorTemperature::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2203,20 +2046,17 @@ CHIP_ERROR ColorControlCluster::StepColorTemperature(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::StepHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                        uint8_t stepMode, uint8_t stepSize, uint8_t transitionTime, uint8_t optionsMask,
-                                        uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::StepHue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t stepMode, uint8_t stepSize, uint8_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2227,8 +2067,7 @@ CHIP_ERROR ColorControlCluster::StepHue(Callback::Cancelable * onSuccessCallback
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::StepHue::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2253,20 +2092,17 @@ CHIP_ERROR ColorControlCluster::StepHue(Callback::Cancelable * onSuccessCallback
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::StepSaturation(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                               uint8_t stepMode, uint8_t stepSize, uint8_t transitionTime, uint8_t optionsMask,
-                                               uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::StepSaturation(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t stepMode, uint8_t stepSize, uint8_t transitionTime, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2277,8 +2113,7 @@ CHIP_ERROR ColorControlCluster::StepSaturation(Callback::Cancelable * onSuccessC
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::StepSaturation::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2303,19 +2138,17 @@ CHIP_ERROR ColorControlCluster::StepSaturation(Callback::Cancelable * onSuccessC
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ColorControlCluster::StopMoveStep(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                             uint8_t optionsMask, uint8_t optionsOverride)
+CHIP_ERROR ColorControlCluster::StopMoveStep(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t optionsMask, uint8_t optionsOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2326,8 +2159,7 @@ CHIP_ERROR ColorControlCluster::StopMoveStep(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ColorControl::Commands::StopMoveStep::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2346,21 +2178,20 @@ CHIP_ERROR ColorControlCluster::StopMoveStep(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // ContentLauncher Cluster Commands
-CHIP_ERROR ContentLauncherCluster::LaunchContentRequest(Callback::Cancelable * onSuccessCallback,
-                                                        Callback::Cancelable * onFailureCallback, bool autoPlay,
-                                                        chip::CharSpan data)
+CHIP_ERROR ContentLauncherCluster::LaunchContentRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, bool autoPlay, chip::CharSpan data)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2368,12 +2199,10 @@ CHIP_ERROR ContentLauncherCluster::LaunchContentRequest(Callback::Cancelable * o
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         ContentLauncher::Commands::LaunchContentRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ContentLauncher::Commands::LaunchContentRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2392,20 +2221,17 @@ CHIP_ERROR ContentLauncherCluster::LaunchContentRequest(Callback::Cancelable * o
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ContentLauncherCluster::LaunchURLRequest(Callback::Cancelable * onSuccessCallback,
-                                                    Callback::Cancelable * onFailureCallback, chip::CharSpan contentURL,
-                                                    chip::CharSpan displayString, chip::CharSpan providerName)
+CHIP_ERROR ContentLauncherCluster::LaunchURLRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::CharSpan contentURL, chip::CharSpan displayString, chip::CharSpan providerName)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2416,8 +2242,7 @@ CHIP_ERROR ContentLauncherCluster::LaunchURLRequest(Callback::Cancelable * onSuc
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ContentLauncher::Commands::LaunchURLRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2438,23 +2263,23 @@ CHIP_ERROR ContentLauncherCluster::LaunchURLRequest(Callback::Cancelable * onSuc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // Descriptor Cluster Commands
 
+
 // DiagnosticLogs Cluster Commands
-CHIP_ERROR DiagnosticLogsCluster::RetrieveLogsRequest(Callback::Cancelable * onSuccessCallback,
-                                                      Callback::Cancelable * onFailureCallback, uint8_t intent,
-                                                      uint8_t requestedProtocol, chip::ByteSpan transferFileDesignator)
+CHIP_ERROR DiagnosticLogsCluster::RetrieveLogsRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t intent, uint8_t requestedProtocol, chip::ByteSpan transferFileDesignator)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2465,8 +2290,7 @@ CHIP_ERROR DiagnosticLogsCluster::RetrieveLogsRequest(Callback::Cancelable * onS
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, DiagnosticLogs::Commands::RetrieveLogsRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2487,20 +2311,20 @@ CHIP_ERROR DiagnosticLogsCluster::RetrieveLogsRequest(Callback::Cancelable * onS
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // DoorLock Cluster Commands
-CHIP_ERROR DoorLockCluster::ClearCredential(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                            uint8_t credentialType, uint16_t credentialIndex)
+CHIP_ERROR DoorLockCluster::ClearCredential(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t credentialType, uint16_t credentialIndex)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2511,8 +2335,7 @@ CHIP_ERROR DoorLockCluster::ClearCredential(Callback::Cancelable * onSuccessCall
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, DoorLock::Commands::ClearCredential::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2531,19 +2354,17 @@ CHIP_ERROR DoorLockCluster::ClearCredential(Callback::Cancelable * onSuccessCall
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR DoorLockCluster::ClearUser(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                      uint16_t userIndex)
+CHIP_ERROR DoorLockCluster::ClearUser(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t userIndex)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2554,8 +2375,7 @@ CHIP_ERROR DoorLockCluster::ClearUser(Callback::Cancelable * onSuccessCallback, 
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, DoorLock::Commands::ClearUser::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2572,19 +2392,17 @@ CHIP_ERROR DoorLockCluster::ClearUser(Callback::Cancelable * onSuccessCallback, 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR DoorLockCluster::GetCredentialStatus(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint8_t credentialType, uint16_t credentialIndex)
+CHIP_ERROR DoorLockCluster::GetCredentialStatus(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t credentialType, uint16_t credentialIndex)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2595,8 +2413,7 @@ CHIP_ERROR DoorLockCluster::GetCredentialStatus(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, DoorLock::Commands::GetCredentialStatus::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2615,19 +2432,17 @@ CHIP_ERROR DoorLockCluster::GetCredentialStatus(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR DoorLockCluster::GetUser(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                    uint16_t userIndex)
+CHIP_ERROR DoorLockCluster::GetUser(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t userIndex)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2638,8 +2453,7 @@ CHIP_ERROR DoorLockCluster::GetUser(Callback::Cancelable * onSuccessCallback, Ca
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, DoorLock::Commands::GetUser::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2656,19 +2470,17 @@ CHIP_ERROR DoorLockCluster::GetUser(Callback::Cancelable * onSuccessCallback, Ca
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR DoorLockCluster::LockDoor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                     chip::ByteSpan pinCode)
+CHIP_ERROR DoorLockCluster::LockDoor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan pinCode)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2679,8 +2491,7 @@ CHIP_ERROR DoorLockCluster::LockDoor(Callback::Cancelable * onSuccessCallback, C
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, DoorLock::Commands::LockDoor::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2697,20 +2508,17 @@ CHIP_ERROR DoorLockCluster::LockDoor(Callback::Cancelable * onSuccessCallback, C
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR DoorLockCluster::SetCredential(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                          uint8_t operationType, uint8_t credentialType, uint16_t credentialIndex,
-                                          chip::ByteSpan credentialData, uint16_t userIndex, uint8_t userStatus)
+CHIP_ERROR DoorLockCluster::SetCredential(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t operationType, uint8_t credentialType, uint16_t credentialIndex, chip::ByteSpan credentialData, uint16_t userIndex, uint8_t userStatus)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2721,8 +2529,7 @@ CHIP_ERROR DoorLockCluster::SetCredential(Callback::Cancelable * onSuccessCallba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, DoorLock::Commands::SetCredential::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2749,20 +2556,17 @@ CHIP_ERROR DoorLockCluster::SetCredential(Callback::Cancelable * onSuccessCallba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR DoorLockCluster::SetUser(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                    uint8_t operationType, uint16_t userIndex, chip::CharSpan userName, uint32_t userUniqueId,
-                                    uint8_t userStatus, uint8_t userType, uint8_t credentialRule)
+CHIP_ERROR DoorLockCluster::SetUser(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t operationType, uint16_t userIndex, chip::CharSpan userName, uint32_t userUniqueId, uint8_t userStatus, uint8_t userType, uint8_t credentialRule)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2773,8 +2577,7 @@ CHIP_ERROR DoorLockCluster::SetUser(Callback::Cancelable * onSuccessCallback, Ca
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, DoorLock::Commands::SetUser::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2803,19 +2606,17 @@ CHIP_ERROR DoorLockCluster::SetUser(Callback::Cancelable * onSuccessCallback, Ca
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR DoorLockCluster::UnlockDoor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                       chip::ByteSpan pinCode)
+CHIP_ERROR DoorLockCluster::UnlockDoor(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan pinCode)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2826,8 +2627,7 @@ CHIP_ERROR DoorLockCluster::UnlockDoor(Callback::Cancelable * onSuccessCallback,
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, DoorLock::Commands::UnlockDoor::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2844,22 +2644,23 @@ CHIP_ERROR DoorLockCluster::UnlockDoor(Callback::Cancelable * onSuccessCallback,
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // ElectricalMeasurement Cluster Commands
 
+
 // EthernetNetworkDiagnostics Cluster Commands
-CHIP_ERROR EthernetNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * onSuccessCallback,
-                                                          Callback::Cancelable * onFailureCallback)
+CHIP_ERROR EthernetNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2867,12 +2668,10 @@ CHIP_ERROR EthernetNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable *
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         EthernetNetworkDiagnostics::Commands::ResetCounts::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, EthernetNetworkDiagnostics::Commands::ResetCounts::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2887,25 +2686,26 @@ CHIP_ERROR EthernetNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable *
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // FixedLabel Cluster Commands
+
 
 // FlowMeasurement Cluster Commands
 
+
 // GeneralCommissioning Cluster Commands
-CHIP_ERROR GeneralCommissioningCluster::ArmFailSafe(Callback::Cancelable * onSuccessCallback,
-                                                    Callback::Cancelable * onFailureCallback, uint16_t expiryLengthSeconds,
-                                                    uint64_t breadcrumb, uint32_t timeoutMs)
+CHIP_ERROR GeneralCommissioningCluster::ArmFailSafe(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t expiryLengthSeconds, uint64_t breadcrumb, uint32_t timeoutMs)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2916,8 +2716,7 @@ CHIP_ERROR GeneralCommissioningCluster::ArmFailSafe(Callback::Cancelable * onSuc
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, GeneralCommissioning::Commands::ArmFailSafe::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2938,19 +2737,17 @@ CHIP_ERROR GeneralCommissioningCluster::ArmFailSafe(Callback::Cancelable * onSuc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR GeneralCommissioningCluster::CommissioningComplete(Callback::Cancelable * onSuccessCallback,
-                                                              Callback::Cancelable * onFailureCallback)
+CHIP_ERROR GeneralCommissioningCluster::CommissioningComplete(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2958,12 +2755,10 @@ CHIP_ERROR GeneralCommissioningCluster::CommissioningComplete(Callback::Cancelab
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         GeneralCommissioning::Commands::CommissioningComplete::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, GeneralCommissioning::Commands::CommissioningComplete::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -2978,20 +2773,17 @@ CHIP_ERROR GeneralCommissioningCluster::CommissioningComplete(Callback::Cancelab
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR GeneralCommissioningCluster::SetRegulatoryConfig(Callback::Cancelable * onSuccessCallback,
-                                                            Callback::Cancelable * onFailureCallback, uint8_t location,
-                                                            chip::CharSpan countryCode, uint64_t breadcrumb, uint32_t timeoutMs)
+CHIP_ERROR GeneralCommissioningCluster::SetRegulatoryConfig(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t location, chip::CharSpan countryCode, uint64_t breadcrumb, uint32_t timeoutMs)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -2999,12 +2791,10 @@ CHIP_ERROR GeneralCommissioningCluster::SetRegulatoryConfig(Callback::Cancelable
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         GeneralCommissioning::Commands::SetRegulatoryConfig::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, GeneralCommissioning::Commands::SetRegulatoryConfig::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3027,22 +2817,23 @@ CHIP_ERROR GeneralCommissioningCluster::SetRegulatoryConfig(Callback::Cancelable
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // GeneralDiagnostics Cluster Commands
 
+
 // GroupKeyManagement Cluster Commands
-CHIP_ERROR GroupKeyManagementCluster::KeySetRead(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                 uint16_t groupKeySetID)
+CHIP_ERROR GroupKeyManagementCluster::KeySetRead(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupKeySetID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3053,8 +2844,7 @@ CHIP_ERROR GroupKeyManagementCluster::KeySetRead(Callback::Cancelable * onSucces
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, GroupKeyManagement::Commands::KeySetRead::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3071,19 +2861,17 @@ CHIP_ERROR GroupKeyManagementCluster::KeySetRead(Callback::Cancelable * onSucces
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR GroupKeyManagementCluster::KeySetReadAllIndices(Callback::Cancelable * onSuccessCallback,
-                                                           Callback::Cancelable * onFailureCallback, uint16_t groupKeySetIDs)
+CHIP_ERROR GroupKeyManagementCluster::KeySetReadAllIndices(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupKeySetIDs)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3091,12 +2879,10 @@ CHIP_ERROR GroupKeyManagementCluster::KeySetReadAllIndices(Callback::Cancelable 
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         GroupKeyManagement::Commands::KeySetReadAllIndices::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, GroupKeyManagement::Commands::KeySetReadAllIndices::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3113,19 +2899,17 @@ CHIP_ERROR GroupKeyManagementCluster::KeySetReadAllIndices(Callback::Cancelable 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR GroupKeyManagementCluster::KeySetRemove(Callback::Cancelable * onSuccessCallback,
-                                                   Callback::Cancelable * onFailureCallback, uint16_t groupKeySetID)
+CHIP_ERROR GroupKeyManagementCluster::KeySetRemove(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupKeySetID)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3136,8 +2920,7 @@ CHIP_ERROR GroupKeyManagementCluster::KeySetRemove(Callback::Cancelable * onSucc
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, GroupKeyManagement::Commands::KeySetRemove::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3154,22 +2937,17 @@ CHIP_ERROR GroupKeyManagementCluster::KeySetRemove(Callback::Cancelable * onSucc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR GroupKeyManagementCluster::KeySetWrite(Callback::Cancelable * onSuccessCallback,
-                                                  Callback::Cancelable * onFailureCallback, uint16_t groupKeySetID,
-                                                  uint8_t securityPolicy, chip::ByteSpan epochKey0, uint64_t epochStartTime0,
-                                                  chip::ByteSpan epochKey1, uint64_t epochStartTime1, chip::ByteSpan epochKey2,
-                                                  uint64_t epochStartTime2)
+CHIP_ERROR GroupKeyManagementCluster::KeySetWrite(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupKeySetID, uint8_t securityPolicy, chip::ByteSpan epochKey0, uint64_t epochStartTime0, chip::ByteSpan epochKey1, uint64_t epochStartTime1, chip::ByteSpan epochKey2, uint64_t epochStartTime2)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3180,8 +2958,7 @@ CHIP_ERROR GroupKeyManagementCluster::KeySetWrite(Callback::Cancelable * onSucce
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, GroupKeyManagement::Commands::KeySetWrite::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3212,20 +2989,20 @@ CHIP_ERROR GroupKeyManagementCluster::KeySetWrite(Callback::Cancelable * onSucce
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // Groups Cluster Commands
-CHIP_ERROR GroupsCluster::AddGroup(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                   uint16_t groupId, chip::CharSpan groupName)
+CHIP_ERROR GroupsCluster::AddGroup(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId, chip::CharSpan groupName)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3236,8 +3013,7 @@ CHIP_ERROR GroupsCluster::AddGroup(Callback::Cancelable * onSuccessCallback, Cal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Groups::Commands::AddGroup::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3256,19 +3032,17 @@ CHIP_ERROR GroupsCluster::AddGroup(Callback::Cancelable * onSuccessCallback, Cal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR GroupsCluster::AddGroupIfIdentifying(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint16_t groupId, chip::CharSpan groupName)
+CHIP_ERROR GroupsCluster::AddGroupIfIdentifying(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId, chip::CharSpan groupName)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3279,8 +3053,7 @@ CHIP_ERROR GroupsCluster::AddGroupIfIdentifying(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Groups::Commands::AddGroupIfIdentifying::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3299,19 +3072,17 @@ CHIP_ERROR GroupsCluster::AddGroupIfIdentifying(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR GroupsCluster::GetGroupMembership(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                             uint16_t groupList)
+CHIP_ERROR GroupsCluster::GetGroupMembership(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupList)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3322,8 +3093,7 @@ CHIP_ERROR GroupsCluster::GetGroupMembership(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Groups::Commands::GetGroupMembership::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3340,8 +3110,7 @@ CHIP_ERROR GroupsCluster::GetGroupMembership(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -3349,9 +3118,9 @@ exit:
 
 CHIP_ERROR GroupsCluster::RemoveAllGroups(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3362,8 +3131,7 @@ CHIP_ERROR GroupsCluster::RemoveAllGroups(Callback::Cancelable * onSuccessCallba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Groups::Commands::RemoveAllGroups::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3378,19 +3146,17 @@ CHIP_ERROR GroupsCluster::RemoveAllGroups(Callback::Cancelable * onSuccessCallba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR GroupsCluster::RemoveGroup(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                      uint16_t groupId)
+CHIP_ERROR GroupsCluster::RemoveGroup(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3401,8 +3167,7 @@ CHIP_ERROR GroupsCluster::RemoveGroup(Callback::Cancelable * onSuccessCallback, 
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Groups::Commands::RemoveGroup::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3419,19 +3184,17 @@ CHIP_ERROR GroupsCluster::RemoveGroup(Callback::Cancelable * onSuccessCallback, 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR GroupsCluster::ViewGroup(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                    uint16_t groupId)
+CHIP_ERROR GroupsCluster::ViewGroup(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3442,8 +3205,7 @@ CHIP_ERROR GroupsCluster::ViewGroup(Callback::Cancelable * onSuccessCallback, Ca
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Groups::Commands::ViewGroup::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3460,20 +3222,20 @@ CHIP_ERROR GroupsCluster::ViewGroup(Callback::Cancelable * onSuccessCallback, Ca
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // Identify Cluster Commands
-CHIP_ERROR IdentifyCluster::Identify(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                     uint16_t identifyTime)
+CHIP_ERROR IdentifyCluster::Identify(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t identifyTime)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3484,8 +3246,7 @@ CHIP_ERROR IdentifyCluster::Identify(Callback::Cancelable * onSuccessCallback, C
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Identify::Commands::Identify::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3502,8 +3263,7 @@ CHIP_ERROR IdentifyCluster::Identify(Callback::Cancelable * onSuccessCallback, C
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -3511,9 +3271,9 @@ exit:
 
 CHIP_ERROR IdentifyCluster::IdentifyQuery(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3524,8 +3284,7 @@ CHIP_ERROR IdentifyCluster::IdentifyQuery(Callback::Cancelable * onSuccessCallba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Identify::Commands::IdentifyQuery::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3540,19 +3299,17 @@ CHIP_ERROR IdentifyCluster::IdentifyQuery(Callback::Cancelable * onSuccessCallba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR IdentifyCluster::TriggerEffect(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                          uint8_t effectIdentifier, uint8_t effectVariant)
+CHIP_ERROR IdentifyCluster::TriggerEffect(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t effectIdentifier, uint8_t effectVariant)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3563,8 +3320,7 @@ CHIP_ERROR IdentifyCluster::TriggerEffect(Callback::Cancelable * onSuccessCallba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Identify::Commands::TriggerEffect::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3583,22 +3339,23 @@ CHIP_ERROR IdentifyCluster::TriggerEffect(Callback::Cancelable * onSuccessCallba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // IlluminanceMeasurement Cluster Commands
 
+
 // KeypadInput Cluster Commands
-CHIP_ERROR KeypadInputCluster::SendKeyRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                              uint8_t keyCode)
+CHIP_ERROR KeypadInputCluster::SendKeyRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t keyCode)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3609,8 +3366,7 @@ CHIP_ERROR KeypadInputCluster::SendKeyRequest(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, KeypadInput::Commands::SendKeyRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3627,20 +3383,20 @@ CHIP_ERROR KeypadInputCluster::SendKeyRequest(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // LevelControl Cluster Commands
-CHIP_ERROR LevelControlCluster::Move(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                     uint8_t moveMode, uint8_t rate, uint8_t optionMask, uint8_t optionOverride)
+CHIP_ERROR LevelControlCluster::Move(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t moveMode, uint8_t rate, uint8_t optionMask, uint8_t optionOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3651,8 +3407,7 @@ CHIP_ERROR LevelControlCluster::Move(Callback::Cancelable * onSuccessCallback, C
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, LevelControl::Commands::Move::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3675,19 +3430,17 @@ CHIP_ERROR LevelControlCluster::Move(Callback::Cancelable * onSuccessCallback, C
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR LevelControlCluster::MoveToLevel(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                            uint8_t level, uint16_t transitionTime, uint8_t optionMask, uint8_t optionOverride)
+CHIP_ERROR LevelControlCluster::MoveToLevel(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t level, uint16_t transitionTime, uint8_t optionMask, uint8_t optionOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3698,8 +3451,7 @@ CHIP_ERROR LevelControlCluster::MoveToLevel(Callback::Cancelable * onSuccessCall
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, LevelControl::Commands::MoveToLevel::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3722,20 +3474,17 @@ CHIP_ERROR LevelControlCluster::MoveToLevel(Callback::Cancelable * onSuccessCall
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR LevelControlCluster::MoveToLevelWithOnOff(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback, uint8_t level,
-                                                     uint16_t transitionTime)
+CHIP_ERROR LevelControlCluster::MoveToLevelWithOnOff(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t level, uint16_t transitionTime)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3746,8 +3495,7 @@ CHIP_ERROR LevelControlCluster::MoveToLevelWithOnOff(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, LevelControl::Commands::MoveToLevelWithOnOff::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3766,19 +3514,17 @@ CHIP_ERROR LevelControlCluster::MoveToLevelWithOnOff(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR LevelControlCluster::MoveWithOnOff(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                              uint8_t moveMode, uint8_t rate)
+CHIP_ERROR LevelControlCluster::MoveWithOnOff(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t moveMode, uint8_t rate)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3789,8 +3535,7 @@ CHIP_ERROR LevelControlCluster::MoveWithOnOff(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, LevelControl::Commands::MoveWithOnOff::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3809,20 +3554,17 @@ CHIP_ERROR LevelControlCluster::MoveWithOnOff(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR LevelControlCluster::Step(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                     uint8_t stepMode, uint8_t stepSize, uint16_t transitionTime, uint8_t optionMask,
-                                     uint8_t optionOverride)
+CHIP_ERROR LevelControlCluster::Step(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t stepMode, uint8_t stepSize, uint16_t transitionTime, uint8_t optionMask, uint8_t optionOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3833,8 +3575,7 @@ CHIP_ERROR LevelControlCluster::Step(Callback::Cancelable * onSuccessCallback, C
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, LevelControl::Commands::Step::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3859,19 +3600,17 @@ CHIP_ERROR LevelControlCluster::Step(Callback::Cancelable * onSuccessCallback, C
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR LevelControlCluster::StepWithOnOff(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                              uint8_t stepMode, uint8_t stepSize, uint16_t transitionTime)
+CHIP_ERROR LevelControlCluster::StepWithOnOff(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t stepMode, uint8_t stepSize, uint16_t transitionTime)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3882,8 +3621,7 @@ CHIP_ERROR LevelControlCluster::StepWithOnOff(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, LevelControl::Commands::StepWithOnOff::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3904,19 +3642,17 @@ CHIP_ERROR LevelControlCluster::StepWithOnOff(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR LevelControlCluster::Stop(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                     uint8_t optionMask, uint8_t optionOverride)
+CHIP_ERROR LevelControlCluster::Stop(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t optionMask, uint8_t optionOverride)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3927,8 +3663,7 @@ CHIP_ERROR LevelControlCluster::Stop(Callback::Cancelable * onSuccessCallback, C
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, LevelControl::Commands::Stop::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3947,8 +3682,7 @@ CHIP_ERROR LevelControlCluster::Stop(Callback::Cancelable * onSuccessCallback, C
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -3956,9 +3690,9 @@ exit:
 
 CHIP_ERROR LevelControlCluster::StopWithOnOff(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -3969,8 +3703,7 @@ CHIP_ERROR LevelControlCluster::StopWithOnOff(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, LevelControl::Commands::StopWithOnOff::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -3985,21 +3718,23 @@ CHIP_ERROR LevelControlCluster::StopWithOnOff(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // LocalizationConfiguration Cluster Commands
+
 
 // LowPower Cluster Commands
 CHIP_ERROR LowPowerCluster::Sleep(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4010,8 +3745,7 @@ CHIP_ERROR LowPowerCluster::Sleep(Callback::Cancelable * onSuccessCallback, Call
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, LowPower::Commands::Sleep::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4026,20 +3760,20 @@ CHIP_ERROR LowPowerCluster::Sleep(Callback::Cancelable * onSuccessCallback, Call
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // MediaInput Cluster Commands
-CHIP_ERROR MediaInputCluster::HideInputStatusRequest(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback)
+CHIP_ERROR MediaInputCluster::HideInputStatusRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4050,8 +3784,7 @@ CHIP_ERROR MediaInputCluster::HideInputStatusRequest(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaInput::Commands::HideInputStatusRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4066,19 +3799,17 @@ CHIP_ERROR MediaInputCluster::HideInputStatusRequest(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR MediaInputCluster::RenameInputRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                 uint8_t index, chip::CharSpan name)
+CHIP_ERROR MediaInputCluster::RenameInputRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t index, chip::CharSpan name)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4089,8 +3820,7 @@ CHIP_ERROR MediaInputCluster::RenameInputRequest(Callback::Cancelable * onSucces
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaInput::Commands::RenameInputRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4109,19 +3839,17 @@ CHIP_ERROR MediaInputCluster::RenameInputRequest(Callback::Cancelable * onSucces
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR MediaInputCluster::SelectInputRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                 uint8_t index)
+CHIP_ERROR MediaInputCluster::SelectInputRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t index)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4132,8 +3860,7 @@ CHIP_ERROR MediaInputCluster::SelectInputRequest(Callback::Cancelable * onSucces
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaInput::Commands::SelectInputRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4150,19 +3877,17 @@ CHIP_ERROR MediaInputCluster::SelectInputRequest(Callback::Cancelable * onSucces
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR MediaInputCluster::ShowInputStatusRequest(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback)
+CHIP_ERROR MediaInputCluster::ShowInputStatusRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4173,8 +3898,7 @@ CHIP_ERROR MediaInputCluster::ShowInputStatusRequest(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaInput::Commands::ShowInputStatusRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4189,20 +3913,20 @@ CHIP_ERROR MediaInputCluster::ShowInputStatusRequest(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // MediaPlayback Cluster Commands
-CHIP_ERROR MediaPlaybackCluster::FastForwardRequest(Callback::Cancelable * onSuccessCallback,
-                                                    Callback::Cancelable * onFailureCallback)
+CHIP_ERROR MediaPlaybackCluster::FastForwardRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4213,8 +3937,7 @@ CHIP_ERROR MediaPlaybackCluster::FastForwardRequest(Callback::Cancelable * onSuc
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::FastForwardRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4229,8 +3952,7 @@ CHIP_ERROR MediaPlaybackCluster::FastForwardRequest(Callback::Cancelable * onSuc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -4238,9 +3960,9 @@ exit:
 
 CHIP_ERROR MediaPlaybackCluster::NextRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4251,8 +3973,7 @@ CHIP_ERROR MediaPlaybackCluster::NextRequest(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::NextRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4267,8 +3988,7 @@ CHIP_ERROR MediaPlaybackCluster::NextRequest(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -4276,9 +3996,9 @@ exit:
 
 CHIP_ERROR MediaPlaybackCluster::PauseRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4289,8 +4009,7 @@ CHIP_ERROR MediaPlaybackCluster::PauseRequest(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::PauseRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4305,8 +4024,7 @@ CHIP_ERROR MediaPlaybackCluster::PauseRequest(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -4314,9 +4032,9 @@ exit:
 
 CHIP_ERROR MediaPlaybackCluster::PlayRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4327,8 +4045,7 @@ CHIP_ERROR MediaPlaybackCluster::PlayRequest(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::PlayRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4343,8 +4060,7 @@ CHIP_ERROR MediaPlaybackCluster::PlayRequest(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -4352,9 +4068,9 @@ exit:
 
 CHIP_ERROR MediaPlaybackCluster::PreviousRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4365,8 +4081,7 @@ CHIP_ERROR MediaPlaybackCluster::PreviousRequest(Callback::Cancelable * onSucces
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::PreviousRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4381,8 +4096,7 @@ CHIP_ERROR MediaPlaybackCluster::PreviousRequest(Callback::Cancelable * onSucces
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -4390,9 +4104,9 @@ exit:
 
 CHIP_ERROR MediaPlaybackCluster::RewindRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4403,8 +4117,7 @@ CHIP_ERROR MediaPlaybackCluster::RewindRequest(Callback::Cancelable * onSuccessC
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::RewindRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4419,19 +4132,17 @@ CHIP_ERROR MediaPlaybackCluster::RewindRequest(Callback::Cancelable * onSuccessC
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR MediaPlaybackCluster::SeekRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                             uint64_t position)
+CHIP_ERROR MediaPlaybackCluster::SeekRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint64_t position)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4442,8 +4153,7 @@ CHIP_ERROR MediaPlaybackCluster::SeekRequest(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::SeekRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4460,19 +4170,17 @@ CHIP_ERROR MediaPlaybackCluster::SeekRequest(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR MediaPlaybackCluster::SkipBackwardRequest(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback, uint64_t deltaPositionMilliseconds)
+CHIP_ERROR MediaPlaybackCluster::SkipBackwardRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint64_t deltaPositionMilliseconds)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4483,8 +4191,7 @@ CHIP_ERROR MediaPlaybackCluster::SkipBackwardRequest(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::SkipBackwardRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4501,19 +4208,17 @@ CHIP_ERROR MediaPlaybackCluster::SkipBackwardRequest(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR MediaPlaybackCluster::SkipForwardRequest(Callback::Cancelable * onSuccessCallback,
-                                                    Callback::Cancelable * onFailureCallback, uint64_t deltaPositionMilliseconds)
+CHIP_ERROR MediaPlaybackCluster::SkipForwardRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint64_t deltaPositionMilliseconds)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4524,8 +4229,7 @@ CHIP_ERROR MediaPlaybackCluster::SkipForwardRequest(Callback::Cancelable * onSuc
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::SkipForwardRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4542,19 +4246,17 @@ CHIP_ERROR MediaPlaybackCluster::SkipForwardRequest(Callback::Cancelable * onSuc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR MediaPlaybackCluster::StartOverRequest(Callback::Cancelable * onSuccessCallback,
-                                                  Callback::Cancelable * onFailureCallback)
+CHIP_ERROR MediaPlaybackCluster::StartOverRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4565,8 +4267,7 @@ CHIP_ERROR MediaPlaybackCluster::StartOverRequest(Callback::Cancelable * onSucce
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::StartOverRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4581,8 +4282,7 @@ CHIP_ERROR MediaPlaybackCluster::StartOverRequest(Callback::Cancelable * onSucce
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -4590,9 +4290,9 @@ exit:
 
 CHIP_ERROR MediaPlaybackCluster::StopRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4603,8 +4303,7 @@ CHIP_ERROR MediaPlaybackCluster::StopRequest(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, MediaPlayback::Commands::StopRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4619,20 +4318,20 @@ CHIP_ERROR MediaPlaybackCluster::StopRequest(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // ModeSelect Cluster Commands
-CHIP_ERROR ModeSelectCluster::ChangeToMode(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                           uint8_t newMode)
+CHIP_ERROR ModeSelectCluster::ChangeToMode(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t newMode)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4643,8 +4342,7 @@ CHIP_ERROR ModeSelectCluster::ChangeToMode(Callback::Cancelable * onSuccessCallb
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ModeSelect::Commands::ChangeToMode::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4661,21 +4359,20 @@ CHIP_ERROR ModeSelectCluster::ChangeToMode(Callback::Cancelable * onSuccessCallb
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // NetworkCommissioning Cluster Commands
-CHIP_ERROR NetworkCommissioningCluster::AddOrUpdateThreadNetwork(Callback::Cancelable * onSuccessCallback,
-                                                                 Callback::Cancelable * onFailureCallback,
-                                                                 chip::ByteSpan operationalDataset, uint64_t breadcrumb)
+CHIP_ERROR NetworkCommissioningCluster::AddOrUpdateThreadNetwork(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan operationalDataset, uint64_t breadcrumb)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4683,12 +4380,10 @@ CHIP_ERROR NetworkCommissioningCluster::AddOrUpdateThreadNetwork(Callback::Cance
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         NetworkCommissioning::Commands::AddOrUpdateThreadNetwork::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, NetworkCommissioning::Commands::AddOrUpdateThreadNetwork::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4707,20 +4402,17 @@ CHIP_ERROR NetworkCommissioningCluster::AddOrUpdateThreadNetwork(Callback::Cance
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR NetworkCommissioningCluster::AddOrUpdateWiFiNetwork(Callback::Cancelable * onSuccessCallback,
-                                                               Callback::Cancelable * onFailureCallback, chip::ByteSpan ssid,
-                                                               chip::ByteSpan credentials, uint64_t breadcrumb)
+CHIP_ERROR NetworkCommissioningCluster::AddOrUpdateWiFiNetwork(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan ssid, chip::ByteSpan credentials, uint64_t breadcrumb)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4728,12 +4420,10 @@ CHIP_ERROR NetworkCommissioningCluster::AddOrUpdateWiFiNetwork(Callback::Cancela
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         NetworkCommissioning::Commands::AddOrUpdateWiFiNetwork::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, NetworkCommissioning::Commands::AddOrUpdateWiFiNetwork::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4754,20 +4444,17 @@ CHIP_ERROR NetworkCommissioningCluster::AddOrUpdateWiFiNetwork(Callback::Cancela
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR NetworkCommissioningCluster::ConnectNetwork(Callback::Cancelable * onSuccessCallback,
-                                                       Callback::Cancelable * onFailureCallback, chip::ByteSpan networkID,
-                                                       uint64_t breadcrumb)
+CHIP_ERROR NetworkCommissioningCluster::ConnectNetwork(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan networkID, uint64_t breadcrumb)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4775,12 +4462,10 @@ CHIP_ERROR NetworkCommissioningCluster::ConnectNetwork(Callback::Cancelable * on
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         NetworkCommissioning::Commands::ConnectNetwork::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, NetworkCommissioning::Commands::ConnectNetwork::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4799,20 +4484,17 @@ CHIP_ERROR NetworkCommissioningCluster::ConnectNetwork(Callback::Cancelable * on
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR NetworkCommissioningCluster::RemoveNetwork(Callback::Cancelable * onSuccessCallback,
-                                                      Callback::Cancelable * onFailureCallback, chip::ByteSpan networkID,
-                                                      uint64_t breadcrumb)
+CHIP_ERROR NetworkCommissioningCluster::RemoveNetwork(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan networkID, uint64_t breadcrumb)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4823,8 +4505,7 @@ CHIP_ERROR NetworkCommissioningCluster::RemoveNetwork(Callback::Cancelable * onS
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, NetworkCommissioning::Commands::RemoveNetwork::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4843,20 +4524,17 @@ CHIP_ERROR NetworkCommissioningCluster::RemoveNetwork(Callback::Cancelable * onS
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR NetworkCommissioningCluster::ReorderNetwork(Callback::Cancelable * onSuccessCallback,
-                                                       Callback::Cancelable * onFailureCallback, chip::ByteSpan networkID,
-                                                       uint8_t networkIndex, uint64_t breadcrumb)
+CHIP_ERROR NetworkCommissioningCluster::ReorderNetwork(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan networkID, uint8_t networkIndex, uint64_t breadcrumb)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4864,12 +4542,10 @@ CHIP_ERROR NetworkCommissioningCluster::ReorderNetwork(Callback::Cancelable * on
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         NetworkCommissioning::Commands::ReorderNetwork::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, NetworkCommissioning::Commands::ReorderNetwork::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4890,20 +4566,17 @@ CHIP_ERROR NetworkCommissioningCluster::ReorderNetwork(Callback::Cancelable * on
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR NetworkCommissioningCluster::ScanNetworks(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback, chip::ByteSpan ssid,
-                                                     uint64_t breadcrumb)
+CHIP_ERROR NetworkCommissioningCluster::ScanNetworks(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan ssid, uint64_t breadcrumb)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4914,8 +4587,7 @@ CHIP_ERROR NetworkCommissioningCluster::ScanNetworks(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, NetworkCommissioning::Commands::ScanNetworks::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4934,21 +4606,20 @@ CHIP_ERROR NetworkCommissioningCluster::ScanNetworks(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // OtaSoftwareUpdateProvider Cluster Commands
-CHIP_ERROR OtaSoftwareUpdateProviderCluster::ApplyUpdateRequest(Callback::Cancelable * onSuccessCallback,
-                                                                Callback::Cancelable * onFailureCallback,
-                                                                chip::ByteSpan updateToken, uint32_t newVersion)
+CHIP_ERROR OtaSoftwareUpdateProviderCluster::ApplyUpdateRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan updateToken, uint32_t newVersion)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -4956,12 +4627,10 @@ CHIP_ERROR OtaSoftwareUpdateProviderCluster::ApplyUpdateRequest(Callback::Cancel
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OtaSoftwareUpdateProvider::Commands::ApplyUpdateRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OtaSoftwareUpdateProvider::Commands::ApplyUpdateRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -4980,20 +4649,17 @@ CHIP_ERROR OtaSoftwareUpdateProviderCluster::ApplyUpdateRequest(Callback::Cancel
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OtaSoftwareUpdateProviderCluster::NotifyUpdateApplied(Callback::Cancelable * onSuccessCallback,
-                                                                 Callback::Cancelable * onFailureCallback,
-                                                                 chip::ByteSpan updateToken, uint32_t softwareVersion)
+CHIP_ERROR OtaSoftwareUpdateProviderCluster::NotifyUpdateApplied(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan updateToken, uint32_t softwareVersion)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5001,12 +4667,10 @@ CHIP_ERROR OtaSoftwareUpdateProviderCluster::NotifyUpdateApplied(Callback::Cance
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OtaSoftwareUpdateProvider::Commands::NotifyUpdateApplied::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OtaSoftwareUpdateProvider::Commands::NotifyUpdateApplied::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5025,22 +4689,17 @@ CHIP_ERROR OtaSoftwareUpdateProviderCluster::NotifyUpdateApplied(Callback::Cance
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OtaSoftwareUpdateProviderCluster::QueryImage(Callback::Cancelable * onSuccessCallback,
-                                                        Callback::Cancelable * onFailureCallback, chip::VendorId vendorId,
-                                                        uint16_t productId, uint32_t softwareVersion, uint8_t protocolsSupported,
-                                                        uint16_t hardwareVersion, chip::CharSpan location, bool requestorCanConsent,
-                                                        chip::ByteSpan metadataForProvider)
+CHIP_ERROR OtaSoftwareUpdateProviderCluster::QueryImage(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::VendorId vendorId, uint16_t productId, uint32_t softwareVersion, uint8_t protocolsSupported, uint16_t hardwareVersion, chip::CharSpan location, bool requestorCanConsent, chip::ByteSpan metadataForProvider)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5048,12 +4707,10 @@ CHIP_ERROR OtaSoftwareUpdateProviderCluster::QueryImage(Callback::Cancelable * o
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OtaSoftwareUpdateProvider::Commands::QueryImage::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OtaSoftwareUpdateProvider::Commands::QueryImage::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5084,23 +4741,20 @@ CHIP_ERROR OtaSoftwareUpdateProviderCluster::QueryImage(Callback::Cancelable * o
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // OtaSoftwareUpdateRequestor Cluster Commands
-CHIP_ERROR OtaSoftwareUpdateRequestorCluster::AnnounceOtaProvider(Callback::Cancelable * onSuccessCallback,
-                                                                  Callback::Cancelable * onFailureCallback,
-                                                                  chip::NodeId providerNodeId, chip::VendorId vendorId,
-                                                                  uint8_t announcementReason, chip::ByteSpan metadataForNode,
-                                                                  chip::EndpointId endpoint)
+CHIP_ERROR OtaSoftwareUpdateRequestorCluster::AnnounceOtaProvider(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::NodeId providerNodeId, chip::VendorId vendorId, uint8_t announcementReason, chip::ByteSpan metadataForNode, chip::EndpointId endpoint)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5108,12 +4762,10 @@ CHIP_ERROR OtaSoftwareUpdateRequestorCluster::AnnounceOtaProvider(Callback::Canc
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OtaSoftwareUpdateRequestor::Commands::AnnounceOtaProvider::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OtaSoftwareUpdateRequestor::Commands::AnnounceOtaProvider::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5138,21 +4790,23 @@ CHIP_ERROR OtaSoftwareUpdateRequestorCluster::AnnounceOtaProvider(Callback::Canc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // OccupancySensing Cluster Commands
+
 
 // OnOff Cluster Commands
 CHIP_ERROR OnOffCluster::Off(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5163,8 +4817,7 @@ CHIP_ERROR OnOffCluster::Off(Callback::Cancelable * onSuccessCallback, Callback:
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OnOff::Commands::Off::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5179,19 +4832,17 @@ CHIP_ERROR OnOffCluster::Off(Callback::Cancelable * onSuccessCallback, Callback:
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OnOffCluster::OffWithEffect(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                       uint8_t effectId, uint8_t effectVariant)
+CHIP_ERROR OnOffCluster::OffWithEffect(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t effectId, uint8_t effectVariant)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5202,8 +4853,7 @@ CHIP_ERROR OnOffCluster::OffWithEffect(Callback::Cancelable * onSuccessCallback,
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OnOff::Commands::OffWithEffect::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5222,8 +4872,7 @@ CHIP_ERROR OnOffCluster::OffWithEffect(Callback::Cancelable * onSuccessCallback,
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -5231,9 +4880,9 @@ exit:
 
 CHIP_ERROR OnOffCluster::On(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5244,8 +4893,7 @@ CHIP_ERROR OnOffCluster::On(Callback::Cancelable * onSuccessCallback, Callback::
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OnOff::Commands::On::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5260,8 +4908,7 @@ CHIP_ERROR OnOffCluster::On(Callback::Cancelable * onSuccessCallback, Callback::
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -5269,9 +4916,9 @@ exit:
 
 CHIP_ERROR OnOffCluster::OnWithRecallGlobalScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5282,8 +4929,7 @@ CHIP_ERROR OnOffCluster::OnWithRecallGlobalScene(Callback::Cancelable * onSucces
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OnOff::Commands::OnWithRecallGlobalScene::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5298,19 +4944,17 @@ CHIP_ERROR OnOffCluster::OnWithRecallGlobalScene(Callback::Cancelable * onSucces
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OnOffCluster::OnWithTimedOff(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                        uint8_t onOffControl, uint16_t onTime, uint16_t offWaitTime)
+CHIP_ERROR OnOffCluster::OnWithTimedOff(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t onOffControl, uint16_t onTime, uint16_t offWaitTime)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5321,8 +4965,7 @@ CHIP_ERROR OnOffCluster::OnWithTimedOff(Callback::Cancelable * onSuccessCallback
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OnOff::Commands::OnWithTimedOff::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5343,8 +4986,7 @@ CHIP_ERROR OnOffCluster::OnWithTimedOff(Callback::Cancelable * onSuccessCallback
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -5352,9 +4994,9 @@ exit:
 
 CHIP_ERROR OnOffCluster::Toggle(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5365,8 +5007,7 @@ CHIP_ERROR OnOffCluster::Toggle(Callback::Cancelable * onSuccessCallback, Callba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OnOff::Commands::Toggle::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5381,23 +5022,23 @@ CHIP_ERROR OnOffCluster::Toggle(Callback::Cancelable * onSuccessCallback, Callba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // OnOffSwitchConfiguration Cluster Commands
 
+
 // OperationalCredentials Cluster Commands
-CHIP_ERROR OperationalCredentialsCluster::AddNOC(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                 chip::ByteSpan NOCValue, chip::ByteSpan ICACValue, chip::ByteSpan IPKValue,
-                                                 chip::NodeId caseAdminNode, uint16_t adminVendorId)
+CHIP_ERROR OperationalCredentialsCluster::AddNOC(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan NOCValue, chip::ByteSpan ICACValue, chip::ByteSpan IPKValue, chip::NodeId caseAdminNode, uint16_t adminVendorId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5408,8 +5049,7 @@ CHIP_ERROR OperationalCredentialsCluster::AddNOC(Callback::Cancelable * onSucces
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OperationalCredentials::Commands::AddNOC::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5434,20 +5074,17 @@ CHIP_ERROR OperationalCredentialsCluster::AddNOC(Callback::Cancelable * onSucces
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OperationalCredentialsCluster::AddTrustedRootCertificate(Callback::Cancelable * onSuccessCallback,
-                                                                    Callback::Cancelable * onFailureCallback,
-                                                                    chip::ByteSpan rootCertificate)
+CHIP_ERROR OperationalCredentialsCluster::AddTrustedRootCertificate(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan rootCertificate)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5455,12 +5092,10 @@ CHIP_ERROR OperationalCredentialsCluster::AddTrustedRootCertificate(Callback::Ca
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OperationalCredentials::Commands::AddTrustedRootCertificate::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OperationalCredentials::Commands::AddTrustedRootCertificate::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5477,20 +5112,17 @@ CHIP_ERROR OperationalCredentialsCluster::AddTrustedRootCertificate(Callback::Ca
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OperationalCredentialsCluster::AttestationRequest(Callback::Cancelable * onSuccessCallback,
-                                                             Callback::Cancelable * onFailureCallback,
-                                                             chip::ByteSpan attestationNonce)
+CHIP_ERROR OperationalCredentialsCluster::AttestationRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan attestationNonce)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5498,12 +5130,10 @@ CHIP_ERROR OperationalCredentialsCluster::AttestationRequest(Callback::Cancelabl
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OperationalCredentials::Commands::AttestationRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OperationalCredentials::Commands::AttestationRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5520,19 +5150,17 @@ CHIP_ERROR OperationalCredentialsCluster::AttestationRequest(Callback::Cancelabl
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OperationalCredentialsCluster::CertificateChainRequest(Callback::Cancelable * onSuccessCallback,
-                                                                  Callback::Cancelable * onFailureCallback, uint8_t certificateType)
+CHIP_ERROR OperationalCredentialsCluster::CertificateChainRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t certificateType)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5540,12 +5168,10 @@ CHIP_ERROR OperationalCredentialsCluster::CertificateChainRequest(Callback::Canc
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OperationalCredentials::Commands::CertificateChainRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OperationalCredentials::Commands::CertificateChainRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5562,19 +5188,17 @@ CHIP_ERROR OperationalCredentialsCluster::CertificateChainRequest(Callback::Canc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OperationalCredentialsCluster::OpCSRRequest(Callback::Cancelable * onSuccessCallback,
-                                                       Callback::Cancelable * onFailureCallback, chip::ByteSpan CSRNonce)
+CHIP_ERROR OperationalCredentialsCluster::OpCSRRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan CSRNonce)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5582,12 +5206,10 @@ CHIP_ERROR OperationalCredentialsCluster::OpCSRRequest(Callback::Cancelable * on
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OperationalCredentials::Commands::OpCSRRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OperationalCredentials::Commands::OpCSRRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5604,19 +5226,17 @@ CHIP_ERROR OperationalCredentialsCluster::OpCSRRequest(Callback::Cancelable * on
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OperationalCredentialsCluster::RemoveFabric(Callback::Cancelable * onSuccessCallback,
-                                                       Callback::Cancelable * onFailureCallback, uint8_t fabricIndex)
+CHIP_ERROR OperationalCredentialsCluster::RemoveFabric(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t fabricIndex)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5624,12 +5244,10 @@ CHIP_ERROR OperationalCredentialsCluster::RemoveFabric(Callback::Cancelable * on
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OperationalCredentials::Commands::RemoveFabric::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OperationalCredentials::Commands::RemoveFabric::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5646,20 +5264,17 @@ CHIP_ERROR OperationalCredentialsCluster::RemoveFabric(Callback::Cancelable * on
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OperationalCredentialsCluster::RemoveTrustedRootCertificate(Callback::Cancelable * onSuccessCallback,
-                                                                       Callback::Cancelable * onFailureCallback,
-                                                                       chip::ByteSpan trustedRootIdentifier)
+CHIP_ERROR OperationalCredentialsCluster::RemoveTrustedRootCertificate(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan trustedRootIdentifier)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5667,12 +5282,10 @@ CHIP_ERROR OperationalCredentialsCluster::RemoveTrustedRootCertificate(Callback:
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OperationalCredentials::Commands::RemoveTrustedRootCertificate::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OperationalCredentials::Commands::RemoveTrustedRootCertificate::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5689,19 +5302,17 @@ CHIP_ERROR OperationalCredentialsCluster::RemoveTrustedRootCertificate(Callback:
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OperationalCredentialsCluster::UpdateFabricLabel(Callback::Cancelable * onSuccessCallback,
-                                                            Callback::Cancelable * onFailureCallback, chip::CharSpan label)
+CHIP_ERROR OperationalCredentialsCluster::UpdateFabricLabel(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::CharSpan label)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5709,12 +5320,10 @@ CHIP_ERROR OperationalCredentialsCluster::UpdateFabricLabel(Callback::Cancelable
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         OperationalCredentials::Commands::UpdateFabricLabel::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OperationalCredentials::Commands::UpdateFabricLabel::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5731,20 +5340,17 @@ CHIP_ERROR OperationalCredentialsCluster::UpdateFabricLabel(Callback::Cancelable
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR OperationalCredentialsCluster::UpdateNOC(Callback::Cancelable * onSuccessCallback,
-                                                    Callback::Cancelable * onFailureCallback, chip::ByteSpan NOCValue,
-                                                    chip::ByteSpan ICACValue)
+CHIP_ERROR OperationalCredentialsCluster::UpdateNOC(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan NOCValue, chip::ByteSpan ICACValue)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5755,8 +5361,7 @@ CHIP_ERROR OperationalCredentialsCluster::UpdateNOC(Callback::Cancelable * onSuc
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, OperationalCredentials::Commands::UpdateNOC::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5775,31 +5380,35 @@ CHIP_ERROR OperationalCredentialsCluster::UpdateNOC(Callback::Cancelable * onSuc
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // PowerSource Cluster Commands
+
 
 // PowerSourceConfiguration Cluster Commands
 
+
 // PressureMeasurement Cluster Commands
+
 
 // PumpConfigurationAndControl Cluster Commands
 
+
 // RelativeHumidityMeasurement Cluster Commands
 
+
 // Scenes Cluster Commands
-CHIP_ERROR ScenesCluster::AddScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                   uint16_t groupId, uint8_t sceneId, uint16_t transitionTime, chip::CharSpan sceneName,
-                                   chip::ClusterId clusterId, uint8_t length, uint8_t value)
+CHIP_ERROR ScenesCluster::AddScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId, uint8_t sceneId, uint16_t transitionTime, chip::CharSpan sceneName, chip::ClusterId clusterId, uint8_t length, uint8_t value)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5810,8 +5419,7 @@ CHIP_ERROR ScenesCluster::AddScene(Callback::Cancelable * onSuccessCallback, Cal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Scenes::Commands::AddScene::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5840,19 +5448,17 @@ CHIP_ERROR ScenesCluster::AddScene(Callback::Cancelable * onSuccessCallback, Cal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ScenesCluster::GetSceneMembership(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                             uint16_t groupId)
+CHIP_ERROR ScenesCluster::GetSceneMembership(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5863,8 +5469,7 @@ CHIP_ERROR ScenesCluster::GetSceneMembership(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Scenes::Commands::GetSceneMembership::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5881,19 +5486,17 @@ CHIP_ERROR ScenesCluster::GetSceneMembership(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ScenesCluster::RecallScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                      uint16_t groupId, uint8_t sceneId, uint16_t transitionTime)
+CHIP_ERROR ScenesCluster::RecallScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId, uint8_t sceneId, uint16_t transitionTime)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5904,8 +5507,7 @@ CHIP_ERROR ScenesCluster::RecallScene(Callback::Cancelable * onSuccessCallback, 
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Scenes::Commands::RecallScene::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5926,19 +5528,17 @@ CHIP_ERROR ScenesCluster::RecallScene(Callback::Cancelable * onSuccessCallback, 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ScenesCluster::RemoveAllScenes(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                          uint16_t groupId)
+CHIP_ERROR ScenesCluster::RemoveAllScenes(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5949,8 +5549,7 @@ CHIP_ERROR ScenesCluster::RemoveAllScenes(Callback::Cancelable * onSuccessCallba
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Scenes::Commands::RemoveAllScenes::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -5967,19 +5566,17 @@ CHIP_ERROR ScenesCluster::RemoveAllScenes(Callback::Cancelable * onSuccessCallba
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ScenesCluster::RemoveScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                      uint16_t groupId, uint8_t sceneId)
+CHIP_ERROR ScenesCluster::RemoveScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId, uint8_t sceneId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -5990,8 +5587,7 @@ CHIP_ERROR ScenesCluster::RemoveScene(Callback::Cancelable * onSuccessCallback, 
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Scenes::Commands::RemoveScene::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6010,19 +5606,17 @@ CHIP_ERROR ScenesCluster::RemoveScene(Callback::Cancelable * onSuccessCallback, 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ScenesCluster::StoreScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                     uint16_t groupId, uint8_t sceneId)
+CHIP_ERROR ScenesCluster::StoreScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId, uint8_t sceneId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6033,8 +5627,7 @@ CHIP_ERROR ScenesCluster::StoreScene(Callback::Cancelable * onSuccessCallback, C
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Scenes::Commands::StoreScene::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6053,19 +5646,17 @@ CHIP_ERROR ScenesCluster::StoreScene(Callback::Cancelable * onSuccessCallback, C
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ScenesCluster::ViewScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                    uint16_t groupId, uint8_t sceneId)
+CHIP_ERROR ScenesCluster::ViewScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t groupId, uint8_t sceneId)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6076,8 +5667,7 @@ CHIP_ERROR ScenesCluster::ViewScene(Callback::Cancelable * onSuccessCallback, Ca
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Scenes::Commands::ViewScene::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6096,20 +5686,20 @@ CHIP_ERROR ScenesCluster::ViewScene(Callback::Cancelable * onSuccessCallback, Ca
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // SoftwareDiagnostics Cluster Commands
-CHIP_ERROR SoftwareDiagnosticsCluster::ResetWatermarks(Callback::Cancelable * onSuccessCallback,
-                                                       Callback::Cancelable * onFailureCallback)
+CHIP_ERROR SoftwareDiagnosticsCluster::ResetWatermarks(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6117,12 +5707,10 @@ CHIP_ERROR SoftwareDiagnosticsCluster::ResetWatermarks(Callback::Cancelable * on
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         SoftwareDiagnostics::Commands::ResetWatermarks::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, SoftwareDiagnostics::Commands::ResetWatermarks::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6137,23 +5725,23 @@ CHIP_ERROR SoftwareDiagnosticsCluster::ResetWatermarks(Callback::Cancelable * on
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // Switch Cluster Commands
 
+
 // TargetNavigator Cluster Commands
-CHIP_ERROR TargetNavigatorCluster::NavigateTargetRequest(Callback::Cancelable * onSuccessCallback,
-                                                         Callback::Cancelable * onFailureCallback, uint8_t target,
-                                                         chip::CharSpan data)
+CHIP_ERROR TargetNavigatorCluster::NavigateTargetRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t target, chip::CharSpan data)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6161,12 +5749,10 @@ CHIP_ERROR TargetNavigatorCluster::NavigateTargetRequest(Callback::Cancelable * 
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TargetNavigator::Commands::NavigateTargetRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TargetNavigator::Commands::NavigateTargetRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6185,23 +5771,23 @@ CHIP_ERROR TargetNavigatorCluster::NavigateTargetRequest(Callback::Cancelable * 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // TemperatureMeasurement Cluster Commands
 
+
 // TestCluster Cluster Commands
-CHIP_ERROR TestClusterCluster::SimpleStructEchoRequest(Callback::Cancelable * onSuccessCallback,
-                                                       Callback::Cancelable * onFailureCallback, uint8_t a, bool b, uint8_t c,
-                                                       chip::ByteSpan d, chip::CharSpan e, uint8_t f, float g, double h)
+CHIP_ERROR TestClusterCluster::SimpleStructEchoRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t a, bool b, uint8_t c, chip::ByteSpan d, chip::CharSpan e, uint8_t f, float g, double h)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6209,12 +5795,10 @@ CHIP_ERROR TestClusterCluster::SimpleStructEchoRequest(Callback::Cancelable * on
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::SimpleStructEchoRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::SimpleStructEchoRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6245,8 +5829,7 @@ CHIP_ERROR TestClusterCluster::SimpleStructEchoRequest(Callback::Cancelable * on
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -6254,9 +5837,9 @@ exit:
 
 CHIP_ERROR TestClusterCluster::Test(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6267,8 +5850,7 @@ CHIP_ERROR TestClusterCluster::Test(Callback::Cancelable * onSuccessCallback, Ca
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::Test::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6283,19 +5865,17 @@ CHIP_ERROR TestClusterCluster::Test(Callback::Cancelable * onSuccessCallback, Ca
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestAddArguments(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint8_t arg1, uint8_t arg2)
+CHIP_ERROR TestClusterCluster::TestAddArguments(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t arg1, uint8_t arg2)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6306,8 +5886,7 @@ CHIP_ERROR TestClusterCluster::TestAddArguments(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestAddArguments::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6326,20 +5905,17 @@ CHIP_ERROR TestClusterCluster::TestAddArguments(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestEmitTestEventRequest(Callback::Cancelable * onSuccessCallback,
-                                                        Callback::Cancelable * onFailureCallback, uint8_t arg1, uint8_t arg2,
-                                                        bool arg3)
+CHIP_ERROR TestClusterCluster::TestEmitTestEventRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t arg1, uint8_t arg2, bool arg3)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6347,12 +5923,10 @@ CHIP_ERROR TestClusterCluster::TestEmitTestEventRequest(Callback::Cancelable * o
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestEmitTestEventRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestEmitTestEventRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6373,19 +5947,17 @@ CHIP_ERROR TestClusterCluster::TestEmitTestEventRequest(Callback::Cancelable * o
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestEnumsRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                chip::VendorId arg1, uint8_t arg2)
+CHIP_ERROR TestClusterCluster::TestEnumsRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::VendorId arg1, uint8_t arg2)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6396,8 +5968,7 @@ CHIP_ERROR TestClusterCluster::TestEnumsRequest(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestEnumsRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6416,19 +5987,17 @@ CHIP_ERROR TestClusterCluster::TestEnumsRequest(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestListInt8UArgumentRequest(Callback::Cancelable * onSuccessCallback,
-                                                            Callback::Cancelable * onFailureCallback, uint8_t arg1)
+CHIP_ERROR TestClusterCluster::TestListInt8UArgumentRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t arg1)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6436,12 +6005,10 @@ CHIP_ERROR TestClusterCluster::TestListInt8UArgumentRequest(Callback::Cancelable
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestListInt8UArgumentRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestListInt8UArgumentRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6458,19 +6025,17 @@ CHIP_ERROR TestClusterCluster::TestListInt8UArgumentRequest(Callback::Cancelable
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestListInt8UReverseRequest(Callback::Cancelable * onSuccessCallback,
-                                                           Callback::Cancelable * onFailureCallback, uint8_t arg1)
+CHIP_ERROR TestClusterCluster::TestListInt8UReverseRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t arg1)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6478,12 +6043,10 @@ CHIP_ERROR TestClusterCluster::TestListInt8UReverseRequest(Callback::Cancelable 
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestListInt8UReverseRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestListInt8UReverseRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6500,20 +6063,17 @@ CHIP_ERROR TestClusterCluster::TestListInt8UReverseRequest(Callback::Cancelable 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestListNestedStructListArgumentRequest(Callback::Cancelable * onSuccessCallback,
-                                                                       Callback::Cancelable * onFailureCallback, uint8_t a, bool b,
-                                                                       uint32_t e, chip::ByteSpan f, uint8_t g)
+CHIP_ERROR TestClusterCluster::TestListNestedStructListArgumentRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t a, bool b, uint32_t e, chip::ByteSpan f, uint8_t g)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6521,12 +6081,10 @@ CHIP_ERROR TestClusterCluster::TestListNestedStructListArgumentRequest(Callback:
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestListNestedStructListArgumentRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestListNestedStructListArgumentRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6551,20 +6109,17 @@ CHIP_ERROR TestClusterCluster::TestListNestedStructListArgumentRequest(Callback:
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestListStructArgumentRequest(Callback::Cancelable * onSuccessCallback,
-                                                             Callback::Cancelable * onFailureCallback, uint8_t a, bool b, uint8_t c,
-                                                             chip::ByteSpan d, chip::CharSpan e, uint8_t f, float g, double h)
+CHIP_ERROR TestClusterCluster::TestListStructArgumentRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t a, bool b, uint8_t c, chip::ByteSpan d, chip::CharSpan e, uint8_t f, float g, double h)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6572,12 +6127,10 @@ CHIP_ERROR TestClusterCluster::TestListStructArgumentRequest(Callback::Cancelabl
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestListStructArgumentRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestListStructArgumentRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6608,19 +6161,17 @@ CHIP_ERROR TestClusterCluster::TestListStructArgumentRequest(Callback::Cancelabl
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestNestedStructArgumentRequest(Callback::Cancelable * onSuccessCallback,
-                                                               Callback::Cancelable * onFailureCallback, uint8_t a, bool b)
+CHIP_ERROR TestClusterCluster::TestNestedStructArgumentRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t a, bool b)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6628,12 +6179,10 @@ CHIP_ERROR TestClusterCluster::TestNestedStructArgumentRequest(Callback::Cancela
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestNestedStructArgumentRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestNestedStructArgumentRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6652,20 +6201,17 @@ CHIP_ERROR TestClusterCluster::TestNestedStructArgumentRequest(Callback::Cancela
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestNestedStructListArgumentRequest(Callback::Cancelable * onSuccessCallback,
-                                                                   Callback::Cancelable * onFailureCallback, uint8_t a, bool b,
-                                                                   uint32_t e, chip::ByteSpan f, uint8_t g)
+CHIP_ERROR TestClusterCluster::TestNestedStructListArgumentRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t a, bool b, uint32_t e, chip::ByteSpan f, uint8_t g)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6673,12 +6219,10 @@ CHIP_ERROR TestClusterCluster::TestNestedStructListArgumentRequest(Callback::Can
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestNestedStructListArgumentRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestNestedStructListArgumentRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6703,8 +6247,7 @@ CHIP_ERROR TestClusterCluster::TestNestedStructListArgumentRequest(Callback::Can
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -6712,9 +6255,9 @@ exit:
 
 CHIP_ERROR TestClusterCluster::TestNotHandled(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6725,8 +6268,7 @@ CHIP_ERROR TestClusterCluster::TestNotHandled(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestNotHandled::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6741,19 +6283,17 @@ CHIP_ERROR TestClusterCluster::TestNotHandled(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestNullableOptionalRequest(Callback::Cancelable * onSuccessCallback,
-                                                           Callback::Cancelable * onFailureCallback, uint8_t arg1)
+CHIP_ERROR TestClusterCluster::TestNullableOptionalRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t arg1)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6761,12 +6301,10 @@ CHIP_ERROR TestClusterCluster::TestNullableOptionalRequest(Callback::Cancelable 
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestNullableOptionalRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestNullableOptionalRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6783,19 +6321,17 @@ CHIP_ERROR TestClusterCluster::TestNullableOptionalRequest(Callback::Cancelable 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestSimpleOptionalArgumentRequest(Callback::Cancelable * onSuccessCallback,
-                                                                 Callback::Cancelable * onFailureCallback, bool arg1)
+CHIP_ERROR TestClusterCluster::TestSimpleOptionalArgumentRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, bool arg1)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6803,12 +6339,10 @@ CHIP_ERROR TestClusterCluster::TestSimpleOptionalArgumentRequest(Callback::Cance
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestSimpleOptionalArgumentRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestSimpleOptionalArgumentRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6825,8 +6359,7 @@ CHIP_ERROR TestClusterCluster::TestSimpleOptionalArgumentRequest(Callback::Cance
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -6834,9 +6367,9 @@ exit:
 
 CHIP_ERROR TestClusterCluster::TestSpecific(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6847,8 +6380,7 @@ CHIP_ERROR TestClusterCluster::TestSpecific(Callback::Cancelable * onSuccessCall
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestSpecific::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6863,20 +6395,17 @@ CHIP_ERROR TestClusterCluster::TestSpecific(Callback::Cancelable * onSuccessCall
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestStructArgumentRequest(Callback::Cancelable * onSuccessCallback,
-                                                         Callback::Cancelable * onFailureCallback, uint8_t a, bool b, uint8_t c,
-                                                         chip::ByteSpan d, chip::CharSpan e, uint8_t f, float g, double h)
+CHIP_ERROR TestClusterCluster::TestStructArgumentRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t a, bool b, uint8_t c, chip::ByteSpan d, chip::CharSpan e, uint8_t f, float g, double h)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6884,12 +6413,10 @@ CHIP_ERROR TestClusterCluster::TestStructArgumentRequest(Callback::Cancelable * 
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         TestCluster::Commands::TestStructArgumentRequest::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestStructArgumentRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6920,19 +6447,17 @@ CHIP_ERROR TestClusterCluster::TestStructArgumentRequest(Callback::Cancelable * 
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TestUnknownCommand(Callback::Cancelable * onSuccessCallback,
-                                                  Callback::Cancelable * onFailureCallback)
+CHIP_ERROR TestClusterCluster::TestUnknownCommand(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6943,8 +6468,7 @@ CHIP_ERROR TestClusterCluster::TestUnknownCommand(Callback::Cancelable * onSucce
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TestUnknownCommand::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6959,19 +6483,17 @@ CHIP_ERROR TestClusterCluster::TestUnknownCommand(Callback::Cancelable * onSucce
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR TestClusterCluster::TimedInvokeRequest(Callback::Cancelable * onSuccessCallback,
-                                                  Callback::Cancelable * onFailureCallback)
+CHIP_ERROR TestClusterCluster::TimedInvokeRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -6982,8 +6504,7 @@ CHIP_ERROR TestClusterCluster::TimedInvokeRequest(Callback::Cancelable * onSucce
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, TestCluster::Commands::TimedInvokeRequest::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -6998,20 +6519,20 @@ CHIP_ERROR TestClusterCluster::TimedInvokeRequest(Callback::Cancelable * onSucce
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // Thermostat Cluster Commands
-CHIP_ERROR ThermostatCluster::ClearWeeklySchedule(Callback::Cancelable * onSuccessCallback,
-                                                  Callback::Cancelable * onFailureCallback)
+CHIP_ERROR ThermostatCluster::ClearWeeklySchedule(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7022,8 +6543,7 @@ CHIP_ERROR ThermostatCluster::ClearWeeklySchedule(Callback::Cancelable * onSucce
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Thermostat::Commands::ClearWeeklySchedule::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7038,8 +6558,7 @@ CHIP_ERROR ThermostatCluster::ClearWeeklySchedule(Callback::Cancelable * onSucce
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -7047,9 +6566,9 @@ exit:
 
 CHIP_ERROR ThermostatCluster::GetRelayStatusLog(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7060,8 +6579,7 @@ CHIP_ERROR ThermostatCluster::GetRelayStatusLog(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Thermostat::Commands::GetRelayStatusLog::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7076,19 +6594,17 @@ CHIP_ERROR ThermostatCluster::GetRelayStatusLog(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ThermostatCluster::GetWeeklySchedule(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint8_t daysToReturn, uint8_t modeToReturn)
+CHIP_ERROR ThermostatCluster::GetWeeklySchedule(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t daysToReturn, uint8_t modeToReturn)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7099,8 +6615,7 @@ CHIP_ERROR ThermostatCluster::GetWeeklySchedule(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Thermostat::Commands::GetWeeklySchedule::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7119,20 +6634,17 @@ CHIP_ERROR ThermostatCluster::GetWeeklySchedule(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ThermostatCluster::SetWeeklySchedule(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint8_t numberOfTransitionsForSequence, uint8_t dayOfWeekForSequence,
-                                                uint8_t modeForSequence, uint8_t payload)
+CHIP_ERROR ThermostatCluster::SetWeeklySchedule(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t numberOfTransitionsForSequence, uint8_t dayOfWeekForSequence, uint8_t modeForSequence, uint8_t payload)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7143,8 +6655,7 @@ CHIP_ERROR ThermostatCluster::SetWeeklySchedule(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Thermostat::Commands::SetWeeklySchedule::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7167,19 +6678,17 @@ CHIP_ERROR ThermostatCluster::SetWeeklySchedule(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR ThermostatCluster::SetpointRaiseLower(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                 uint8_t mode, int8_t amount)
+CHIP_ERROR ThermostatCluster::SetpointRaiseLower(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t mode, int8_t amount)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7190,8 +6699,7 @@ CHIP_ERROR ThermostatCluster::SetpointRaiseLower(Callback::Cancelable * onSucces
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, Thermostat::Commands::SetpointRaiseLower::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7210,22 +6718,23 @@ CHIP_ERROR ThermostatCluster::SetpointRaiseLower(Callback::Cancelable * onSucces
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // ThermostatUserInterfaceConfiguration Cluster Commands
 
+
 // ThreadNetworkDiagnostics Cluster Commands
-CHIP_ERROR ThreadNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * onSuccessCallback,
-                                                        Callback::Cancelable * onFailureCallback)
+CHIP_ERROR ThreadNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7233,12 +6742,10 @@ CHIP_ERROR ThreadNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * o
 
     VerifyOrReturnError(mDevice != nullptr, CHIP_ERROR_INCORRECT_STATE);
 
-    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId,
-                                         ThreadNetworkDiagnostics::Commands::ResetCounts::Id,
+    app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, ThreadNetworkDiagnostics::Commands::ResetCounts::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7253,26 +6760,29 @@ CHIP_ERROR ThreadNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * o
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // TimeFormatLocalization Cluster Commands
+
 
 // UserLabel Cluster Commands
 
+
 // WakeOnLan Cluster Commands
 
+
 // WiFiNetworkDiagnostics Cluster Commands
-CHIP_ERROR WiFiNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * onSuccessCallback,
-                                                      Callback::Cancelable * onFailureCallback)
+CHIP_ERROR WiFiNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7283,8 +6793,7 @@ CHIP_ERROR WiFiNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * onS
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, WiFiNetworkDiagnostics::Commands::ResetCounts::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7299,19 +6808,20 @@ CHIP_ERROR WiFiNetworkDiagnosticsCluster::ResetCounts(Callback::Cancelable * onS
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
+
+
 // WindowCovering Cluster Commands
 CHIP_ERROR WindowCoveringCluster::DownOrClose(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7322,8 +6832,7 @@ CHIP_ERROR WindowCoveringCluster::DownOrClose(Callback::Cancelable * onSuccessCa
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, WindowCovering::Commands::DownOrClose::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7338,20 +6847,17 @@ CHIP_ERROR WindowCoveringCluster::DownOrClose(Callback::Cancelable * onSuccessCa
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR WindowCoveringCluster::GoToLiftPercentage(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback, chip::Percent liftPercentageValue,
-                                                     chip::Percent100ths liftPercent100thsValue)
+CHIP_ERROR WindowCoveringCluster::GoToLiftPercentage(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::Percent liftPercentageValue, chip::Percent100ths liftPercent100thsValue)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7362,8 +6868,7 @@ CHIP_ERROR WindowCoveringCluster::GoToLiftPercentage(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, WindowCovering::Commands::GoToLiftPercentage::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7382,19 +6887,17 @@ CHIP_ERROR WindowCoveringCluster::GoToLiftPercentage(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR WindowCoveringCluster::GoToLiftValue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint16_t liftValue)
+CHIP_ERROR WindowCoveringCluster::GoToLiftValue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t liftValue)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7405,8 +6908,7 @@ CHIP_ERROR WindowCoveringCluster::GoToLiftValue(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, WindowCovering::Commands::GoToLiftValue::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7423,20 +6925,17 @@ CHIP_ERROR WindowCoveringCluster::GoToLiftValue(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR WindowCoveringCluster::GoToTiltPercentage(Callback::Cancelable * onSuccessCallback,
-                                                     Callback::Cancelable * onFailureCallback, chip::Percent tiltPercentageValue,
-                                                     chip::Percent100ths tiltPercent100thsValue)
+CHIP_ERROR WindowCoveringCluster::GoToTiltPercentage(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::Percent tiltPercentageValue, chip::Percent100ths tiltPercent100thsValue)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7447,8 +6946,7 @@ CHIP_ERROR WindowCoveringCluster::GoToTiltPercentage(Callback::Cancelable * onSu
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, WindowCovering::Commands::GoToTiltPercentage::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7467,19 +6965,17 @@ CHIP_ERROR WindowCoveringCluster::GoToTiltPercentage(Callback::Cancelable * onSu
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
 
-CHIP_ERROR WindowCoveringCluster::GoToTiltValue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                                uint16_t tiltValue)
+CHIP_ERROR WindowCoveringCluster::GoToTiltValue(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint16_t tiltValue)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7490,8 +6986,7 @@ CHIP_ERROR WindowCoveringCluster::GoToTiltValue(Callback::Cancelable * onSuccess
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, WindowCovering::Commands::GoToTiltValue::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7508,8 +7003,7 @@ CHIP_ERROR WindowCoveringCluster::GoToTiltValue(Callback::Cancelable * onSuccess
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -7517,9 +7011,9 @@ exit:
 
 CHIP_ERROR WindowCoveringCluster::StopMotion(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7530,8 +7024,7 @@ CHIP_ERROR WindowCoveringCluster::StopMotion(Callback::Cancelable * onSuccessCal
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, WindowCovering::Commands::StopMotion::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7546,8 +7039,7 @@ CHIP_ERROR WindowCoveringCluster::StopMotion(Callback::Cancelable * onSuccessCal
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
@@ -7555,9 +7047,9 @@ exit:
 
 CHIP_ERROR WindowCoveringCluster::UpOrOpen(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    CHIP_ERROR err          = CHIP_NO_ERROR;
-    TLV::TLVWriter * writer = nullptr;
-    uint8_t argSeqNumber    = 0;
+    CHIP_ERROR err = CHIP_NO_ERROR;
+    TLV::TLVWriter * writer     = nullptr;
+    uint8_t argSeqNumber        = 0;
 
     // Used when encoding non-empty command. Suppress error message when encoding empty commands.
     (void) writer;
@@ -7568,8 +7060,7 @@ CHIP_ERROR WindowCoveringCluster::UpOrOpen(Callback::Cancelable * onSuccessCallb
     app::CommandPathParams cmdParams = { mEndpoint, /* group id */ 0, mClusterId, WindowCovering::Commands::UpOrOpen::Id,
                                          (app::CommandPathFlags::kEndpointIdValid) };
 
-    CommandSenderHandle sender(
-        Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
+    CommandSenderHandle sender(Platform::New<app::CommandSender>(mDevice->GetInteractionModelDelegate(), mDevice->GetExchangeManager()));
 
     VerifyOrReturnError(sender != nullptr, CHIP_ERROR_NO_MEMORY);
 
@@ -7584,12 +7075,13 @@ CHIP_ERROR WindowCoveringCluster::UpOrOpen(Callback::Cancelable * onSuccessCallb
 
     SuccessOrExit(err = mDevice->SendCommands(sender.get(), mTimeout));
 
-    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object
-    // now.
+    // We have successfully sent the command, and the callback handler will be responsible to free the object, release the object now.
     sender.release();
 exit:
     return err;
 }
+
+
 
 } // namespace Controller
 } // namespace chip

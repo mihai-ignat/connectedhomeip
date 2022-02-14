@@ -21,18 +21,5 @@
 
 #include <app-common/zap-generated/callbacks/PluginCallbacks.h>
 
-#define MATTER_PLUGINS_INIT                                                                                                        \
-    MatterBasicPluginServerInitCallback();                                                                                         \
-    MatterColorControlPluginServerInitCallback();                                                                                  \
-    MatterDescriptorPluginServerInitCallback();                                                                                    \
-    MatterGeneralCommissioningPluginServerInitCallback();                                                                          \
-    MatterGroupsPluginServerInitCallback();                                                                                        \
-    MatterIdentifyPluginServerInitCallback();                                                                                      \
-    MatterLevelControlPluginServerInitCallback();                                                                                  \
-    MatterNetworkCommissioningPluginServerInitCallback();                                                                          \
-    MatterOnOffPluginServerInitCallback();                                                                                         \
-    MatterOperationalCredentialsPluginClientInitCallback();                                                                        \
-    MatterOperationalCredentialsPluginServerInitCallback();                                                                        \
-    MatterScenesPluginServerInitCallback();                                                                                        \
-    MatterTemperatureMeasurementPluginClientInitCallback();                                                                        \
-    MatterTemperatureMeasurementPluginServerInitCallback();
+#define MATTER_PLUGINS_INIT MatterBasicPluginServerInitCallback(); MatterColorControlPluginServerInitCallback(); MatterDescriptorPluginServerInitCallback(); MatterGeneralCommissioningPluginServerInitCallback(); MatterGroupsPluginServerInitCallback(); MatterIdentifyPluginServerInitCallback(); MatterLevelControlPluginServerInitCallback(); MatterNetworkCommissioningPluginServerInitCallback(); MatterOnOffPluginServerInitCallback(); MatterOperationalCredentialsPluginClientInitCallback(); MatterOperationalCredentialsPluginServerInitCallback(); MatterScenesPluginServerInitCallback(); MatterTemperatureMeasurementPluginClientInitCallback(); MatterTemperatureMeasurementPluginServerInitCallback(); 
+

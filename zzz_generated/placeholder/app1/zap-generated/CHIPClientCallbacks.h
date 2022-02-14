@@ -19,9 +19,9 @@
 
 #pragma once
 
+#include <app/InteractionModelEngine.h>
 #include <app-common/zap-generated/af-structs.h>
 #include <app-common/zap-generated/cluster-objects.h>
-#include <app/InteractionModelEngine.h>
 #include <app/data-model/DecodableList.h>
 #include <app/util/af-enums.h>
 #include <app/util/attribute-filter.h>
@@ -37,15 +37,7 @@
 // Cluster Specific Response Callbacks
 
 // List specific responses
-void OperationalCredentialsClusterFabricsListListAttributeFilter(chip::TLV::TLVReader * data,
-                                                                 chip::Callback::Cancelable * onSuccessCallback,
-                                                                 chip::Callback::Cancelable * onFailureCallback);
-typedef void (*OperationalCredentialsFabricsListListAttributeCallback)(
-    void * context,
-    const chip::app::DataModel::DecodableList<
-        chip::app::Clusters::OperationalCredentials::Structs::FabricDescriptor::DecodableType> & data);
-void OperationalCredentialsClusterTrustedRootCertificatesListAttributeFilter(chip::TLV::TLVReader * data,
-                                                                             chip::Callback::Cancelable * onSuccessCallback,
-                                                                             chip::Callback::Cancelable * onFailureCallback);
-typedef void (*OperationalCredentialsTrustedRootCertificatesListAttributeCallback)(
-    void * context, const chip::app::DataModel::DecodableList<chip::ByteSpan> & data);
+void OperationalCredentialsClusterFabricsListListAttributeFilter(chip::TLV::TLVReader * data, chip::Callback::Cancelable * onSuccessCallback, chip::Callback::Cancelable * onFailureCallback);
+typedef void (*OperationalCredentialsFabricsListListAttributeCallback)(void * context, const chip::app::DataModel::DecodableList<chip::app::Clusters::OperationalCredentials::Structs::FabricDescriptor::DecodableType> & data);
+void OperationalCredentialsClusterTrustedRootCertificatesListAttributeFilter(chip::TLV::TLVReader * data, chip::Callback::Cancelable * onSuccessCallback, chip::Callback::Cancelable * onFailureCallback);
+typedef void (*OperationalCredentialsTrustedRootCertificatesListAttributeCallback)(void * context, const chip::app::DataModel::DecodableList<chip::ByteSpan> & data);

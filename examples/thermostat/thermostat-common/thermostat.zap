@@ -85,7 +85,7 @@
           "mfgCode": null,
           "define": "IDENTIFY_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [
             {
               "name": "IdentifyQueryResponse",
@@ -917,6 +917,26 @@
           ]
         },
         {
+          "name": "Access Control",
+          "code": 31,
+          "mfgCode": null,
+          "define": "ACCESS_CONTROL_CLUSTER",
+          "side": "client",
+          "enabled": 0,
+          "commands": [],
+          "attributes": []
+        },
+        {
+          "name": "Access Control",
+          "code": 31,
+          "mfgCode": null,
+          "define": "ACCESS_CONTROL_CLUSTER",
+          "side": "server",
+          "enabled": 1,
+          "commands": [],
+          "attributes": []
+        },
+        {
           "name": "Basic",
           "code": 40,
           "mfgCode": null,
@@ -1268,7 +1288,7 @@
           "mfgCode": null,
           "define": "OTA_PROVIDER_CLUSTER",
           "side": "client",
-          "enabled": 0,
+          "enabled": 1,
           "commands": [
             {
               "name": "QueryImage",
@@ -1319,7 +1339,7 @@
           "mfgCode": null,
           "define": "OTA_PROVIDER_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [
             {
               "name": "QueryImageResponse",
@@ -1355,6 +1375,26 @@
               "reportableChange": 0
             }
           ]
+        },
+        {
+          "name": "OTA Software Update Requestor",
+          "code": 42,
+          "mfgCode": null,
+          "define": "OTA_REQUESTOR_CLUSTER",
+          "side": "client",
+          "enabled": 0,
+          "commands": [],
+          "attributes": []
+        },
+        {
+          "name": "OTA Software Update Requestor",
+          "code": 42,
+          "mfgCode": null,
+          "define": "OTA_REQUESTOR_CLUSTER",
+          "side": "server",
+          "enabled": 1,
+          "commands": [],
+          "attributes": []
         },
         {
           "name": "Localization Configuration",
@@ -1457,7 +1497,7 @@
               "reportableChange": 0
             },
             {
-              "name": "CalendarType",
+              "name": "ActiveCalendarType",
               "code": 1,
               "mfgCode": null,
               "side": "server",
@@ -1946,8 +1986,18 @@
           "code": 50,
           "mfgCode": null,
           "define": "DIAGNOSTIC_LOGS_CLUSTER",
+          "side": "client",
+          "enabled": 0,
+          "commands": [],
+          "attributes": []
+        },
+        {
+          "name": "Diagnostic Logs",
+          "code": 50,
+          "mfgCode": null,
+          "define": "DIAGNOSTIC_LOGS_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [
             {
               "name": "RetrieveLogsRequest",
@@ -2173,7 +2223,7 @@
           "mfgCode": null,
           "define": "SOFTWARE_DIAGNOSTICS_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [],
           "attributes": [
             {
@@ -3286,7 +3336,7 @@
           "mfgCode": null,
           "define": "WIFI_NETWORK_DIAGNOSTICS_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [],
           "attributes": [
             {
@@ -3557,7 +3607,7 @@
           "mfgCode": null,
           "define": "ETHERNET_NETWORK_DIAGNOSTICS_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [],
           "attributes": [
             {
@@ -3726,6 +3776,26 @@
               "reportableChange": 0
             }
           ]
+        },
+        {
+          "name": "Time Synchronization",
+          "code": 56,
+          "mfgCode": null,
+          "define": "TIME_SYNCHRONIZATION_CLUSTER",
+          "side": "client",
+          "enabled": 0,
+          "commands": [],
+          "attributes": []
+        },
+        {
+          "name": "Time Synchronization",
+          "code": 56,
+          "mfgCode": null,
+          "define": "TIME_SYNCHRONIZATION_CLUSTER",
+          "side": "server",
+          "enabled": 1,
+          "commands": [],
+          "attributes": []
         },
         {
           "name": "Switch",
@@ -4292,7 +4362,7 @@
           "mfgCode": null,
           "define": "FIXED_LABEL_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [],
           "attributes": [
             {
@@ -4343,7 +4413,7 @@
           "mfgCode": null,
           "define": "USER_LABEL_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [],
           "attributes": [
             {
@@ -7009,7 +7079,7 @@
           "mfgCode": null,
           "define": "GROUPS_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [
             {
               "name": "AddGroupResponse",
@@ -7166,7 +7236,7 @@
           "mfgCode": null,
           "define": "SCENES_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [
             {
               "name": "AddSceneResponse",
@@ -8123,7 +8193,7 @@
           "mfgCode": null,
           "define": "BASIC_CLUSTER",
           "side": "server",
-          "enabled": 1,
+          "enabled": 0,
           "commands": [],
           "attributes": [
             {
@@ -8437,6 +8507,26 @@
               "reportableChange": 0
             }
           ]
+        },
+        {
+          "name": "Power Source",
+          "code": 47,
+          "mfgCode": null,
+          "define": "POWER_SOURCE_CLUSTER",
+          "side": "client",
+          "enabled": 0,
+          "commands": [],
+          "attributes": []
+        },
+        {
+          "name": "Power Source",
+          "code": 47,
+          "mfgCode": null,
+          "define": "POWER_SOURCE_CLUSTER",
+          "side": "server",
+          "enabled": 1,
+          "commands": [],
+          "attributes": []
         },
         {
           "name": "General Commissioning",
@@ -10946,6 +11036,26 @@
           ]
         },
         {
+          "name": "Thermostat User Interface Configuration",
+          "code": 516,
+          "mfgCode": null,
+          "define": "THERMOSTAT_UI_CONFIG_CLUSTER",
+          "side": "client",
+          "enabled": 0,
+          "commands": [],
+          "attributes": []
+        },
+        {
+          "name": "Thermostat User Interface Configuration",
+          "code": 516,
+          "mfgCode": null,
+          "define": "THERMOSTAT_UI_CONFIG_CLUSTER",
+          "side": "server",
+          "enabled": 1,
+          "commands": [],
+          "attributes": []
+        },
+        {
           "name": "Color Control",
           "code": 768,
           "mfgCode": null,
@@ -11892,7 +12002,7 @@
           "mfgCode": null,
           "define": "TEMP_MEASUREMENT_CLUSTER",
           "side": "server",
-          "enabled": 0,
+          "enabled": 1,
           "commands": [],
           "attributes": [
             {
@@ -12243,7 +12353,7 @@
           "mfgCode": null,
           "define": "RELATIVE_HUMIDITY_MEASUREMENT_CLUSTER",
           "side": "server",
-          "enabled": 0,
+          "enabled": 1,
           "commands": [],
           "attributes": [
             {
@@ -12322,6 +12432,26 @@
               "reportableChange": 0
             }
           ]
+        },
+        {
+          "name": "Occupancy Sensing",
+          "code": 1030,
+          "mfgCode": null,
+          "define": "OCCUPANCY_SENSING_CLUSTER",
+          "side": "client",
+          "enabled": 0,
+          "commands": [],
+          "attributes": []
+        },
+        {
+          "name": "Occupancy Sensing",
+          "code": 1030,
+          "mfgCode": null,
+          "define": "OCCUPANCY_SENSING_CLUSTER",
+          "side": "server",
+          "enabled": 1,
+          "commands": [],
+          "attributes": []
         },
         {
           "name": "IAS Zone",
@@ -13950,5 +14080,6 @@
       "endpointVersion": 1,
       "deviceIdentifier": 769
     }
-  ]
+  ],
+  "log": []
 }

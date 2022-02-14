@@ -22,10 +22,10 @@
 #include <cinttypes>
 
 #include <app-common/zap-generated/enums.h>
-#include <app/util/CHIPDeviceCallbacksMgr.h>
-#include <app/util/af-enums.h>
 #include <app/util/af.h>
+#include <app/util/af-enums.h>
 #include <app/util/basic-types.h>
+#include <app/util/CHIPDeviceCallbacksMgr.h>
 #include <lib/core/CHIPEncoding.h>
 #include <lib/support/SafeInt.h>
 #include <lib/support/TypeTraits.h>
@@ -35,10 +35,11 @@ using namespace ::chip;
 using namespace ::chip::app::DataModel;
 
 namespace {
-[[maybe_unused]] constexpr uint16_t kByteSpanSizeLengthInBytes = 2;
+  [[maybe_unused]] constexpr uint16_t kByteSpanSizeLengthInBytes = 2;
 } // namespace
 
-#define CHECK_STATUS_WITH_RETVAL(error, retval)                                                                                    \
+
+#define CHECK_STATUS_WITH_RETVAL(error, retval) \
     if (CHIP_NO_ERROR != error)                                                                                                    \
     {                                                                                                                              \
         ChipLogError(Zcl, "CHECK_STATUS %s", ErrorStr(error));                                                                     \
@@ -54,8 +55,8 @@ namespace {
 #define CHECK_STATUS(error) CHECK_STATUS_WITH_RETVAL(error, true)
 #define CHECK_STATUS_VOID(error) CHECK_STATUS_WITH_RETVAL(error, )
 
-#define CHECK_MESSAGE_LENGTH_WITH_RETVAL(value, retval)                                                                            \
-    if (!CanCastTo<uint16_t>(value))                                                                                               \
+#define CHECK_MESSAGE_LENGTH_WITH_RETVAL(value, retval)                                                                                                \
+    if (!CanCastTo<uint16_t>(value))                                                                                         \
     {                                                                                                                              \
         ChipLogError(Zcl, "CHECK_MESSAGE_LENGTH expects a uint16_t value, got: %d", value);                                        \
         if (onFailureCallback != nullptr)                                                                                          \
@@ -106,6 +107,7 @@ namespace {
         return true;                                                                                                               \
     }
 
+
 #define GET_CLUSTER_RESPONSE_CALLBACKS(name)                                                                                       \
     Callback::Cancelable * onSuccessCallback = nullptr;                                                                            \
     Callback::Cancelable * onFailureCallback = nullptr;                                                                            \
@@ -128,35 +130,30 @@ namespace {
         return true;                                                                                                               \
     }
 
+
+
 // Singleton instance of the callbacks manager
 app::CHIPDeviceCallbacksMgr & gCallbacks = app::CHIPDeviceCallbacksMgr::GetInstance();
 
-void GeneralCommissioningClusterBasicCommissioningInfoListListAttributeFilter(TLV::TLVReader * tlvData,
-                                                                              Callback::Cancelable * onSuccessCallback,
-                                                                              Callback::Cancelable * onFailureCallback)
+void GeneralCommissioningClusterBasicCommissioningInfoListListAttributeFilter(TLV::TLVReader * tlvData, Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
-    chip::app::DataModel::DecodableList<
-        chip::app::Clusters::GeneralCommissioning::Structs::BasicCommissioningInfoType::DecodableType>
-        list;
+    chip::app::DataModel::DecodableList<chip::app::Clusters::GeneralCommissioning::Structs::BasicCommissioningInfoType::DecodableType> list;
     CHIP_ERROR err = Decode(*tlvData, list);
     if (err != CHIP_NO_ERROR)
     {
         if (onFailureCallback != nullptr)
         {
-            Callback::Callback<DefaultFailureCallback> * cb =
-                Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
+            Callback::Callback<DefaultFailureCallback> * cb = Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
             cb->mCall(cb->mContext, EMBER_ZCL_STATUS_INVALID_VALUE);
         }
         return;
     }
 
-    Callback::Callback<GeneralCommissioningBasicCommissioningInfoListListAttributeCallback> * cb =
-        Callback::Callback<GeneralCommissioningBasicCommissioningInfoListListAttributeCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<GeneralCommissioningBasicCommissioningInfoListListAttributeCallback> * cb = Callback::Callback<GeneralCommissioningBasicCommissioningInfoListListAttributeCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, list);
 }
 
-void NetworkCommissioningClusterNetworksListAttributeFilter(TLV::TLVReader * tlvData, Callback::Cancelable * onSuccessCallback,
-                                                            Callback::Cancelable * onFailureCallback)
+void NetworkCommissioningClusterNetworksListAttributeFilter(TLV::TLVReader * tlvData, Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
     chip::app::DataModel::DecodableList<chip::app::Clusters::NetworkCommissioning::Structs::NetworkInfo::DecodableType> list;
     CHIP_ERROR err = Decode(*tlvData, list);
@@ -164,20 +161,17 @@ void NetworkCommissioningClusterNetworksListAttributeFilter(TLV::TLVReader * tlv
     {
         if (onFailureCallback != nullptr)
         {
-            Callback::Callback<DefaultFailureCallback> * cb =
-                Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
+            Callback::Callback<DefaultFailureCallback> * cb = Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
             cb->mCall(cb->mContext, EMBER_ZCL_STATUS_INVALID_VALUE);
         }
         return;
     }
 
-    Callback::Callback<NetworkCommissioningNetworksListAttributeCallback> * cb =
-        Callback::Callback<NetworkCommissioningNetworksListAttributeCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<NetworkCommissioningNetworksListAttributeCallback> * cb = Callback::Callback<NetworkCommissioningNetworksListAttributeCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, list);
 }
 
-void OperationalCredentialsClusterNOCsListAttributeFilter(TLV::TLVReader * tlvData, Callback::Cancelable * onSuccessCallback,
-                                                          Callback::Cancelable * onFailureCallback)
+void OperationalCredentialsClusterNOCsListAttributeFilter(TLV::TLVReader * tlvData, Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
     chip::app::DataModel::DecodableList<chip::app::Clusters::OperationalCredentials::Structs::NOCStruct::DecodableType> list;
     CHIP_ERROR err = Decode(*tlvData, list);
@@ -185,20 +179,17 @@ void OperationalCredentialsClusterNOCsListAttributeFilter(TLV::TLVReader * tlvDa
     {
         if (onFailureCallback != nullptr)
         {
-            Callback::Callback<DefaultFailureCallback> * cb =
-                Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
+            Callback::Callback<DefaultFailureCallback> * cb = Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
             cb->mCall(cb->mContext, EMBER_ZCL_STATUS_INVALID_VALUE);
         }
         return;
     }
 
-    Callback::Callback<OperationalCredentialsNOCsListAttributeCallback> * cb =
-        Callback::Callback<OperationalCredentialsNOCsListAttributeCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<OperationalCredentialsNOCsListAttributeCallback> * cb = Callback::Callback<OperationalCredentialsNOCsListAttributeCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, list);
 }
 
-void OperationalCredentialsClusterFabricsListListAttributeFilter(TLV::TLVReader * tlvData, Callback::Cancelable * onSuccessCallback,
-                                                                 Callback::Cancelable * onFailureCallback)
+void OperationalCredentialsClusterFabricsListListAttributeFilter(TLV::TLVReader * tlvData, Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
     chip::app::DataModel::DecodableList<chip::app::Clusters::OperationalCredentials::Structs::FabricDescriptor::DecodableType> list;
     CHIP_ERROR err = Decode(*tlvData, list);
@@ -206,21 +197,17 @@ void OperationalCredentialsClusterFabricsListListAttributeFilter(TLV::TLVReader 
     {
         if (onFailureCallback != nullptr)
         {
-            Callback::Callback<DefaultFailureCallback> * cb =
-                Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
+            Callback::Callback<DefaultFailureCallback> * cb = Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
             cb->mCall(cb->mContext, EMBER_ZCL_STATUS_INVALID_VALUE);
         }
         return;
     }
 
-    Callback::Callback<OperationalCredentialsFabricsListListAttributeCallback> * cb =
-        Callback::Callback<OperationalCredentialsFabricsListListAttributeCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<OperationalCredentialsFabricsListListAttributeCallback> * cb = Callback::Callback<OperationalCredentialsFabricsListListAttributeCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, list);
 }
 
-void OperationalCredentialsClusterTrustedRootCertificatesListAttributeFilter(TLV::TLVReader * tlvData,
-                                                                             Callback::Cancelable * onSuccessCallback,
-                                                                             Callback::Cancelable * onFailureCallback)
+void OperationalCredentialsClusterTrustedRootCertificatesListAttributeFilter(TLV::TLVReader * tlvData, Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback)
 {
     chip::app::DataModel::DecodableList<chip::ByteSpan> list;
     CHIP_ERROR err = Decode(*tlvData, list);
@@ -228,116 +215,99 @@ void OperationalCredentialsClusterTrustedRootCertificatesListAttributeFilter(TLV
     {
         if (onFailureCallback != nullptr)
         {
-            Callback::Callback<DefaultFailureCallback> * cb =
-                Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
+            Callback::Callback<DefaultFailureCallback> * cb = Callback::Callback<DefaultFailureCallback>::FromCancelable(onFailureCallback);
             cb->mCall(cb->mContext, EMBER_ZCL_STATUS_INVALID_VALUE);
         }
         return;
     }
 
-    Callback::Callback<OperationalCredentialsTrustedRootCertificatesListAttributeCallback> * cb =
-        Callback::Callback<OperationalCredentialsTrustedRootCertificatesListAttributeCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<OperationalCredentialsTrustedRootCertificatesListAttributeCallback> * cb = Callback::Callback<OperationalCredentialsTrustedRootCertificatesListAttributeCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, list);
 }
 
-bool emberAfGeneralCommissioningClusterArmFailSafeResponseCallback(EndpointId endpoint, app::CommandSender * commandObj,
-                                                                   uint8_t errorCode, chip::CharSpan debugText)
+
+bool emberAfGeneralCommissioningClusterArmFailSafeResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, uint8_t errorCode, chip::CharSpan debugText)
 {
     ChipLogProgress(Zcl, "ArmFailSafeResponse:");
-    ChipLogProgress(Zcl, "  errorCode: %" PRIu8 "", errorCode);
-    ChipLogProgress(Zcl, "  debugText: %.*s", static_cast<int>(debugText.size()), debugText.data());
+      ChipLogProgress(Zcl, "  errorCode: %" PRIu8 "", errorCode);
+        ChipLogProgress(Zcl, "  debugText: %.*s", static_cast<int>(debugText.size()), debugText.data());
 
     GET_CLUSTER_RESPONSE_CALLBACKS("GeneralCommissioningClusterArmFailSafeResponseCallback");
 
-    Callback::Callback<GeneralCommissioningClusterArmFailSafeResponseCallback> * cb =
-        Callback::Callback<GeneralCommissioningClusterArmFailSafeResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<GeneralCommissioningClusterArmFailSafeResponseCallback> * cb = Callback::Callback<GeneralCommissioningClusterArmFailSafeResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, errorCode, debugText);
     return true;
 }
 
-bool emberAfGeneralCommissioningClusterCommissioningCompleteResponseCallback(EndpointId endpoint, app::CommandSender * commandObj,
-                                                                             uint8_t errorCode, chip::CharSpan debugText)
+bool emberAfGeneralCommissioningClusterCommissioningCompleteResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, uint8_t errorCode, chip::CharSpan debugText)
 {
     ChipLogProgress(Zcl, "CommissioningCompleteResponse:");
-    ChipLogProgress(Zcl, "  errorCode: %" PRIu8 "", errorCode);
-    ChipLogProgress(Zcl, "  debugText: %.*s", static_cast<int>(debugText.size()), debugText.data());
+      ChipLogProgress(Zcl, "  errorCode: %" PRIu8 "", errorCode);
+        ChipLogProgress(Zcl, "  debugText: %.*s", static_cast<int>(debugText.size()), debugText.data());
 
     GET_CLUSTER_RESPONSE_CALLBACKS("GeneralCommissioningClusterCommissioningCompleteResponseCallback");
 
-    Callback::Callback<GeneralCommissioningClusterCommissioningCompleteResponseCallback> * cb =
-        Callback::Callback<GeneralCommissioningClusterCommissioningCompleteResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<GeneralCommissioningClusterCommissioningCompleteResponseCallback> * cb = Callback::Callback<GeneralCommissioningClusterCommissioningCompleteResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, errorCode, debugText);
     return true;
 }
 
-bool emberAfGeneralCommissioningClusterSetRegulatoryConfigResponseCallback(EndpointId endpoint, app::CommandSender * commandObj,
-                                                                           uint8_t errorCode, chip::CharSpan debugText)
+bool emberAfGeneralCommissioningClusterSetRegulatoryConfigResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, uint8_t errorCode, chip::CharSpan debugText)
 {
     ChipLogProgress(Zcl, "SetRegulatoryConfigResponse:");
-    ChipLogProgress(Zcl, "  errorCode: %" PRIu8 "", errorCode);
-    ChipLogProgress(Zcl, "  debugText: %.*s", static_cast<int>(debugText.size()), debugText.data());
+      ChipLogProgress(Zcl, "  errorCode: %" PRIu8 "", errorCode);
+        ChipLogProgress(Zcl, "  debugText: %.*s", static_cast<int>(debugText.size()), debugText.data());
 
     GET_CLUSTER_RESPONSE_CALLBACKS("GeneralCommissioningClusterSetRegulatoryConfigResponseCallback");
 
-    Callback::Callback<GeneralCommissioningClusterSetRegulatoryConfigResponseCallback> * cb =
-        Callback::Callback<GeneralCommissioningClusterSetRegulatoryConfigResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<GeneralCommissioningClusterSetRegulatoryConfigResponseCallback> * cb = Callback::Callback<GeneralCommissioningClusterSetRegulatoryConfigResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, errorCode, debugText);
     return true;
 }
 
-bool emberAfNetworkCommissioningClusterConnectNetworkResponseCallback(EndpointId endpoint, app::CommandSender * commandObj,
-                                                                      uint8_t NetworkingStatus, chip::CharSpan DebugText,
-                                                                      int32_t ErrorValue)
+bool emberAfNetworkCommissioningClusterConnectNetworkResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, uint8_t NetworkingStatus, chip::CharSpan DebugText, int32_t ErrorValue)
 {
     ChipLogProgress(Zcl, "ConnectNetworkResponse:");
-    ChipLogProgress(Zcl, "  NetworkingStatus: %" PRIu8 "", NetworkingStatus);
-    ChipLogProgress(Zcl, "  DebugText: %.*s", static_cast<int>(DebugText.size()), DebugText.data());
-    ChipLogProgress(Zcl, "  ErrorValue: %" PRId32 "", ErrorValue);
-
+      ChipLogProgress(Zcl, "  NetworkingStatus: %" PRIu8 "", NetworkingStatus);
+        ChipLogProgress(Zcl, "  DebugText: %.*s", static_cast<int>(DebugText.size()), DebugText.data());
+      ChipLogProgress(Zcl, "  ErrorValue: %" PRId32 "", ErrorValue);
+    
     GET_CLUSTER_RESPONSE_CALLBACKS("NetworkCommissioningClusterConnectNetworkResponseCallback");
 
-    Callback::Callback<NetworkCommissioningClusterConnectNetworkResponseCallback> * cb =
-        Callback::Callback<NetworkCommissioningClusterConnectNetworkResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<NetworkCommissioningClusterConnectNetworkResponseCallback> * cb = Callback::Callback<NetworkCommissioningClusterConnectNetworkResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, NetworkingStatus, DebugText, ErrorValue);
     return true;
 }
 
-bool emberAfNetworkCommissioningClusterNetworkConfigResponseCallback(EndpointId endpoint, app::CommandSender * commandObj,
-                                                                     uint8_t NetworkingStatus, chip::CharSpan DebugText)
+bool emberAfNetworkCommissioningClusterNetworkConfigResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, uint8_t NetworkingStatus, chip::CharSpan DebugText)
 {
     ChipLogProgress(Zcl, "NetworkConfigResponse:");
-    ChipLogProgress(Zcl, "  NetworkingStatus: %" PRIu8 "", NetworkingStatus);
-    ChipLogProgress(Zcl, "  DebugText: %.*s", static_cast<int>(DebugText.size()), DebugText.data());
+      ChipLogProgress(Zcl, "  NetworkingStatus: %" PRIu8 "", NetworkingStatus);
+        ChipLogProgress(Zcl, "  DebugText: %.*s", static_cast<int>(DebugText.size()), DebugText.data());
 
     GET_CLUSTER_RESPONSE_CALLBACKS("NetworkCommissioningClusterNetworkConfigResponseCallback");
 
-    Callback::Callback<NetworkCommissioningClusterNetworkConfigResponseCallback> * cb =
-        Callback::Callback<NetworkCommissioningClusterNetworkConfigResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<NetworkCommissioningClusterNetworkConfigResponseCallback> * cb = Callback::Callback<NetworkCommissioningClusterNetworkConfigResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, NetworkingStatus, DebugText);
     return true;
 }
 
-bool emberAfNetworkCommissioningClusterScanNetworksResponseCallback(
-    EndpointId endpoint, app::CommandSender * commandObj, uint8_t NetworkingStatus, chip::CharSpan DebugText,
-    /* TYPE WARNING: array array defaults to */ uint8_t * WiFiScanResults,
-    /* TYPE WARNING: array array defaults to */ uint8_t * ThreadScanResults)
+bool emberAfNetworkCommissioningClusterScanNetworksResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, uint8_t NetworkingStatus, chip::CharSpan DebugText, /* TYPE WARNING: array array defaults to */ uint8_t *  WiFiScanResults, /* TYPE WARNING: array array defaults to */ uint8_t *  ThreadScanResults)
 {
     ChipLogProgress(Zcl, "ScanNetworksResponse:");
-    ChipLogProgress(Zcl, "  NetworkingStatus: %" PRIu8 "", NetworkingStatus);
-    ChipLogProgress(Zcl, "  DebugText: %.*s", static_cast<int>(DebugText.size()), DebugText.data());
+      ChipLogProgress(Zcl, "  NetworkingStatus: %" PRIu8 "", NetworkingStatus);
+        ChipLogProgress(Zcl, "  DebugText: %.*s", static_cast<int>(DebugText.size()), DebugText.data());
     ChipLogProgress(Zcl, "  WiFiScanResults: %p", WiFiScanResults);
     ChipLogProgress(Zcl, "  ThreadScanResults: %p", ThreadScanResults);
 
     GET_CLUSTER_RESPONSE_CALLBACKS("NetworkCommissioningClusterScanNetworksResponseCallback");
 
-    Callback::Callback<NetworkCommissioningClusterScanNetworksResponseCallback> * cb =
-        Callback::Callback<NetworkCommissioningClusterScanNetworksResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<NetworkCommissioningClusterScanNetworksResponseCallback> * cb = Callback::Callback<NetworkCommissioningClusterScanNetworksResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, NetworkingStatus, DebugText, WiFiScanResults, ThreadScanResults);
     return true;
 }
 
-bool emberAfOperationalCredentialsClusterAttestationResponseCallback(EndpointId endpoint, app::CommandSender * commandObj,
-                                                                     chip::ByteSpan AttestationElements, chip::ByteSpan Signature)
+bool emberAfOperationalCredentialsClusterAttestationResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, chip::ByteSpan AttestationElements, chip::ByteSpan Signature)
 {
     ChipLogProgress(Zcl, "AttestationResponse:");
     ChipLogProgress(Zcl, "  AttestationElements: %zu", AttestationElements.size());
@@ -345,44 +315,38 @@ bool emberAfOperationalCredentialsClusterAttestationResponseCallback(EndpointId 
 
     GET_CLUSTER_RESPONSE_CALLBACKS("OperationalCredentialsClusterAttestationResponseCallback");
 
-    Callback::Callback<OperationalCredentialsClusterAttestationResponseCallback> * cb =
-        Callback::Callback<OperationalCredentialsClusterAttestationResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<OperationalCredentialsClusterAttestationResponseCallback> * cb = Callback::Callback<OperationalCredentialsClusterAttestationResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, AttestationElements, Signature);
     return true;
 }
 
-bool emberAfOperationalCredentialsClusterCertificateChainResponseCallback(EndpointId endpoint, app::CommandSender * commandObj,
-                                                                          chip::ByteSpan Certificate)
+bool emberAfOperationalCredentialsClusterCertificateChainResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, chip::ByteSpan Certificate)
 {
     ChipLogProgress(Zcl, "CertificateChainResponse:");
     ChipLogProgress(Zcl, "  Certificate: %zu", Certificate.size());
 
     GET_CLUSTER_RESPONSE_CALLBACKS("OperationalCredentialsClusterCertificateChainResponseCallback");
 
-    Callback::Callback<OperationalCredentialsClusterCertificateChainResponseCallback> * cb =
-        Callback::Callback<OperationalCredentialsClusterCertificateChainResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<OperationalCredentialsClusterCertificateChainResponseCallback> * cb = Callback::Callback<OperationalCredentialsClusterCertificateChainResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, Certificate);
     return true;
 }
 
-bool emberAfOperationalCredentialsClusterNOCResponseCallback(EndpointId endpoint, app::CommandSender * commandObj,
-                                                             uint8_t StatusCode, uint8_t FabricIndex, chip::CharSpan DebugText)
+bool emberAfOperationalCredentialsClusterNOCResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, uint8_t StatusCode, uint8_t FabricIndex, chip::CharSpan DebugText)
 {
     ChipLogProgress(Zcl, "NOCResponse:");
-    ChipLogProgress(Zcl, "  StatusCode: %" PRIu8 "", StatusCode);
-    ChipLogProgress(Zcl, "  FabricIndex: %" PRIu8 "", FabricIndex);
-    ChipLogProgress(Zcl, "  DebugText: %.*s", static_cast<int>(DebugText.size()), DebugText.data());
+      ChipLogProgress(Zcl, "  StatusCode: %" PRIu8 "", StatusCode);
+          ChipLogProgress(Zcl, "  FabricIndex: %" PRIu8 "", FabricIndex);
+        ChipLogProgress(Zcl, "  DebugText: %.*s", static_cast<int>(DebugText.size()), DebugText.data());
 
     GET_CLUSTER_RESPONSE_CALLBACKS("OperationalCredentialsClusterNOCResponseCallback");
 
-    Callback::Callback<OperationalCredentialsClusterNOCResponseCallback> * cb =
-        Callback::Callback<OperationalCredentialsClusterNOCResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<OperationalCredentialsClusterNOCResponseCallback> * cb = Callback::Callback<OperationalCredentialsClusterNOCResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, StatusCode, FabricIndex, DebugText);
     return true;
 }
 
-bool emberAfOperationalCredentialsClusterOpCSRResponseCallback(EndpointId endpoint, app::CommandSender * commandObj,
-                                                               chip::ByteSpan NOCSRElements, chip::ByteSpan AttestationSignature)
+bool emberAfOperationalCredentialsClusterOpCSRResponseCallback(EndpointId endpoint, app::CommandSender * commandObj, chip::ByteSpan NOCSRElements, chip::ByteSpan AttestationSignature)
 {
     ChipLogProgress(Zcl, "OpCSRResponse:");
     ChipLogProgress(Zcl, "  NOCSRElements: %zu", NOCSRElements.size());
@@ -390,8 +354,8 @@ bool emberAfOperationalCredentialsClusterOpCSRResponseCallback(EndpointId endpoi
 
     GET_CLUSTER_RESPONSE_CALLBACKS("OperationalCredentialsClusterOpCSRResponseCallback");
 
-    Callback::Callback<OperationalCredentialsClusterOpCSRResponseCallback> * cb =
-        Callback::Callback<OperationalCredentialsClusterOpCSRResponseCallback>::FromCancelable(onSuccessCallback);
+    Callback::Callback<OperationalCredentialsClusterOpCSRResponseCallback> * cb = Callback::Callback<OperationalCredentialsClusterOpCSRResponseCallback>::FromCancelable(onSuccessCallback);
     cb->mCall(cb->mContext, NOCSRElements, AttestationSignature);
     return true;
 }
+

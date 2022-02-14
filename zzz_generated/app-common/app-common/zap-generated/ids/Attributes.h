@@ -43,6 +43,7 @@ static constexpr AttributeId Id = 0x0000FFFD;
 } // namespace Attributes
 } // namespace Globals
 
+
 namespace PowerConfiguration {
 namespace Attributes {
 
@@ -6154,6 +6155,7 @@ static constexpr AttributeId Id = Globals::Attributes::ClusterRevision::Id;
 
 } // namespace Attributes
 } // namespace ElectricalMeasurement
+
 
 } // namespace Clusters
 } // namespace app

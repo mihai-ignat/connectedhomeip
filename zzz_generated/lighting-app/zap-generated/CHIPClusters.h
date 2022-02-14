@@ -37,14 +37,9 @@ public:
     ~OtaSoftwareUpdateProviderCluster() {}
 
     // Cluster Commands
-    CHIP_ERROR ApplyUpdateRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                  chip::ByteSpan updateToken, uint32_t newVersion);
-    CHIP_ERROR NotifyUpdateApplied(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                                   chip::ByteSpan updateToken, uint32_t softwareVersion);
-    CHIP_ERROR QueryImage(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback,
-                          chip::VendorId vendorId, uint16_t productId, uint32_t softwareVersion, uint8_t protocolsSupported,
-                          uint16_t hardwareVersion, chip::CharSpan location, bool requestorCanConsent,
-                          chip::ByteSpan metadataForProvider);
+    CHIP_ERROR ApplyUpdateRequest(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan updateToken, uint32_t newVersion);
+    CHIP_ERROR NotifyUpdateApplied(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::ByteSpan updateToken, uint32_t softwareVersion);
+    CHIP_ERROR QueryImage(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, chip::VendorId vendorId, uint16_t productId, uint32_t softwareVersion, uint8_t protocolsSupported, uint16_t hardwareVersion, chip::CharSpan location, bool requestorCanConsent, chip::ByteSpan metadataForProvider);
 };
 
 class DLL_EXPORT OnOffCluster : public ClusterBase
@@ -52,6 +47,11 @@ class DLL_EXPORT OnOffCluster : public ClusterBase
 public:
     OnOffCluster() : ClusterBase(app::Clusters::OnOff::Id) {}
     ~OnOffCluster() {}
+
+    // Cluster Commands
+    CHIP_ERROR OffWithEffect(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t effectId, uint8_t effectVariant);
+    CHIP_ERROR OnWithRecallGlobalScene(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback);
+    CHIP_ERROR OnWithTimedOff(Callback::Cancelable * onSuccessCallback, Callback::Cancelable * onFailureCallback, uint8_t onOffControl, uint16_t onTime, uint16_t offWaitTime);
 };
 
 } // namespace Controller
