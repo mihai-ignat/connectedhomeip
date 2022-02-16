@@ -338,3 +338,34 @@ Start the OTA process:
 ```
 ./out/chip-tool otasoftwareupdaterequestor announce-ota-provider 1 0 0 0 2 0
 ```
+
+<a name="detokenizerscript"></a>
+
+# Detokenizer script
+
+The python3 script detokenizer.py is a script that decodes the tokenized logs either from a file or from a serial port.
+The script can be used in the following ways:
+```
+usage: detokenizer.py serial [-h] -i INPUT -d DATABASE [-o OUTPUT]
+usage: detokenizer.py file [-h] -i INPUT -d DATABASE -o OUTPUT
+```
+The first parameter is either **serial** or **file** and it selects between decoding from a file or from a serial port.
+
+The second parameter is **-i INPUT** and it must se set to the path of the file or the serial to decode from.
+
+The third parameter is **-d DATABSE** and represents the path to the token database to be used for decoding. The default path is **out/debug/chip-k32w061-light-example-database.bin** after a successful build.
+
+The forth parameter is **-o OUTPUT** and it represents the path to the output file where the decoded logs will be stored. This parameter is required for file usage and optional for serial usage. If not provided when used with serial port, it will show the decoded log only at the stdout and not save it to file.
+
+## Notes
+
+The token database is created automatically after building the binary if the flag **chip_pw_tokenizer_logging=true** in **src/platform/nxp/k32w/k32w0/args.gni**.
+
+The detokenizer script must be run inside the example's folder after a successful run of the **scripts/activate.sh** script. The pw_tokenizer module used by the script is loaded by the environment.
+
+## Know issues
+
+If run, closed and rerun with the serial option on the same serial port, the script will get stuck and not show any logs. The solution is to unplug and plug the board and then rerun the script.
+
+Not all tokens will be decoded. This is due to a gcc/pw_tokenizer issue. The pw_tokenizer creates special elf sections using attributes where the tokens and strings will be stored. This sections will be used by the database creation script. For template C++ functions, gcc ignores these attributes and places all the strings by default in the .rodata section. As a result the database creation script won't find them in the special-created sections.
+
