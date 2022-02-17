@@ -28,6 +28,10 @@ network.
     -    [Writing the PSECT](#psect)
     -    [Writing the application](#appwrite)
     -    [OTA Testing](#otatesting)
+-   [Pigweed Tokenizer](#tokenizer)
+    -    [Detokenizer script](#detokenizer)
+    -    [Notes](#detokenizernotes)
+    -    [Known issues](#detokenizerknownissues)
 
 <hr>
 
@@ -291,8 +295,9 @@ CD04     -> 0x4CD pages of 512-bytes (= 614,5kB)
 <a name="appwrite"></a>
 
 ### Writing the application
-Before writing the application, _src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp_ must be provisioned with
-the size of the OTA image (e.g.: the lighting application binary file - chip-k32w061-light-example.bin - can be used as OTA image).
+Before writing the application, [_src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp_](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp#L32) must be provisioned with
+the size (in bytes) of the OTA image (One option would be to use the lighting application as an OTA image and change only some [logging](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/examples/lighting-app/nxp/k32w/k32w0/main/main.cpp#L72) to check that this new image boots when update is finished. Please note that the signing script is being run with _-i=1_ for generating an OTA image - this is automatically done when compiling matter applications).
+This is just a temporary work-around until the OTA header is added inside the Matter SDK implementation.
 
 DK6Programmer can be used for flashing the application:
 ```
@@ -307,41 +312,68 @@ at address 0x4000:
 <a name="otatesting"></a>
 
 ### OTA Testing
-The lighting application binary file (chip-k32w061-light-example.bin) can be used as OTA image. For the moment,
-the size of the OTA image must be hard-coded inside _src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp_
 
-For rapid testing, test event setup topology can be used. For the moment, we recommand running the Linux OTA
-provider application to a device different than the one running the OTBR (more details [here](https://csamembers.slack.com/archives/C02HUSNLN4S/p1641999791014600)).
+The OTA topology used for OTA testing is illustrated in the figure below. Topology is similar with the one used for Matter Test Events. Please note that other topologies can be used (e.g.: connecting _Computer #1_ and _Computer #2_ through other means), this is just an example which was tested locally.
+
+![OTA_TOPOLOGY](../../../../platform/nxp/k32w/k32w0/doc/images/ota_topology.JPG)
+
+The concept for OTA is the next one:
+-   there is an OTA Provider Application that holds the OTA image. In our case, this is a Linux application running on an Ubuntu based-system;
+-   the OTA Requestor functionality is embedded inside the Lighting Application. It will be used for requesting OTA 
+    blocks from the OTA Provider;
+-   the controller (a linux application called chip-tool) will be used for commmissionning both the device and the OTA Provider App. The device
+    will be commissionned using the standard Matter flow (BLE + IEEE 802.15.4) while the OTA Provider Application will be commissionned using 
+    the _onnetwork_ option of chip-tool: this means that _Computer #1_ and _Computer #2_ need to be in the same Layer 3 Network and need to have IPv6 addressing
+    capability;
+-   during commissioning, each device is assigned a node id by the chip-tool (can be specified manually by the user). Using the node id of the device and of
+    the lighting application, chip-tool triggers the OTA transfer by invoking the _announce-ota-provider_ command - basically, the OTA Requestor is informed of the 
+    node id of the OTA Provider Application. The OTA Requestor will then initiate a connection to the OTA Provider Application: Thread will be used for the 
+    communication between the Device and OTBR while the communication between OTBR and OTA-Provider Application is done through standard Wi-Fi.
+
+_Computer #1_ and _Computer #2_ can be any system running an Ubuntu distribution. We recommand using TE 7.5 instructions from [here](https://groups.csa-iot.org/wg/matter-csg/document/24839), where RPi 4 are proposed. Also, TE 7.5 instructions document point to the OS/Docker images that should be used on the RPis. For compatibility reasons, we recommand compiling chip-tool and OTA Provider applications with the same commit id that was used for compiling the Lighting Application. Also, please note that there is a single controller (chip-tool) running on Computer #1 which is used for commissioning both the device and the OTA Provider Application. [These instructions](https://itsfoss.com/connect-wifi-terminal-ubuntu/) could be used for connecting the RPis to WiFi.
+
+For the moment, we recommand running the Linux OTA provider application to a device different than the one running the OTBR. The issue was fixed on the latest master by this [PR](https://github.com/project-chip/connectedhomeip/pull/14382). (more details [here](https://csamembers.slack.com/archives/C02HUSNLN4S/p1641999791014600) - please note that you need to be a member of #sw-update-ota Slack channel in order to be able to access the link).
 
 Build the Linux OTA provider application:
 ```
-scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/debug chip_config_network_layer_ble=false
+doru@computer2:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/ chip_config_network_layer_ble=false
+```
+
+Start the OTA Provider Application:
+```
+doru@computer2:~/connectedhomeip$ : ./out/chip-ota-provider-app -f chip-k32w061-light-example.bin
 ```
 
 Build Linux chip-tool:
 ```
-scripts/examples/gn_build_example.sh examples/chip-tool out/
+doru@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/chip-tool out/
 ```
 
 Provision the OTA provider application and assign node id _1_:
 ```
-rm -r /tmp/chip_*
-./out/chip-tool pairing onnetwork 1 20202021
+doru@computer1:~/connectedhomeip$ : rm -r /tmp/chip_*
+doru@computer1:~/connectedhomeip$ : ./out/chip-tool pairing onnetwork 1 20202021
 ```
 
 Provision the device and assign node id _2_:
 ```
-./out/chip-tool pairing ble-thread 2 hex:<operationalDataset> 20202021   3840
+doru@computer1:~/connectedhomeip$ : ./out/chip-tool pairing ble-thread 2 hex:<operationalDataset> 20202021   3840
 ```
 
 Start the OTA process:
 ```
-./out/chip-tool otasoftwareupdaterequestor announce-ota-provider 1 0 0 0 2 0
+doru@computer1:~/connectedhomeip$ : ./out/chip-tool otasoftwareupdaterequestor announce-ota-provider 1 0 0 0 2 0
 ```
 
-<a name="detokenizerscript"></a>
+<a name="tokenizer"></a>
 
-# Detokenizer script
+## Pigweed tokenizer
+Tokenizer is a pigweed module that allows hashing the strings. This greatly reduces the flash needed for logs.
+The module can be enabled by setting [_chip_pw_tokenizer_logging=true_](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/src/platform/nxp/k32w/k32w0/args.gni#L34).
+Detokenizer script is needed for parsing the hashed scripts.
+
+<a name="detokenizer"></a>
+### Detokenizer script
 
 The python3 script detokenizer.py is a script that decodes the tokenized logs either from a file or from a serial port.
 The script can be used in the following ways:
@@ -349,23 +381,24 @@ The script can be used in the following ways:
 usage: detokenizer.py serial [-h] -i INPUT -d DATABASE [-o OUTPUT]
 usage: detokenizer.py file [-h] -i INPUT -d DATABASE -o OUTPUT
 ```
-The first parameter is either **serial** or **file** and it selects between decoding from a file or from a serial port.
+The first parameter is either _serial_ or _file_ and it selects between decoding from a file or from a serial port.
 
-The second parameter is **-i INPUT** and it must se set to the path of the file or the serial to decode from.
+The second parameter is _-i INPUT_ and it must se set to the path of the file or the serial to decode from.
 
-The third parameter is **-d DATABSE** and represents the path to the token database to be used for decoding. The default path is **out/debug/chip-k32w061-light-example-database.bin** after a successful build.
+The third parameter is _-d DATABSE_ and represents the path to the token database to be used for decoding. The default path is _out/debug/chip-k32w061-light-example-database.bin_ after a successful build.
 
-The forth parameter is **-o OUTPUT** and it represents the path to the output file where the decoded logs will be stored. This parameter is required for file usage and optional for serial usage. If not provided when used with serial port, it will show the decoded log only at the stdout and not save it to file.
+The forth parameter is _-o OUTPUT_ and it represents the path to the output file where the decoded logs will be stored. This parameter is required for file usage and optional for serial usage. If not provided when used with serial port, it will show the decoded log only at the stdout and not save it to file.
 
-## Notes
+<a name="detokenizernotes"></a>
+### Notes
 
-The token database is created automatically after building the binary if the flag **chip_pw_tokenizer_logging=true** in **src/platform/nxp/k32w/k32w0/args.gni**.
+The token database is created automatically after building the binary if the flag _chip_pw_tokenizer_logging=true_ in _src/platform/nxp/k32w/k32w0/args.gni_.
 
-The detokenizer script must be run inside the example's folder after a successful run of the **scripts/activate.sh** script. The pw_tokenizer module used by the script is loaded by the environment.
+The detokenizer script must be run inside the example's folder after a successful run of the _scripts/activate.sh_ script. The pw_tokenizer module used by the script is loaded by the environment.
 
-## Know issues
+<a name="detokenizerknownissues"></a>
+### Know issues
 
 If run, closed and rerun with the serial option on the same serial port, the script will get stuck and not show any logs. The solution is to unplug and plug the board and then rerun the script.
 
 Not all tokens will be decoded. This is due to a gcc/pw_tokenizer issue. The pw_tokenizer creates special elf sections using attributes where the tokens and strings will be stored. This sections will be used by the database creation script. For template C++ functions, gcc ignores these attributes and places all the strings by default in the .rodata section. As a result the database creation script won't find them in the special-created sections.
-
