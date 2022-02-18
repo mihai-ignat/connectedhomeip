@@ -44,6 +44,13 @@
 #include <mbedtls/x509.h>
 #include <mbedtls/x509_csr.h>
 
+#if defined(MBEDTLS_USE_TINYCRYPT)
+#include <mbedtls/pk.h>
+#include <tinycrypt/ecc.h>
+#include <tinycrypt/ecc_dh.h>
+#include <tinycrypt/ecc_dsa.h>
+#endif // defined(MBEDTLS_USE_TINYCRYPT)
+
 #include <lib/core/CHIPSafeCasts.h>
 #include <lib/support/BufferWriter.h>
 #include <lib/support/CHIPArgParser.hpp>
@@ -486,6 +493,22 @@ mbedtls_ecp_group_id MapECPGroupId(SupportedECPKeyTypes keyType)
     }
 }
 
+#if defined(MBEDTLS_USE_TINYCRYPT)
+
+static inline mbedtls_uecc_keypair * to_keypair(P256KeypairContext * context)
+{
+    return SafePointerCast<mbedtls_uecc_keypair *>(context);
+}
+
+static inline const mbedtls_uecc_keypair * to_const_keypair(const P256KeypairContext * context)
+{
+    return SafePointerCast<const mbedtls_uecc_keypair *>(context);
+}
+
+#else /*MBEDTLS_USE_TINYCRYPT*/
+
+#if defined(MBEDTLS_ECP_C)
+
 static inline mbedtls_ecp_keypair * to_keypair(P256KeypairContext * context)
 {
     return SafePointerCast<mbedtls_ecp_keypair *>(context);
@@ -495,6 +518,9 @@ static inline const mbedtls_ecp_keypair * to_const_keypair(const P256KeypairCont
 {
     return SafePointerCast<const mbedtls_ecp_keypair *>(context);
 }
+
+#endif /*MBEDTLS_ECP_C*/
+#endif /*MBEDTLS_USE_TINYCRYPT*/
 
 CHIP_ERROR P256Keypair::ECDSA_sign_msg(const uint8_t * msg, const size_t msg_length, P256ECDSASignature & out_signature)
 {
@@ -514,6 +540,30 @@ CHIP_ERROR P256Keypair::ECDSA_sign_msg(const uint8_t * msg, const size_t msg_len
 
 CHIP_ERROR P256Keypair::ECDSA_sign_hash(const uint8_t * hash, const size_t hash_length, P256ECDSASignature & out_signature)
 {
+#if defined(MBEDTLS_USE_TINYCRYPT)
+	VerifyOrReturnError(mInitialized, CHIP_ERROR_INCORRECT_STATE);
+	VerifyOrReturnError(hash != nullptr, CHIP_ERROR_INVALID_ARGUMENT);
+	VerifyOrReturnError(hash_length == kSHA256_Hash_Length, CHIP_ERROR_INVALID_ARGUMENT);
+
+	CHIP_ERROR error = CHIP_NO_ERROR;
+	int result = UECC_FAILURE;
+
+	const mbedtls_uecc_keypair * keypair = to_const_keypair(&mKeypair);
+
+	ChipLogError(Crypto, "uECC_sign: before");
+	result = uECC_sign(keypair->private_key, hash, hash_length, out_signature.Bytes() );
+	ChipLogError(Crypto, "uECC_sign: after");
+
+	VerifyOrExit(result == UECC_SUCCESS, error = CHIP_ERROR_INTERNAL);
+	VerifyOrExit(out_signature.SetLength(kP256_ECDSA_Signature_Length_Raw) == CHIP_NO_ERROR, error = CHIP_ERROR_INTERNAL);
+
+	keypair		= nullptr;
+
+exit:
+	return error;
+
+#else
+
 #if defined(MBEDTLS_ECDSA_C)
     VerifyOrReturnError(mInitialized, CHIP_ERROR_INCORRECT_STATE);
     VerifyOrReturnError(hash != nullptr, CHIP_ERROR_INVALID_ARGUMENT);
@@ -533,9 +583,8 @@ CHIP_ERROR P256Keypair::ECDSA_sign_hash(const uint8_t * hash, const size_t hash_
     result = mbedtls_ecdsa_from_keypair(&ecdsa_ctxt, keypair);
     VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
 
-    result = mbedtls_ecdsa_sign(&ecdsa_ctxt.CHIP_CRYPTO_PAL_PRIVATE(grp), &r, &s, &ecdsa_ctxt.CHIP_CRYPTO_PAL_PRIVATE(d),
-                                Uint8::to_const_uchar(hash), hash_length, CryptoRNG, nullptr);
-
+    result =
+        mbedtls_ecdsa_sign(&ecdsa_ctxt.grp, &r, &s, &ecdsa_ctxt.d, Uint8::to_const_uchar(hash), hash_length, CryptoRNG, nullptr);
     VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
 
     VerifyOrExit((mbedtls_mpi_size(&r) <= kP256_FE_Length) || (mbedtls_mpi_size(&s) <= kP256_FE_Length),
@@ -560,6 +609,8 @@ exit:
 #else
     return CHIP_ERROR_NOT_IMPLEMENTED;
 #endif
+
+#endif
 }
 
 CHIP_ERROR P256PublicKey::ECDSA_validate_msg_signature(const uint8_t * msg, const size_t msg_length,
@@ -581,6 +632,27 @@ CHIP_ERROR P256PublicKey::ECDSA_validate_msg_signature(const uint8_t * msg, cons
 CHIP_ERROR P256PublicKey::ECDSA_validate_hash_signature(const uint8_t * hash, const size_t hash_length,
                                                         const P256ECDSASignature & signature) const
 {
+
+#if defined(MBEDTLS_USE_TINYCRYPT)
+
+	VerifyOrReturnError(hash != nullptr, CHIP_ERROR_INVALID_ARGUMENT);
+	VerifyOrReturnError(hash_length == kSHA256_Hash_Length, CHIP_ERROR_INVALID_ARGUMENT);
+	VerifyOrReturnError(signature.Length() == kP256_ECDSA_Signature_Length_Raw, CHIP_ERROR_INVALID_ARGUMENT);
+
+	CHIP_ERROR error = CHIP_NO_ERROR;
+	int result = UECC_FAILURE;
+
+	const uint8_t *public_key = *this;
+
+	ChipLogError(Crypto, "uECC_verify: before");
+	result = uECC_verify( public_key + 1, hash, hash_length, Uint8::to_const_uchar(signature.ConstBytes()) );
+	ChipLogError(Crypto, "uECC_verify: after");
+	VerifyOrExit(result == UECC_SUCCESS, error = CHIP_ERROR_INVALID_SIGNATURE);
+
+exit:
+	return error;
+
+#else
 #if defined(MBEDTLS_ECDSA_C)
     VerifyOrReturnError(hash != nullptr, CHIP_ERROR_INVALID_ARGUMENT);
     VerifyOrReturnError(hash_length == kSHA256_Hash_Length, CHIP_ERROR_INVALID_ARGUMENT);
@@ -633,11 +705,35 @@ exit:
 #else
     return CHIP_ERROR_NOT_IMPLEMENTED;
 #endif
+#endif
 }
 
 CHIP_ERROR P256Keypair::ECDH_derive_secret(const P256PublicKey & remote_public_key, P256ECDHDerivedSecret & out_secret) const
 {
 #if defined(MBEDTLS_ECDH_C)
+
+#if defined(MBEDTLS_USE_TINYCRYPT)
+
+    CHIP_ERROR error     = CHIP_NO_ERROR;
+    int result           = 0;
+    size_t secret_length = (out_secret.Length() == 0) ? out_secret.Capacity() : out_secret.Length();
+
+    const mbedtls_uecc_keypair * keypair = to_const_keypair(&mKeypair);
+
+    VerifyOrExit(mInitialized, error = CHIP_ERROR_INCORRECT_STATE);
+
+    result = uECC_shared_secret(remote_public_key.ConstBytes() + 1, keypair->private_key, Uint8::to_uchar(out_secret));
+    VerifyOrExit(result == UECC_SUCCESS, error = CHIP_ERROR_INTERNAL);
+
+    SuccessOrExit(out_secret.SetLength(secret_length));
+
+exit:
+    keypair = nullptr;
+    _log_mbedTLS_error(result);
+    return error;
+
+#else
+
     CHIP_ERROR error     = CHIP_NO_ERROR;
     int result           = 0;
     size_t secret_length = (out_secret.Length() == 0) ? out_secret.Capacity() : out_secret.Length();
@@ -677,6 +773,9 @@ exit:
     mbedtls_ecp_point_free(&ecp_pubkey);
     _log_mbedTLS_error(result);
     return error;
+
+    #endif
+
 #else
     return CHIP_ERROR_NOT_IMPLEMENTED;
 #endif
@@ -687,8 +786,44 @@ void ClearSecretData(uint8_t * buf, size_t len)
     mbedtls_platform_zeroize(buf, len);
 }
 
+int uecc_rng_wrapper(uint8_t *dest, unsigned int size)
+{
+	int ret;
+
+	ret = CryptoRNG(NULL, dest, size);
+
+	return (ret == 0)?size:0;
+}
+
 CHIP_ERROR P256Keypair::Initialize()
 {
+
+#if defined(MBEDTLS_USE_TINYCRYPT)
+
+	CHIP_ERROR error = CHIP_NO_ERROR;
+	int result = UECC_FAILURE;
+
+	Clear();
+
+	mbedtls_uecc_keypair * keypair = to_keypair(&mKeypair);
+	uECC_set_rng( &uecc_rng_wrapper );
+
+	ChipLogError(Crypto, "uECC_make_key: before");
+	result = uECC_make_key( keypair->public_key, keypair->private_key);
+	ChipLogError(Crypto, "uECC_make_key: after");
+	VerifyOrExit(result == UECC_SUCCESS, error = CHIP_ERROR_INTERNAL);
+
+	Uint8::to_uchar(mPublicKey)[0] = 0x04; //uncompressed type
+	memcpy(Uint8::to_uchar(mPublicKey) + 1, keypair->public_key, 2*NUM_ECC_BYTES);
+
+	keypair      = nullptr;
+	mInitialized = true;
+
+exit:
+	_log_mbedTLS_error(result);
+	return error;
+
+#else
     CHIP_ERROR error = CHIP_NO_ERROR;
     int result       = 0;
 
@@ -722,10 +857,39 @@ exit:
 
     _log_mbedTLS_error(result);
     return error;
+#endif
 }
 
 CHIP_ERROR P256Keypair::Serialize(P256SerializedKeypair & output) const
 {
+
+#if defined(MBEDTLS_USE_TINYCRYPT)
+
+    const mbedtls_uecc_keypair * keypair = to_const_keypair(&mKeypair);
+    size_t len                          = output.Length() == 0 ? output.Capacity() : output.Length();
+    Encoding::BufferWriter bbuf(output, len);
+    uint8_t privkey[kP256_PrivateKey_Length];
+    CHIP_ERROR error = CHIP_NO_ERROR;
+    int result       = 0;
+
+    bbuf.Put(mPublicKey, mPublicKey.Length());
+
+    VerifyOrExit(bbuf.Available() == sizeof(privkey), error = CHIP_ERROR_INTERNAL);
+    VerifyOrExit(sizeof(keypair->private_key) <= bbuf.Available(), error = CHIP_ERROR_INTERNAL);
+
+    memcpy(privkey, keypair->private_key, sizeof(privkey));
+
+    bbuf.Put(privkey, sizeof(privkey));
+    VerifyOrExit(bbuf.Fit(), error = CHIP_ERROR_BUFFER_TOO_SMALL);
+
+    output.SetLength(bbuf.Needed());
+
+exit:
+	memset(privkey, 0, sizeof(privkey));
+    _log_mbedTLS_error(result);
+    return error;
+
+#else
     const mbedtls_ecp_keypair * keypair = to_const_keypair(&mKeypair);
     size_t len                          = output.Length() == 0 ? output.Capacity() : output.Length();
     Encoding::BufferWriter bbuf(output, len);
@@ -751,10 +915,34 @@ exit:
     ClearSecretData(privkey, sizeof(privkey));
     _log_mbedTLS_error(result);
     return error;
+
+#endif
 }
 
 CHIP_ERROR P256Keypair::Deserialize(P256SerializedKeypair & input)
 {
+
+#if defined(MBEDTLS_USE_TINYCRYPT)
+
+	int result       = 0;
+	CHIP_ERROR error = CHIP_NO_ERROR;
+
+	Clear();
+
+	mbedtls_uecc_keypair * keypair = to_keypair(&mKeypair);
+	uECC_set_rng( &uecc_rng_wrapper );
+
+	memcpy(keypair->public_key, Uint8::to_uchar(input) + 1, 2*NUM_ECC_BYTES);
+	memcpy(keypair->private_key, Uint8::to_uchar(input) + mPublicKey.Length(), NUM_ECC_BYTES);
+
+	keypair			= nullptr;
+	mInitialized	= true;
+
+exit:
+	_log_mbedTLS_error(result);
+	return error;
+
+#else
     Encoding::BufferWriter bbuf(mPublicKey, mPublicKey.Length());
 
     int result       = 0;
@@ -788,15 +976,20 @@ CHIP_ERROR P256Keypair::Deserialize(P256SerializedKeypair & input)
 exit:
     _log_mbedTLS_error(result);
     return error;
+#endif
 }
 
 void P256Keypair::Clear()
 {
     if (mInitialized)
     {
+#if defined(MBEDTLS_USE_TINYCRYPT)
+    	mInitialized = false;
+#else
         mbedtls_ecp_keypair * keypair = to_keypair(&mKeypair);
         mbedtls_ecp_keypair_free(keypair);
         mInitialized = false;
+#endif
     }
 }
 
@@ -807,6 +1000,69 @@ P256Keypair::~P256Keypair()
 
 CHIP_ERROR P256Keypair::NewCertificateSigningRequest(uint8_t * out_csr, size_t & csr_length)
 {
+#if defined(MBEDTLS_USE_TINYCRYPT)
+
+    CHIP_ERROR error = CHIP_NO_ERROR;
+
+    int result = 0;
+
+    size_t out_length;
+
+    const mbedtls_uecc_keypair * keypair = to_const_keypair(&mKeypair);
+
+    mbedtls_x509write_csr csr;
+	mbedtls_x509write_csr_init(&csr);
+
+	mbedtls_pk_context pk;
+	mbedtls_pk_init(&pk);
+
+	const mbedtls_pk_info_t * pk_info = mbedtls_pk_info_from_type(MBEDTLS_PK_ECKEY);
+	VerifyOrExit(pk_info != nullptr, error = CHIP_ERROR_INTERNAL);
+
+	VerifyOrExit(mInitialized, error = CHIP_ERROR_INCORRECT_STATE);
+
+	result = mbedtls_pk_setup(&pk, pk_info);
+	VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
+
+	memcpy(mbedtls_pk_uecc(pk), keypair, sizeof(mbedtls_uecc_keypair));
+
+	//HERE
+	mbedtls_x509write_csr_set_key(&csr, &pk);
+
+	mbedtls_x509write_csr_set_md_alg(&csr, MBEDTLS_MD_SHA256);
+
+	// TODO: mbedTLS CSR parser fails if the subject name is not set (or if empty).
+	//       CHIP Spec doesn't specify the subject name that can be used.
+	//       Figure out the correct value and update this code.
+	result = mbedtls_x509write_csr_set_subject_name(&csr, "O=CSR");
+	VerifyOrExit(result == 0, error = CHIP_ERROR_INTERNAL);
+
+	result = mbedtls_x509write_csr_der(&csr, out_csr, csr_length, CryptoRNG, nullptr);
+	VerifyOrExit(result > 0, error = CHIP_ERROR_INTERNAL);
+
+	out_length = (size_t) result;
+	result     = 0;
+	VerifyOrExit(out_length <= csr_length, error = CHIP_ERROR_INTERNAL);
+
+	if (csr_length != out_length)
+	{
+		// mbedTLS API writes the CSR at the end of the provided buffer.
+		// Let's move it to the start of the buffer.
+		size_t offset = csr_length - out_length;
+		memmove(out_csr, &out_csr[offset], out_length);
+	}
+
+	csr_length = out_length;
+
+exit:
+	mbedtls_x509write_csr_free(&csr);
+
+	mbedtls_pk_free(&pk);
+
+	_log_mbedTLS_error(result);
+	return error;
+
+#else
     CHIP_ERROR error = CHIP_NO_ERROR;
 
     int result = 0;
@@ -869,6 +1125,7 @@ exit:
 
     _log_mbedTLS_error(result);
     return error;
+#endif
 }
 
 CHIP_ERROR VerifyCertificateSigningRequest(const uint8_t * csr_buf, size_t csr_length, P256PublicKey & pubkey)
