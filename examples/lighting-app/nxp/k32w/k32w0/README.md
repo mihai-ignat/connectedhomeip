@@ -33,6 +33,9 @@ network.
     -    [Detokenizer script](#detokenizer)
     -    [Notes](#detokenizernotes)
     -    [Known issues](#detokenizerknownissues)
+-   [Tinycrypt ECC operations](#tinycrypt)
+    -    [Building steps](#tinycryptbuildingsteps)
+
 
 <hr>
 
@@ -413,3 +416,27 @@ The detokenizer script must be run inside the example's folder after a successfu
 If run, closed and rerun with the serial option on the same serial port, the script will get stuck and not show any logs. The solution is to unplug and plug the board and then rerun the script.
 
 Not all tokens will be decoded. This is due to a gcc/pw_tokenizer issue. The pw_tokenizer creates special elf sections using attributes where the tokens and strings will be stored. This sections will be used by the database creation script. For template C++ functions, gcc ignores these attributes and places all the strings by default in the .rodata section. As a result the database creation script won't find them in the special-created sections.
+
+<a name="tinycrypt"></a>
+
+## Tinycrypt ECC operations
+
+<a name="tinycryptbuildingsteps"></a>
+### Building steps
+
+
+Note: This solution is temporary.
+
+In order to use the tinycrypt ecc operations, some extra steps have to be done during building:
+
+- Apply the BLE controller patch on SDK_2_6_4_K32W061DK6. This will be released soon.
+- Enable the tokenizer in [args.gni](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer_rebased_to_te8/src/platform/nxp/k32w/k32w0/args.gni#L34) by _setting chip_pw_tokenizer_logging = true_.
+- Run the tinycrypt patching script after activating the environment.
+
+```
+user@ubuntu:~/Desktop/git/connectedhomeip$ ./third_party/nxp/tinycrypt/patch_tinycrypt.sh
+```
+- Build without Secure element, _chip_with_se05x=0_.
+
+After running the patch_tinycrypt.sh script, the tinycrypt ecc operations are enabled. However, if needed, they can be disabled from the config file _third_party/openthread/repo/third_party/mbedtls/mbedtls-config.h_ by commenting the defines MBEDTLS_USE_TINYCRYPT and MBEDTLS_OPTIMIZE_TINYCRYPT_ASM.
+ 
