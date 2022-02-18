@@ -28,6 +28,7 @@ network.
     -    [Writing the PSECT](#psect)
     -    [Writing the application](#appwrite)
     -    [OTA Testing](#otatesting)
+    -    [Known issues](#otaissues)
 -   [Pigweed Tokenizer](#tokenizer)
     -    [Detokenizer script](#detokenizer)
     -    [Notes](#detokenizernotes)
@@ -341,6 +342,7 @@ doru@computer2:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examp
 
 Start the OTA Provider Application:
 ```
+doru@computer1:~/connectedhomeip$ : rm -rf /tmp/chip_*
 doru@computer2:~/connectedhomeip$ : ./out/chip-ota-provider-app -f chip-k32w061-light-example.bin
 ```
 
@@ -351,7 +353,7 @@ doru@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examp
 
 Provision the OTA provider application and assign node id _1_:
 ```
-doru@computer1:~/connectedhomeip$ : rm -r /tmp/chip_*
+doru@computer1:~/connectedhomeip$ : rm -rf /tmp/chip_*
 doru@computer1:~/connectedhomeip$ : ./out/chip-tool pairing onnetwork 1 20202021
 ```
 
@@ -364,6 +366,15 @@ Start the OTA process:
 ```
 doru@computer1:~/connectedhomeip$ : ./out/chip-tool otasoftwareupdaterequestor announce-ota-provider 1 0 0 0 2 0
 ```
+
+
+<a name="otaissues"></a>
+## Known issues
+-   SRP cache on the openthread border router needs to flushed each time a new commissioning process is attempted. For this, factory
+reset the device, then execute _ot-ctl server disable_ followed by _ot-ctl server enable_. After this step, the commissioning process
+of the device can start;
+-   Due to some MDNS issues, the commissoning of the OTA Provider Application may fail. Please make sure that the SRP cache is disabled
+(_ot-ctl srp server disable_) on the openthread border router while commissioning the OTA Provider Application.
 
 <a name="tokenizer"></a>
 
@@ -397,7 +408,7 @@ The token database is created automatically after building the binary if the fla
 The detokenizer script must be run inside the example's folder after a successful run of the _scripts/activate.sh_ script. The pw_tokenizer module used by the script is loaded by the environment.
 
 <a name="detokenizerknownissues"></a>
-### Know issues
+### Known issues
 
 If run, closed and rerun with the serial option on the same serial port, the script will get stuck and not show any logs. The solution is to unplug and plug the board and then rerun the script.
 
