@@ -1,0 +1,15 @@
+diff --git a/third_party/mbedtls/mbedtls-config.h b/third_party/mbedtls/mbedtls-config.h
+index 619cfd74f..5b9b4017c 100644
+--- a/third_party/mbedtls/mbedtls-config.h
++++ b/third_party/mbedtls/mbedtls-config.h
+@@ -130,6 +130,10 @@
+ 
+ #define MBEDTLS_SSL_CIPHERSUITES         MBEDTLS_TLS_ECJPAKE_WITH_AES_128_CCM_8
+ 
++#define MBEDTLS_USE_TINYCRYPT
++
++#define MBEDTLS_OPTIMIZE_TINYCRYPT_ASM
++
+ // Spans multiple lines to avoid being processed by unifdef
+ #if defined(\
+     MBEDTLS_USER_CONFIG_FILE)
