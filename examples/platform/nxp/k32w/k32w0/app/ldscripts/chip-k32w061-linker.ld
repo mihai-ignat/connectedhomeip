@@ -1,3 +1,4 @@
+
 /*
  *  Copyright (c) 2019, The OpenThread Authors.
  *  All rights reserved.
@@ -52,18 +53,16 @@ m_int_flash_size       = 0xA0000;
 m_int_sector_size      = 512;
 
 /* first 8K: SSBL, next 8K: SSBL update region */
-m_app_start            = 0x4000;
+m_app_start            = DEFINED(__app_load_address__) ? __app_load_address__ : 0x0;
 
 /* sizeof(BOOT_BLOCK_T) + sizeof(IMAGE_CERT_T) + SIGNATURE_LEN + alignment = 1024 bytes */
 m_app_meta_data        = 0x400;
 
 /* 640K (Total Flash size) - 16K (SSBL + SSBL update region) - 8.5K (PSECT) - m_app_meta_data */
-m_app_size             = 0x99A00;
+m_app_size     = DEFINED(__app_stated_size__) ? __app_stated_size__ : 0x9FC00;
 
 MEMORY
 {
-  /* Define each memory region. RAM0 definition leaves the first 1kB for the
-     boot code */
   Flash640 (rx) : ORIGIN = m_app_start, LENGTH = m_app_size
   RAM0 (rwx)    : ORIGIN = 0x4000400,  LENGTH = 0x0015c00   /* 87K bytes (alias RAM) */
   RAM1 (rwx)    : ORIGIN = 0x4020000,  LENGTH = 0x10000     /* 64K bytes (alias RAM2) */
@@ -343,5 +342,4 @@ SECTIONS
     PROVIDE(_pvHeapLimit = _pvHeapStart + (HEAP_SIZE));
 
     __StackLimit = _vStackTop - STACK_SIZE;
-    /* ASSERT (LENGTH(Flash640) >= (_etext + SIZEOF(.data) - m_app_start), "Application does not fit into flash!") */
 }
