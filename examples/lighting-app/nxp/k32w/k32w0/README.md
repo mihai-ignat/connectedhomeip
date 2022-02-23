@@ -317,7 +317,7 @@ at address 0x4000:
 
 ### OTA Testing
 
-The OTA topology used for OTA testing is illustrated in the figure below. Topology is similar with the one used for Matter Test Events. Please note that other topologies can be used (e.g.: connecting _Computer #1_ and _Computer #2_ through other means), this is just an example which was tested locally.
+The OTA topology used for OTA testing is illustrated in the figure below. Topology is similar with the one used for Matter Test Events.
 
 ![OTA_TOPOLOGY](../../../../platform/nxp/k32w/k32w0/doc/images/ota_topology.JPG)
 
@@ -327,47 +327,43 @@ The concept for OTA is the next one:
     blocks from the OTA Provider;
 -   the controller (a linux application called chip-tool) will be used for commmissionning both the device and the OTA Provider App. The device
     will be commissionned using the standard Matter flow (BLE + IEEE 802.15.4) while the OTA Provider Application will be commissionned using 
-    the _onnetwork_ option of chip-tool: this means that _Computer #1_ and _Computer #2_ need to be in the same Layer 3 Network and need to have IPv6 addressing
-    capability;
+    the _onnetwork_ option of chip-tool;
 -   during commissioning, each device is assigned a node id by the chip-tool (can be specified manually by the user). Using the node id of the device and of
     the lighting application, chip-tool triggers the OTA transfer by invoking the _announce-ota-provider_ command - basically, the OTA Requestor is informed of the 
-    node id of the OTA Provider Application. The OTA Requestor will then initiate a connection to the OTA Provider Application: Thread will be used for the 
-    communication between the Device and OTBR while the communication between OTBR and OTA-Provider Application is done through standard Wi-Fi.
+    node id of the OTA Provider Application.
 
-_Computer #1_ and _Computer #2_ can be any system running an Ubuntu distribution. We recommand using TE 7.5 instructions from [here](https://groups.csa-iot.org/wg/matter-csg/document/24839), where RPi 4 are proposed. Also, TE 7.5 instructions document point to the OS/Docker images that should be used on the RPis. For compatibility reasons, we recommand compiling chip-tool and OTA Provider applications with the same commit id that was used for compiling the Lighting Application. Also, please note that there is a single controller (chip-tool) running on Computer #1 which is used for commissioning both the device and the OTA Provider Application. [These instructions](https://itsfoss.com/connect-wifi-terminal-ubuntu/) could be used for connecting the RPis to WiFi.
-
-For the moment, we recommand running the Linux OTA provider application to a device different than the one running the OTBR. The issue was fixed on the latest master by this [PR](https://github.com/project-chip/connectedhomeip/pull/14382). (more details [here](https://csamembers.slack.com/archives/C02HUSNLN4S/p1641999791014600) - please note that you need to be a member of #sw-update-ota Slack channel in order to be able to access the link).
+_Computer #1_ can be any system running an Ubuntu distribution. We recommand using TE 7.5 instructions from [here](https://groups.csa-iot.org/wg/matter-csg/document/24839), where RPi 4 are proposed. Also, TE 7.5 instructions document point to the OS/Docker images that should be used on the RPis. For compatibility reasons, we recommand compiling chip-tool and OTA Provider applications with the same commit id that was used for compiling the Lighting Application. Also, please note that there is a single controller (chip-tool) running on Computer #1 which is used for commissioning both the device and the OTA Provider Application. If needed, [these instructions](https://itsfoss.com/connect-wifi-terminal-ubuntu/) could be used for connecting the RPis to WiFi.
 
 Build the Linux OTA provider application:
 ```
-doru@computer2:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/ chip_config_network_layer_ble=false
+doru@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/ota-provider-app chip_config_network_layer_ble=false
 ```
 
 Start the OTA Provider Application:
 ```
 doru@computer1:~/connectedhomeip$ : rm -rf /tmp/chip_*
-doru@computer2:~/connectedhomeip$ : ./out/chip-ota-provider-app -f chip-k32w061-light-example.bin
+doru@computer1:~/connectedhomeip$ : ./out/ota-provider-app/chip-ota-provider-app -f chip-k32w061-light-example.bin
 ```
 
 Build Linux chip-tool:
 ```
-doru@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/chip-tool out/
+doru@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/chip-tool out/chip-tool-app
 ```
 
 Provision the OTA provider application and assign node id _1_:
 ```
 doru@computer1:~/connectedhomeip$ : rm -rf /tmp/chip_*
-doru@computer1:~/connectedhomeip$ : ./out/chip-tool pairing onnetwork 1 20202021
+doru@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool pairing onnetwork 1 20202021
 ```
 
 Provision the device and assign node id _2_:
 ```
-doru@computer1:~/connectedhomeip$ : ./out/chip-tool pairing ble-thread 2 hex:<operationalDataset> 20202021   3840
+doru@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool pairing ble-thread 2 hex:<operationalDataset> 20202021   3840
 ```
 
 Start the OTA process:
 ```
-doru@computer1:~/connectedhomeip$ : ./out/chip-tool otasoftwareupdaterequestor announce-ota-provider 1 0 0 0 2 0
+doru@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool otasoftwareupdaterequestor announce-ota-provider 1 0 0 0 2 0
 ```
 
 

@@ -18,6 +18,7 @@
 
 #pragma once
 
+#include <lib/core/OTAImageHeader.h>
 #include <src/app/clusters/ota-requestor/OTADownloader.h>
 #include <src/include/platform/CHIPDeviceLayer.h>
 #include <src/include/platform/OTAImageProcessor.h>
@@ -40,6 +41,7 @@ public:
 private:
     //////////// Actual handlers for the OTAImageProcessorInterface ///////////////
     static void HandlePrepareDownload(intptr_t context);
+    CHIP_ERROR ProcessHeader(ByteSpan & block);
     static void HandleFinalize(intptr_t context);
     static void HandleAbort(intptr_t context);
     static void HandleProcessBlock(intptr_t context);
@@ -56,6 +58,7 @@ private:
     CHIP_ERROR ReleaseBlock();
 
     OTADownloader * mDownloader;
+    OTAImageHeaderParser mHeaderParser;
     MutableByteSpan mBlock;
 };
 

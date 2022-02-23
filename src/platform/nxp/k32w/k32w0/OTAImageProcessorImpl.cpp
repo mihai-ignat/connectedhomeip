@@ -28,9 +28,6 @@ extern "C" void ResetMCU(void);
 
 namespace chip {
 
-/*  TODO: to be computed from the OTA image header */
-constexpr uint32_t imageSize = 628092;
-
 CHIP_ERROR OTAImageProcessorImpl::PrepareDownload()
 {
     if (mParams.imageFile.empty())
@@ -109,11 +106,23 @@ void OTAImageProcessorImpl::HandlePrepareDownload(intptr_t context)
 
     if (gOtaSuccess_c == OTA_ClientInit())
     {
-        if (gOtaSuccess_c == OTA_StartImage(imageSize))
-        {
-            imageProcessor->mDownloader->OnPreparedForDownload(CHIP_NO_ERROR);
-        }
+        imageProcessor->mHeaderParser.Init();
+        imageProcessor->mDownloader->OnPreparedForDownload(CHIP_NO_ERROR);
     }
+}
+
+CHIP_ERROR OTAImageProcessorImpl::ProcessHeader(ByteSpan & block)
+{
+    OTAImageHeader header;
+    CHIP_ERROR error = mHeaderParser.AccumulateAndDecode(block, header);
+
+    // Needs more data to decode the header
+    ReturnErrorCodeIf(error == CHIP_ERROR_BUFFER_TOO_SMALL, CHIP_NO_ERROR);
+    ReturnErrorOnFailure(error);
+    mParams.totalFileBytes = header.mPayloadSize;
+    mHeaderParser.Clear();
+
+    return CHIP_NO_ERROR;
 }
 
 void OTAImageProcessorImpl::HandleAbort(intptr_t context)
@@ -130,6 +139,8 @@ void OTAImageProcessorImpl::HandleAbort(intptr_t context)
 
 void OTAImageProcessorImpl::HandleProcessBlock(intptr_t context)
 {
+    CHIP_ERROR error = CHIP_NO_ERROR;
+
     auto * imageProcessor = reinterpret_cast<OTAImageProcessorImpl *>(context);
     if (imageProcessor == nullptr)
     {
@@ -139,6 +150,48 @@ void OTAImageProcessorImpl::HandleProcessBlock(intptr_t context)
     else if (imageProcessor->mDownloader == nullptr)
     {
         ChipLogError(SoftwareUpdate, "mDownloader is null");
+        return;
+    }
+
+    /* process OTA header if not already did */
+    if (imageProcessor->mHeaderParser.IsInitialized())
+    {
+        ByteSpan block = ByteSpan(imageProcessor->mBlock.data(), imageProcessor->mBlock.size());
+
+        error = imageProcessor->ProcessHeader(block);
+        if (error == CHIP_NO_ERROR)
+        {
+            if (gOtaSuccess_c == OTA_StartImage(imageProcessor->mParams.totalFileBytes))
+            {
+                uint8_t *ptr = static_cast<uint8_t *>(chip::Platform::MemoryAlloc(block.size()));
+
+                if (ptr != nullptr)
+                {
+                    MutableByteSpan mutableBlock = MutableByteSpan(ptr, block.size());
+                    error = CopySpanToMutableSpan(block, mutableBlock);
+
+                    if (error == CHIP_NO_ERROR)
+                    {
+                        imageProcessor->ReleaseBlock();
+                        imageProcessor->mBlock = MutableByteSpan(mutableBlock.data(), mutableBlock.size());
+                    }
+                }
+                else
+                {
+                    error = CHIP_ERROR_NO_MEMORY;
+                }
+            }
+            else
+            {
+                error = CHIP_ERROR_INTERNAL;
+            }
+        }
+    }
+
+    if (error != CHIP_NO_ERROR)
+    {
+        ChipLogError(SoftwareUpdate, "Failed to process OTA image header");
+        imageProcessor->mDownloader->EndDownload(error);
         return;
     }
 
