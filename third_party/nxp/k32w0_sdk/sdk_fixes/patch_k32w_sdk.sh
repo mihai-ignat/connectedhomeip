@@ -7,7 +7,7 @@ fi
 
 convert_to_dos() {
 
-    [[ $(file -b - <$1) != *"CRLF"* ]] && unix2dos "$1"
+    [[ $(file -b - <$1) != *"CRLF"* ]] && sed -i 's/$/\r/' "$1"
 }
 
 SOURCE=${BASH_SOURCE[0]}
@@ -37,9 +37,10 @@ patch -N --binary -d "$NXP_K32W061_SDK_ROOT"/middleware/wireless/bluetooth/host/
 convert_to_dos "$NXP_K32W061_SDK_ROOT"/middleware/wireless/framework/Flash/External/Source/Eeprom_MX25R8035F.c
 patch -N --binary -d "$NXP_K32W061_SDK_ROOT"/middleware/wireless/framework/Flash/External/Source -p1 <"$SOURCE_DIR/Eeprom_MX25R8035F_c.patch"
 
-convert_to_dos "$NXP_K32W061_SDK_ROOT"/tools/imagetool/sign_images.sh
+SIGN_FILE_PATH="$NXP_K32W061_SDK_ROOT"/tools/imagetool/sign_images.sh
+convert_to_dos $SIGN_FILE_PATH
 patch -N --binary -d "$NXP_K32W061_SDK_ROOT"/tools/imagetool/ -p1 <"$SOURCE_DIR/sign_images_sh.patch"
-dos2unix "$NXP_K32W061_SDK_ROOT"/tools/imagetool/sign_images.sh
+sed -i 's/\r$//' $SIGN_FILE_PATH
 
 echo "K32W SDK MR3 QP1 was patched!"
 exit 0
