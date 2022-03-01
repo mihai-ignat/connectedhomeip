@@ -42,8 +42,6 @@ patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/mbedtls/repo -p1 <"$SOURCE_D
 
 patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/openthread/repo -p1 <"$SOURCE_DIR/fixes/openthread_ecdsa_cpp.patch"
 
-patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/openthread/repo -p1 <"$SOURCE_DIR/fixes/openthread_mbedtls-config_h.patch"
-
 # Tinycrypt changes
 
 if [ ! -d "$PW_PROJECT_ROOT"/third_party/mbedtls/repo/include/tinycrypt ]; then
