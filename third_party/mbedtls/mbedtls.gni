@@ -29,7 +29,7 @@ template("mbedtls_target") {
   }
 
   config("${mbedtls_target_name}_config") {
-    include_dirs = [ "${_mbedtls_root}/include", "${_mbedtls_root}/include/tinycrypt" ]
+    include_dirs = [ "${_mbedtls_root}/include" ]
   }
 
   static_library(mbedtls_target_name) {
@@ -126,9 +126,6 @@ template("mbedtls_target") {
       "${_mbedtls_root}/library/x509write_crt.c",
       "${_mbedtls_root}/library/x509write_csr.c",
       "${_mbedtls_root}/library/xtea.c",
-      "${_mbedtls_root}/tinycrypt/ecc.c",
-      "${_mbedtls_root}/tinycrypt/ecc_dh.c",
-      "${_mbedtls_root}/tinycrypt/ecc_dsa.c",
     ]
 
     if (!defined(configs)) {
