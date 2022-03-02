@@ -378,9 +378,9 @@ of the device can start;
 <a name="tokenizer"></a>
 
 ## Pigweed tokenizer
-Tokenizer is a pigweed module that allows hashing the strings. This greatly reduces the flash needed for logs.
-The module can be enabled by setting [_chip_pw_tokenizer_logging=true_](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/src/platform/nxp/k32w/k32w0/args.gni#L34).
-Detokenizer script is needed for parsing the hashed scripts.
+The tokenizer is a pigweed module that allows hashing the strings. This greatly reduces the flash needed for logs.
+The module can be enabled by building with the gn argument _chip_pw_tokenizer_logging=true_.
+The detokenizer script is needed for parsing the hashed scripts.
 
 <a name="detokenizer"></a>
 ### Detokenizer script
@@ -402,16 +402,18 @@ The forth parameter is _-o OUTPUT_ and it represents the path to the output file
 <a name="detokenizernotes"></a>
 ### Notes
 
-The token database is created automatically after building the binary if the flag _chip_pw_tokenizer_logging=true_ in _src/platform/nxp/k32w/k32w0/args.gni_.
+The token database is created automatically after building the binary if the argument _chip_pw_tokenizer_logging=true_ was used.
 
 The detokenizer script must be run inside the example's folder after a successful run of the _scripts/activate.sh_ script. The pw_tokenizer module used by the script is loaded by the environment.
 
 <a name="detokenizerknownissues"></a>
 ### Known issues
 
-If run, closed and rerun with the serial option on the same serial port, the script will get stuck and not show any logs. The solution is to unplug and plug the board and then rerun the script.
+The building process will not update the token database if it already exists. In case that new strings are added and the database already exists in the output folder, it must be deleted so that it will be recreated at the next build.
 
 Not all tokens will be decoded. This is due to a gcc/pw_tokenizer issue. The pw_tokenizer creates special elf sections using attributes where the tokens and strings will be stored. This sections will be used by the database creation script. For template C++ functions, gcc ignores these attributes and places all the strings by default in the .rodata section. As a result the database creation script won't find them in the special-created sections.
+
+If run, closed and rerun with the serial option on the same serial port, the detokenization script will get stuck and not show any logs. The solution is to unplug and plug the board and then rerun the script.
 
 <a name="tinycrypt"></a>
 
@@ -426,7 +428,6 @@ Note: This solution is temporary.
 In order to use the tinycrypt ecc operations, some extra steps have to be done during building:
 
 - Apply the BLE controller patch on SDK_2_6_4_K32W061DK6. This will be released soon.
-- Enable the tokenizer in [args.gni](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer_rebased_to_te8/src/platform/nxp/k32w/k32w0/args.gni#L34) by _setting chip_pw_tokenizer_logging = true_.
 - Run the tinycrypt patching script after activating the environment.
 
 ```
