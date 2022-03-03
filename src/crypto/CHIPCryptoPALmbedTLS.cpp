@@ -85,7 +85,11 @@ static EntropyContext gsEntropyContext;
 
 static void _log_mbedTLS_error(int error_code)
 {
-    if (error_code != 0)
+#if defined(MBEDTLS_USE_TINYCRYPT)
+    if (error_code != 0 && error_code != UECC_SUCCESS)
+#else
+	if (error_code != 0)
+#endif
     {
 #if defined(MBEDTLS_ERROR_C)
         char error_str[MAX_ERROR_STR_LEN];
