@@ -350,10 +350,11 @@ Build Linux chip-tool:
 doru@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/chip-tool out/chip-tool-app
 ```
 
-Provision the OTA provider application and assign node id _1_:
+Provision the OTA provider application and assign node id _1_. Also, grant ACL entries to allow OTA requestors:
 ```
 doru@computer1:~/connectedhomeip$ : rm -rf /tmp/chip_*
 doru@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool pairing onnetwork 1 20202021
+doru@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool accesscontrol write acl '[{"fabricIndex": 1, "privilege": 5, "authMode": 2, "subjects": [112233], "targets": null}, {"fabricIndex": 1, "privilege": 3, "authMode": 2, "subjects": null, "targets": null}]' 1 0
 ```
 
 Provision the device and assign node id _2_:

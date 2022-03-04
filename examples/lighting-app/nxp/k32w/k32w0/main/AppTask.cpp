@@ -505,7 +505,6 @@ void AppTask::OTAHandler(AppEvent * aEvent)
 #if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
 void AppTask::StartOTAQuery(intptr_t arg)
 {
-	gRequestorCore.TestModeSetProviderParameters(providerNodeId, providerFabricIndex, chip::kRootEndpointId);
 	static_cast<OTARequestor *>(GetRequestorInstance())->TriggerImmediateQuery();
 }
 #endif
