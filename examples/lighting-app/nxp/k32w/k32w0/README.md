@@ -436,5 +436,5 @@ user@ubuntu:~/Desktop/git/connectedhomeip$ ./third_party/nxp/tinycrypt/patch_tin
 ```
 - Build without Secure element (_chip_with_se05x=0_) and with tinycrypt enabled (_mbedtls_use_tinycrypt=true_).
 
-After running the patch_tinycrypt.sh script, the tinycrypt ecc operations are enabled. However, if needed, they can be disabled from the config file _third_party/openthread/repo/third_party/mbedtls/mbedtls-config.h_ by commenting the defines MBEDTLS_USE_TINYCRYPT and MBEDTLS_OPTIMIZE_TINYCRYPT_ASM.
+After running the patch_tinycrypt.sh script, the tinycrypt ecc operations are enabled. To disable them, simply build without _mbedtls_use_tinycrypt=true_.
  
