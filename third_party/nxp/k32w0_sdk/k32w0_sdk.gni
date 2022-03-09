@@ -21,6 +21,7 @@ import("${chip_root}/src/platform/nxp/k32w/k32w0/args.gni")
 declare_args() {
   # Location of the k32w0 SDK.
   k32w0_sdk_root = getenv("NXP_K32W061_SDK_ROOT")
+  chip_with_DK6 = 1
   chip_with_OM15082 = 0
   chip_with_ot_cli = 0
   chip_with_low_power = 0
@@ -56,10 +57,27 @@ template("k32w0_sdk") {
     # We want to treat SDK headers as system headers, so that warnings in those
     # headers are not fatal.  Therefore don't add them directly to include_dirs;
     # we will add them to cflags below instead.
-    _sdk_include_dirs = [
-      "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm",
-      "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/enablement",
-      "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/hybrid/ble_ot/lped_ble_wuart/ble_802_15_4_common",
+    _sdk_include_dirs = []
+
+    if (chip_with_DK6 != 0) {
+      if (chip_with_low_power != 0) {
+        _sdk_include_dirs += [
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/lped/bm",
+        ]
+      } else {
+        _sdk_include_dirs += [
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm",
+        ]
+      }
+    }
+
+    if (chip_with_low_power != 0) {
+      _sdk_include_dirs += [
+        "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/hybrid/ble_ot/lped_ble_wuart/ble_802_15_4_common",
+      ]
+    }
+
+    _sdk_include_dirs += [
       "${chip_root}/src/platform/nxp/k32w/k32w0",
       "${k32w0_sdk_root}/CMSIS/Include",
       "${k32w0_sdk_root}/components/serial_manager",
@@ -257,9 +275,6 @@ template("k32w0_sdk") {
     }
 
     sources += [
-      "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm/board.c",
-      "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm/board_utility.c",
-      "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm/hardware_init.c",
       "${k32w0_sdk_root}/components/serial_manager/serial_manager.c",
       "${k32w0_sdk_root}/components/serial_manager/serial_port_uart.c",
       "${k32w0_sdk_root}/components/uart/usart_adapter.c",
@@ -332,19 +347,38 @@ template("k32w0_sdk") {
       "${k32w0_sdk_root}/rtos/amazon-freertos/lib/FreeRTOS/timers.c",
     ]
 
-    if (chip_with_se05x == 1) {
-      sources += [
-        "${chip_root}/third_party/simw-top-mini/repo/demos/ksdk/common/boards/DK6/wireless_examples/chip/clock_config.c",
-        "${chip_root}/third_party/simw-top-mini/repo/demos/ksdk/common/boards/DK6/wireless_examples/chip/pin_mux.c",
-      ]
-    } else {
-      sources += [
-        "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/enablement/clock_config.c",
-        "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/enablement/pin_mux.c",
-      ]
+    if (chip_with_DK6 != 0) {
+
+      if (chip_with_low_power != 0) {
+        sources += [
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/lped/bm/board.c",
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/lped/bm/board_utility.c",
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/lped/bm/clock_config.c",
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/lped/bm/hardware_init.c",
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/lped/bm/pin_mux.c",
+        ]
+      } else {
+        sources += [
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm/board.c",
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm/board_utility.c",
+          "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm/hardware_init.c",
+        ]
+
+        if (chip_with_se05x != 0) {
+          sources += [
+            "${chip_root}/third_party/simw-top-mini/repo/demos/ksdk/common/boards/DK6/wireless_examples/chip/clock_config.c",
+            "${chip_root}/third_party/simw-top-mini/repo/demos/ksdk/common/boards/DK6/wireless_examples/chip/pin_mux.c",
+          ]
+        } else {
+          sources += [
+            "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm/clock_config.c",
+            "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/reed/bm/pin_mux.c",
+          ]
+        }
+      }
     }
 
-    if (chip_with_low_power == 1) {
+    if (chip_with_low_power != 0) {
       sources += [ "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/hybrid/ble_ot/lped_ble_wuart/ble_802_15_4_common/app_dual_mode_low_power.c" ]
     }
 
