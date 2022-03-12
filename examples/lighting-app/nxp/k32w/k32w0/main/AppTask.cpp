@@ -149,8 +149,7 @@ CHIP_ERROR AppTask::Init()
     sStatusLED.Init(SYSTEM_STATE_LED);
 
     sLightLED.Init(LIGHT_STATE_LED);
-    sLightLED.Set(!LightingMgr().IsTurnedOff());
-    UpdateClusterState();
+    UpdateDeviceState();
 
     /* intialize the Keyboard and button press calback */
     KBD_Init(KBD_Callback);
@@ -733,4 +732,16 @@ void AppTask::UpdateClusterStateInternal(intptr_t arg)
     {
         ChipLogError(NotSpecified, "ERR: updating on/off %x", status);
     }
+}
+
+void AppTask::UpdateDeviceState(void)
+{
+	bool onoffAttrValue  = 0;
+
+	/* get onoff attribute value */
+	(void)emberAfReadAttribute(1, ZCL_ON_OFF_CLUSTER_ID, ZCL_ON_OFF_ATTRIBUTE_ID, CLUSTER_MASK_SERVER,
+			(uint8_t *) &onoffAttrValue, 1, NULL);
+
+	/* set the device state */
+	sLightLED.Set(onoffAttrValue);
 }

@@ -48,6 +48,7 @@ public:
     void PostEvent(const AppEvent * event);
 
     void UpdateClusterState(void);
+    void UpdateDeviceState(void);
 
 private:
     friend AppTask & GetAppTask(void);
