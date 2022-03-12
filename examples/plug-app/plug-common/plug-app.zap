@@ -4821,8 +4821,8 @@
     },
     {
       "name": "MA-dimmablelight",
-      "deviceTypeName": "MA-onofflight",
-      "deviceTypeCode": 256,
+      "deviceTypeName": "MA-onoffpluginunit",
+      "deviceTypeCode": 266,
       "deviceTypeProfileId": 259,
       "clusters": [
         {
@@ -5515,7 +5515,7 @@
               "code": 65528,
               "mfgCode": null,
               "side": "server",
-              "included": 1,
+              "included": 0,
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
@@ -5530,7 +5530,7 @@
               "code": 65529,
               "mfgCode": null,
               "side": "server",
-              "included": 1,
+              "included": 0,
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
@@ -5545,7 +5545,7 @@
               "code": 65531,
               "mfgCode": null,
               "side": "server",
-              "included": 1,
+              "included": 0,
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
@@ -5706,7 +5706,7 @@
               "code": 16384,
               "mfgCode": null,
               "side": "server",
-              "included": 1,
+              "included": 0,
               "storageOption": "RAM",
               "singleton": 0,
               "bounded": 0,
@@ -7811,7 +7811,7 @@
       "endpointId": 1,
       "networkId": 0,
       "endpointVersion": 1,
-      "deviceIdentifier": 256
+      "deviceIdentifier": 266
     }
   ],
   "log": []

@@ -422,7 +422,7 @@
 
 #define ZAP_ATTRIBUTE_MASK(mask) ATTRIBUTE_MASK_ ## mask
 // This is an array of EmberAfAttributeMetadata structures.
-#define GENERATED_ATTRIBUTE_COUNT 165
+#define GENERATED_ATTRIBUTE_COUNT 164
 #define GENERATED_ATTRIBUTES { \
 \
   /* Endpoint: 0, Cluster: Groups (server) */ \
@@ -610,7 +610,6 @@
 \
   /* Endpoint: 1, Cluster: On/Off (server) */ \
   { 0x00000000, ZAP_TYPE(BOOLEAN), 1, ZAP_ATTRIBUTE_MASK(TOKENIZE), ZAP_SIMPLE_DEFAULT(0x00) }, /* OnOff */  \
-  { 0x00004000, ZAP_TYPE(BOOLEAN), 1, 0, ZAP_SIMPLE_DEFAULT(0x01) }, /* GlobalSceneControl */  \
   { 0x00004001, ZAP_TYPE(INT16U), 2, ZAP_ATTRIBUTE_MASK(WRITABLE), ZAP_SIMPLE_DEFAULT(0x0000) }, /* OnTime */  \
   { 0x00004002, ZAP_TYPE(INT16U), 2, ZAP_ATTRIBUTE_MASK(WRITABLE), ZAP_SIMPLE_DEFAULT(0x0000) }, /* OffWaitTime */  \
   { 0x00004003, ZAP_TYPE(ENUM8), 1, ZAP_ATTRIBUTE_MASK(TOKENIZE) | ZAP_ATTRIBUTE_MASK(WRITABLE), ZAP_EMPTY_DEFAULT() }, /* StartUpOnOff */  \
@@ -985,8 +984,8 @@ const EmberAfGenericClusterFunction chipFuncArrayOnOffServer[] = {\
       /* Endpoint: 1, Cluster: On/Off (server) */ \
       .clusterId = 0x00000006,  \
       .attributes = ZAP_ATTRIBUTE_INDEX(153), \
-      .attributeCount = 7, \
-      .clusterSize = 13, \
+      .attributeCount = 6, \
+      .clusterSize = 12, \
       .mask = ZAP_CLUSTER_MASK(SERVER) | ZAP_CLUSTER_MASK(INIT_FUNCTION), \
       .functions = chipFuncArrayOnOffServer, \
       .clientGeneratedCommandList = ZAP_GENERATED_COMMANDS_INDEX( 82 ) ,\
@@ -995,7 +994,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOnOffServer[] = {\
   { \
       /* Endpoint: 1, Cluster: Descriptor (server) */ \
       .clusterId = 0x0000001D,  \
-      .attributes = ZAP_ATTRIBUTE_INDEX(160), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(159), \
       .attributeCount = 5, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(SERVER), \
@@ -1006,7 +1005,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOnOffServer[] = {\
   { \
       /* Endpoint: 1, Cluster: Binding (client) */ \
       .clusterId = 0x0000001E,  \
-      .attributes = ZAP_ATTRIBUTE_INDEX(165), \
+      .attributes = ZAP_ATTRIBUTE_INDEX(164), \
       .attributeCount = 0, \
       .clusterSize = 0, \
       .mask = ZAP_CLUSTER_MASK(CLIENT), \
@@ -1025,7 +1024,7 @@ const EmberAfGenericClusterFunction chipFuncArrayOnOffServer[] = {\
 // This is an array of EmberAfEndpointType structures.
 #define GENERATED_ENDPOINT_TYPES { \
   { ZAP_CLUSTER_INDEX(0), 16, 427 }, \
-  { ZAP_CLUSTER_INDEX(16), 5, 21 }, \
+  { ZAP_CLUSTER_INDEX(16), 5, 20 }, \
 }
 
 
@@ -1040,7 +1039,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define ATTRIBUTE_SINGLETONS_SIZE (39)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE (448)
+#define ATTRIBUTE_MAX_SIZE (447)
 
 // Number of fixed endpoints
 #define FIXED_ENDPOINT_COUNT (2)
@@ -1053,7 +1052,7 @@ static_assert(ATTRIBUTE_LARGEST <= CHIP_CONFIG_MAX_ATTRIBUTE_STORE_ELEMENT_SIZE,
 #define FIXED_PROFILE_IDS { 0x0103, 0x0103 }
 
 // Array of device ids
-#define FIXED_DEVICE_IDS { 22, 256 }
+#define FIXED_DEVICE_IDS { 22, 266 }
 
 // Array of device versions
 #define FIXED_DEVICE_VERSIONS { 1, 1 }
