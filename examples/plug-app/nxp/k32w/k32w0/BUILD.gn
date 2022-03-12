@@ -21,6 +21,7 @@ import("${k32w0_sdk_build_root}/k32w0_sdk.gni")
 
 import("${chip_root}/src/crypto/crypto.gni")
 import("${chip_root}/src/platform/device.gni")
+import("${chip_root}/src/lib/core/core.gni")
 
 if (chip_pw_tokenizer_logging) {
   import("//build_overrides/pigweed.gni")
@@ -122,7 +123,7 @@ k32w0_executable("plug_app") {
 
 if (chip_pw_tokenizer_logging) {
   pw_tokenizer_database("plug_app.database") {
-    database = "//out/debug/chip-k32w061-plug-example-database.bin"
+    database = "$root_build_dir/chip-k32w061-plug-example-database.bin"
     create = "binary"
     deps = [ ":plug_app" ]
     optional_paths = [ "$root_build_dir/chip-k32w061-plug-example" ]

@@ -1,6 +1,6 @@
-# CHIP K32W061 Lighting Example Application
+# CHIP K32W061 Plug Example Application
 
-The Project CHIP K32W061 Lighting Example demonstrates how to remotely control a
+The Project CHIP K32W061 Plug Example demonstrates how to remotely control a
 light bulb. The light bulb is simulated using one of the LEDs from the expansion
 board. It uses buttons to test turn on/turn off of the light bulb. You can use
 this example as a reference for creating your own application.
@@ -16,7 +16,7 @@ network.
 
 <hr>
 
--   [CHIP K32W061 Lighting Example Application](#chip-k32w-lighting-example-application) -
+-   [CHIP K32W061 Plug Example Application](#chip-k32w-plug-example-application) -
 -   [Introduction](#introduction)
     -   [Bluetooth LE Advertising](#bluetooth-le-advertising)
     -   [Bluetooth LE Rendezvous](#bluetooth-le-rendezvous)
@@ -45,7 +45,7 @@ network.
 
 ![K32W061 DK6](../../../../platform/nxp/k32w/k32w0/doc/images/k32w-dk6.jpg)
 
-The K32W061 lighting example application provides a working demonstration of a
+The K32W061 plug example application provides a working demonstration of a
 light bulb device, built using the Project CHIP codebase and the NXP K32W061
 SDK. The example supports remote access (e.g.: using CHIP Tool from a mobile
 phone) and control of a light bulb over a low-power, 802.15.4 Thread network. It
@@ -56,7 +56,7 @@ The example targets the
 [NXP K32W061 DK6](https://www.nxp.com/products/wireless/thread/k32w061-41-high-performance-secure-and-ultra-low-power-mcu-for-zigbeethread-and-bluetooth-le-5-0-with-built-in-nfc-option:K32W061_41)
 development kit, but is readily adaptable to other K32W-based hardware.
 
-The CHIP device that runs the lighting application is controlled by the CHIP
+The CHIP device that runs the plug application is controlled by the CHIP
 controller device over the Thread protocol. By default, the CHIP device has
 Thread disabled, and it should be paired over Bluetooth LE with the CHIP
 controller and obtain configuration from it. The actions required before
@@ -188,10 +188,10 @@ distribution (the demo-application was compiled on Ubuntu 20.04).
 user@ubuntu:~/Desktop/git/connectedhomeip$ export NXP_K32W061_SDK_ROOT=/home/user/Desktop/SDK_2_6_4_K32W061DK6/
 user@ubuntu:~/Desktop/git/connectedhomeip$ ./third_party/nxp/k32w0_sdk/sdk_fixes/patch_k32w_sdk.sh
 user@ubuntu:~/Desktop/git/connectedhomeip$ source ./scripts/activate.sh
-user@ubuntu:~/Desktop/git/connectedhomeip$ cd examples/lighting-app/nxp/k32w/k32w0
-user@ubuntu:~/Desktop/git/connectedhomeip/examples/lighting-app/nxp/k32w/k32w0$ gn gen out/debug --args="k32w0_sdk_root=\"${NXP_K32W061_SDK_ROOT}\" chip_with_OM15082=1 chip_with_ot_cli=0 is_debug=false chip_crypto=\"mbedtls\" chip_with_se05x=1"
-user@ubuntu:~/Desktop/git/connectedhomeip/examples/lighting-app/nxp/k32w/k32w0$ ninja -C out/debug
-user@ubuntu:~/Desktop/git/connectedhomeip/examples/lighting-app/nxp/k32w/k32w0$ $NXP_K32W061_SDK_ROOT/tools/imagetool/sign_images.sh out/debug/
+user@ubuntu:~/Desktop/git/connectedhomeip$ cd examples/plug-app/nxp/k32w/k32w0
+user@ubuntu:~/Desktop/git/connectedhomeip/examples/plug-app/nxp/k32w/k32w0$ gn gen out/debug --args="k32w0_sdk_root=\"${NXP_K32W061_SDK_ROOT}\" chip_with_OM15082=1 chip_with_ot_cli=0 is_debug=false chip_crypto=\"mbedtls\" chip_with_se05x=1"
+user@ubuntu:~/Desktop/git/connectedhomeip/examples/plug-app/nxp/k32w/k32w0$ ninja -C out/debug
+user@ubuntu:~/Desktop/git/connectedhomeip/examples/plug-app/nxp/k32w/k32w0$ $NXP_K32W061_SDK_ROOT/tools/imagetool/sign_images.sh out/debug/
 ```
 
     -   without Secure element
@@ -300,7 +300,7 @@ CD04     -> 0x4CD pages of 512-bytes (= 614,5kB)
 
 ### Writing the application
 Before writing the application, [_src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp_](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp#L32) must be provisioned with
-the size (in bytes) of the OTA image (One option would be to use the lighting application as an OTA image and change only some [logging](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/examples/lighting-app/nxp/k32w/k32w0/main/main.cpp#L72) to check that this new image boots when update is finished. Please note that the signing script is being run with _-i=1_ for generating an OTA image - this is automatically done when compiling matter applications).
+the size (in bytes) of the OTA image (One option would be to use the plug application as an OTA image and change only some [logging](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/examples/plug-app/nxp/k32w/k32w0/main/main.cpp#L72) to check that this new image boots when update is finished. Please note that the signing script is being run with _-i=1_ for generating an OTA image - this is automatically done when compiling matter applications).
 This is just a temporary work-around until the OTA header is added inside the Matter SDK implementation.
 
 DK6Programmer can be used for flashing the application:
@@ -323,26 +323,27 @@ The OTA topology used for OTA testing is illustrated in the figure below. Topolo
 
 The concept for OTA is the next one:
 -   there is an OTA Provider Application that holds the OTA image. In our case, this is a Linux application running on an Ubuntu based-system;
--   the OTA Requestor functionality is embedded inside the Lighting Application. It will be used for requesting OTA 
+-   the OTA Requestor functionality is embedded inside the Plug Application. It will be used for requesting OTA 
     blocks from the OTA Provider;
 -   the controller (a linux application called chip-tool) will be used for commmissionning both the device and the OTA Provider App. The device
     will be commissionned using the standard Matter flow (BLE + IEEE 802.15.4) while the OTA Provider Application will be commissionned using 
     the _onnetwork_ option of chip-tool;
 -   during commissioning, each device is assigned a node id by the chip-tool (can be specified manually by the user). Using the node id of the device and of
-    the lighting application, chip-tool triggers the OTA transfer by invoking the _announce-ota-provider_ command - basically, the OTA Requestor is informed of the 
+    the plug application, chip-tool triggers the OTA transfer by invoking the _announce-ota-provider_ command - basically, the OTA Requestor is informed of the 
     node id of the OTA Provider Application.
 
-_Computer #1_ can be any system running an Ubuntu distribution. We recommand using TE 7.5 instructions from [here](https://groups.csa-iot.org/wg/matter-csg/document/24839), where RPi 4 are proposed. Also, TE 7.5 instructions document point to the OS/Docker images that should be used on the RPis. For compatibility reasons, we recommand compiling chip-tool and OTA Provider applications with the same commit id that was used for compiling the Lighting Application. Also, please note that there is a single controller (chip-tool) running on Computer #1 which is used for commissioning both the device and the OTA Provider Application. If needed, [these instructions](https://itsfoss.com/connect-wifi-terminal-ubuntu/) could be used for connecting the RPis to WiFi.
+_Computer #1_ can be any system running an Ubuntu distribution. We recommand using TE 7.5 instructions from [here](https://groups.csa-iot.org/wg/matter-csg/document/24839), where RPi 4 are proposed. Also, TE 7.5 instructions document point to the OS/Docker images that should be used on the RPis. For compatibility reasons, we recommand compiling chip-tool and OTA Provider applications with the same commit id that was used for compiling the Plug Application. Also, please note that there is a single controller (chip-tool) running on Computer #1 which is used for commissioning both the device and the OTA Provider Application. If needed, [these instructions](https://itsfoss.com/connect-wifi-terminal-ubuntu/) could be used for connecting the RPis to WiFi.
 
 Build the Linux OTA provider application:
 ```
 doru@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/ota-provider-app/linux out/ota-provider-app chip_config_network_layer_ble=false
 ```
 
-Start the OTA Provider Application:
+Build OTA image and start the OTA Provider Application:
 ```
+doru@computer1:~/connectedhomeip$ : ./src/app/ota_image_tool.py create -v 0xDEAD -p 0xBEEF -vn 1 -vs "1.0" -da sha256 chip-k32w061-light-example.bin chip-k32w061-light-example.ota
 doru@computer1:~/connectedhomeip$ : rm -rf /tmp/chip_*
-doru@computer1:~/connectedhomeip$ : ./out/ota-provider-app/chip-ota-provider-app -f chip-k32w061-light-example.bin
+doru@computer1:~/connectedhomeip$ : ./out/ota-provider-app/chip-ota-provider-app -f chip-k32w061-light-example.ota
 ```
 
 Build Linux chip-tool:
@@ -350,10 +351,11 @@ Build Linux chip-tool:
 doru@computer1:~/connectedhomeip$ : ./scripts/examples/gn_build_example.sh examples/chip-tool out/chip-tool-app
 ```
 
-Provision the OTA provider application and assign node id _1_:
+Provision the OTA provider application and assign node id _1_. Also, grant ACL entries to allow OTA requestors:
 ```
 doru@computer1:~/connectedhomeip$ : rm -rf /tmp/chip_*
 doru@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool pairing onnetwork 1 20202021
+doru@computer1:~/connectedhomeip$ : ./out/chip-tool-app/chip-tool accesscontrol write acl '[{"fabricIndex": 1, "privilege": 5, "authMode": 2, "subjects": [112233], "targets": null}, {"fabricIndex": 1, "privilege": 3, "authMode": 2, "subjects": null, "targets": null}]' 1 0
 ```
 
 Provision the device and assign node id _2_:
@@ -378,9 +380,9 @@ of the device can start;
 <a name="tokenizer"></a>
 
 ## Pigweed tokenizer
-Tokenizer is a pigweed module that allows hashing the strings. This greatly reduces the flash needed for logs.
-The module can be enabled by setting [_chip_pw_tokenizer_logging=true_](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/src/platform/nxp/k32w/k32w0/args.gni#L34).
-Detokenizer script is needed for parsing the hashed scripts.
+The tokenizer is a pigweed module that allows hashing the strings. This greatly reduces the flash needed for logs.
+The module can be enabled by building with the gn argument _chip_pw_tokenizer_logging=true_.
+The detokenizer script is needed for parsing the hashed scripts.
 
 <a name="detokenizer"></a>
 ### Detokenizer script
@@ -402,16 +404,18 @@ The forth parameter is _-o OUTPUT_ and it represents the path to the output file
 <a name="detokenizernotes"></a>
 ### Notes
 
-The token database is created automatically after building the binary if the flag _chip_pw_tokenizer_logging=true_ in _src/platform/nxp/k32w/k32w0/args.gni_.
+The token database is created automatically after building the binary if the argument _chip_pw_tokenizer_logging=true_ was used.
 
 The detokenizer script must be run inside the example's folder after a successful run of the _scripts/activate.sh_ script. The pw_tokenizer module used by the script is loaded by the environment.
 
 <a name="detokenizerknownissues"></a>
 ### Known issues
 
-If run, closed and rerun with the serial option on the same serial port, the script will get stuck and not show any logs. The solution is to unplug and plug the board and then rerun the script.
+The building process will not update the token database if it already exists. In case that new strings are added and the database already exists in the output folder, it must be deleted so that it will be recreated at the next build.
 
 Not all tokens will be decoded. This is due to a gcc/pw_tokenizer issue. The pw_tokenizer creates special elf sections using attributes where the tokens and strings will be stored. This sections will be used by the database creation script. For template C++ functions, gcc ignores these attributes and places all the strings by default in the .rodata section. As a result the database creation script won't find them in the special-created sections.
+
+If run, closed and rerun with the serial option on the same serial port, the detokenization script will get stuck and not show any logs. The solution is to unplug and plug the board and then rerun the script.
 
 <a name="tinycrypt"></a>
 
@@ -426,7 +430,6 @@ Note: This solution is temporary.
 In order to use the tinycrypt ecc operations, some extra steps have to be done during building:
 
 - Apply the BLE controller patch on SDK_2_6_4_K32W061DK6. This will be released soon.
-- Enable the tokenizer in [args.gni](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer_rebased_to_te8/src/platform/nxp/k32w/k32w0/args.gni#L34) by _setting chip_pw_tokenizer_logging = true_.
 - Run the tinycrypt patching script after activating the environment.
 
 ```
@@ -434,5 +437,5 @@ user@ubuntu:~/Desktop/git/connectedhomeip$ ./third_party/nxp/tinycrypt/patch_tin
 ```
 - Build without Secure element (_chip_with_se05x=0_) and with tinycrypt enabled (_mbedtls_use_tinycrypt=true_).
 
-After running the patch_tinycrypt.sh script, the tinycrypt ecc operations are enabled. However, if needed, they can be disabled from the config file _third_party/openthread/repo/third_party/mbedtls/mbedtls-config.h_ by commenting the defines MBEDTLS_USE_TINYCRYPT and MBEDTLS_OPTIMIZE_TINYCRYPT_ASM.
+After running the patch_tinycrypt.sh script, the tinycrypt ecc operations are enabled. To disable them, simply build without _mbedtls_use_tinycrypt=true_.
  
