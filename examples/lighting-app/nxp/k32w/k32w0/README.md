@@ -299,9 +299,6 @@ CD04     -> 0x4CD pages of 512-bytes (= 614,5kB)
 <a name="appwrite"></a>
 
 ### Writing the application
-Before writing the application, [_src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp_](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/src/platform/nxp/k32w/k32w0/OTAImageProcessorImpl.cpp#L32) must be provisioned with
-the size (in bytes) of the OTA image (One option would be to use the lighting application as an OTA image and change only some [logging](https://github.com/doru91/connectedhomeip/blob/fix/k32w_ota_transfer/examples/lighting-app/nxp/k32w/k32w0/main/main.cpp#L72) to check that this new image boots when update is finished. Please note that the signing script is being run with _-i=1_ for generating an OTA image - this is automatically done when compiling matter applications).
-This is just a temporary work-around until the OTA header is added inside the Matter SDK implementation.
 
 DK6Programmer can be used for flashing the application:
 ```
