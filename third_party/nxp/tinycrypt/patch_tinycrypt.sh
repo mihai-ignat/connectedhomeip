@@ -38,6 +38,8 @@ patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/mbedtls/repo -p1 <"$SOURCE_D
 
 patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/mbedtls/repo -p1 <"$SOURCE_DIR/fixes/mbedtls_x509_crt_c.patch"
 
+patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/mbedtls/repo -p1 <"$SOURCE_DIR/fixes/mbedtls_x509write_csr_c.patch"
+
 # Openthead
 
 patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/openthread/repo -p1 <"$SOURCE_DIR/fixes/openthread_ecdsa_cpp.patch"
