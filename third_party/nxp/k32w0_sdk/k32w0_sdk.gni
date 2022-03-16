@@ -21,7 +21,7 @@ import("${chip_root}/src/platform/nxp/k32w/k32w0/args.gni")
 declare_args() {
   # Location of the k32w0 SDK.
   k32w0_sdk_root = getenv("NXP_K32W061_SDK_ROOT")
-  chip_with_DK6 = 1
+  chip_with_DK6 = true
   chip_with_OM15082 = 0
   chip_with_ot_cli = 0
   chip_with_low_power = 0
@@ -40,7 +40,13 @@ template("k32w0_sdk") {
     k32w0_sdk_root = invoker.k32w0_sdk_root
   }
 
+  if (defined(invoker.override_is_DK6)) {
+    chip_with_DK6 = invoker.override_is_DK6
+  }
+
   assert(k32w0_sdk_root != "", "k32w0_sdk_root must be specified")
+  assert(chip_with_OM15082 == 0 || chip_with_DK6,
+      "OM15082 expansion board is only supported on DK6 board")
   assert(
       chip_with_low_power == 0 ||
           (chip_with_low_power == 1 && chip_with_OM15082 == 0 &&
@@ -60,7 +66,7 @@ template("k32w0_sdk") {
     # we will add them to cflags below instead.
     _sdk_include_dirs = []
 
-    if (chip_with_DK6 != 0) {
+    if (chip_with_DK6) {
       if (chip_with_low_power != 0) {
         _sdk_include_dirs += [
           "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/lped/bm",
@@ -350,7 +356,7 @@ template("k32w0_sdk") {
       "${k32w0_sdk_root}/rtos/amazon-freertos/lib/FreeRTOS/timers.c",
     ]
 
-    if (chip_with_DK6 != 0) {
+    if (chip_with_DK6) {
 
       if (chip_with_low_power != 0) {
         sources += [
