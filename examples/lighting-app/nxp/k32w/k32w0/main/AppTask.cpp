@@ -96,6 +96,9 @@ static FabricIndex providerFabricIndex   = 1;
 constexpr uint16_t requestedOtaBlockSize  = 1024;
 #endif
 
+extern "C" void ResetMCU(void);
+extern bool shouldReset;
+
 CHIP_ERROR AppTask::StartAppTask()
 {
     CHIP_ERROR err = CHIP_NO_ERROR;
@@ -690,6 +693,11 @@ extern "C" void vApplicationIdleHook( void )
 {
 #if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
             OTA_TransactionResume();
+
+            if (shouldReset)
+            {
+                ResetMCU();
+            }
 #endif
 }
 
