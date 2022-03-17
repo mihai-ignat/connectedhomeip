@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ ! -d $NXP_K32W061_SDK_ROOT ]]; then
+    echo "NXP_K32W061_SDK_ROOT is not set"
+    exit 1
+fi
+
 SOURCE=${BASH_SOURCE[0]}
 SOURCE_DIR=$(cd "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)
 
@@ -20,3 +25,8 @@ sed -i '/\"JENNIC_CHIP_FAMILY_NAME=_JN518x\"/a\      "JENNIC_CHIP_FAMILY_JN518x"
 
 
 sed -i 's/k32w061dk6/k32w041amdk6/g' ${SOURCE_DIR}/sdk_fixes/patch_k32w_sdk.sh
+
+
+cp ${SOURCE_DIR}/sdk_fixes/lib_ble_controller.a "$NXP_K32W061_SDK_ROOT"/middleware/wireless/ble_controller/lib
+cp ${SOURCE_DIR}/sdk_fixes/controller_config.c "$NXP_K32W061_SDK_ROOT"/middleware/wireless/ble_controller/config
+cp ${SOURCE_DIR}/sdk_fixes/controller_interface.h "$NXP_K32W061_SDK_ROOT"/middleware/wireless/ble_controller/interface
