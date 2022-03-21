@@ -219,7 +219,6 @@ template("k32w0_sdk") {
         "gEepromType_d=gEepromDevice_MX25R8035F_c",
         "gPdmNbSegments=63",
       ]
-
       if (chip_with_OM15082 != 0) {
         defines += [
           "OM15082=1",
