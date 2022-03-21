@@ -36,7 +36,6 @@
 #include "Keyboard.h"
 #include "LED.h"
 #include "LEDWidget.h"
-#include "TimersManager.h"
 #include "app_config.h"
 
 constexpr uint32_t kFactoryResetTriggerTimeout = 6000;
@@ -92,8 +91,6 @@ CHIP_ERROR AppTask::Init()
 
     // QR code will be used with CHIP Tool
     PrintOnboardingCodes(chip::RendezvousInformationFlags(chip::RendezvousInformationFlag::kBLE));
-
-    TMR_Init();
 
     /* HW init leds */
 #if !cPWR_UsePowerDownMode

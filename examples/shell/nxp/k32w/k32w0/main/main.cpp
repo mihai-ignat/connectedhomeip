@@ -41,6 +41,9 @@
 #include "app_config.h"
 
 #include "radio.h"
+#include "RNG_Interface.h"
+#include "MemManager.h"
+#include "TimersManager.h"
 
 #include <AppTask.h>
 
@@ -57,8 +60,12 @@ typedef void (*InitFunc)(void);
 extern InitFunc __init_array_start;
 extern InitFunc __init_array_end;
 
+extern "C" void boardFwkInit(void);
+
 /* needed for FreeRtos Heap 4 */
 uint8_t __attribute__((section(".heap"))) ucHeap[0xF000];
+
+static char initString[] = "app";
 
 extern "C" unsigned int sleep(unsigned int seconds)
 {
@@ -75,6 +82,7 @@ static void shell_task(void * args)
 extern "C" void main_task(void const * argument)
 {
     int status = 0;
+    char *argv[1] = {0};
     BaseType_t shellTaskHandle;
 
     /* Call C++ constructors */
@@ -84,10 +92,15 @@ extern "C" void main_task(void const * argument)
         (*pFunc)();
     }
 
+    argv[0] = &initString[0];
+
     mbedtls_platform_set_calloc_free(CHIPPlatformMemoryCalloc, CHIPPlatformMemoryFree);
 
-    /* Used for HW initializations */
-    otSysInit(0, NULL);
+    /* Initialize board framework services */
+    boardFwkInit();
+
+    /* Used for OT initializations */
+    otSysInit(1, argv);
 
     K32W_LOG("Welcome to NXP Shell Demo App");
 
@@ -162,4 +175,15 @@ extern "C" void otSysEventSignalPending(void)
         BaseType_t yieldRequired = ThreadStackMgrImpl().SignalThreadActivityPendingFromISR();
         portYIELD_FROM_ISR(yieldRequired);
     }
+}
+
+extern "C" void boardFwkInit(void)
+{
+    MEM_Init();
+
+    /* RNG initialization and PRNG initial seeding */
+    (void) RNG_Init();
+    RNG_SetPseudoRandomNoSeed(NULL);
+
+    TMR_Init();
 }
