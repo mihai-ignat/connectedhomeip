@@ -164,9 +164,6 @@ template("k32w0_sdk") {
       "gUartDebugConsole_d=1",
       "DEBUG_SERIAL_INTERFACE_INSTANCE=0",
       "APP_SERIAL_INTERFACE_INSTANCE=1",
-      "gUsePdm_d=1",
-      "PDM_EXT_FLASH=1",
-      "gEepromType_d=gEepromDevice_MX25R8035F_c",
       "gOTA_externalFlash_d=1",
       "gEepromPostedOperations_d=1",
       "gOtaEepromPostedOperations_d=1",
@@ -174,7 +171,6 @@ template("k32w0_sdk") {
       "gExternalFlashIsCiphered_d=1",
       "gBootData_None_c=1",
       "PROGRAM_PAGE_SZ=256",
-      "gPdmNbSegments=63",
       "configFRTOS_MEMORY_SCHEME=4",
       "osCustomStartup=1",
       "ENABLE_RAM_VECTOR_TABLE=1",
@@ -217,6 +213,12 @@ template("k32w0_sdk") {
     }
 
     if (chip_with_DK6) {
+      defines += [
+        "gUsePdm_d=1",
+        "PDM_EXT_FLASH=1",
+        "gEepromType_d=gEepromDevice_MX25R8035F_c",
+        "gPdmNbSegments=63",
+      ]
       if (chip_with_OM15082 != 0) {
         defines += [
           "OM15082=1",
