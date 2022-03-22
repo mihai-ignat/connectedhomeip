@@ -30,7 +30,7 @@ index 464b61ee2..d75287aab 100644
 + *          tinycrypt/ecc_dh.c
 + *          tinycrypt/ecc_dsa.c
 + */
-+#define MBEDTLS_USE_TINYCRYPT
++//#define MBEDTLS_USE_TINYCRYPT
 +
 +/**
 + * \def MBEDTLS_OPTIMIZE_TINYCRYPT_ASM
@@ -45,7 +45,7 @@ index 464b61ee2..d75287aab 100644
 + *
 + * Module:  tinycrypt/ecc.c
 + */
-+#define MBEDTLS_OPTIMIZE_TINYCRYPT_ASM
++//#define MBEDTLS_OPTIMIZE_TINYCRYPT_ASM
 +
  /**
   * \def MBEDTLS_ENTROPY_C
