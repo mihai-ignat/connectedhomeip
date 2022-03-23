@@ -62,10 +62,11 @@ CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
     err = Internal::K32WConfig::Init();
     SuccessOrExit(err);
 
-    if (Chip_GetType() != CHIP_K32W061)
+    /* Check that chip type is from K32W0x1 family: K32W041A, K32W041AM, K32W061 or K32W041 */
+    if (Chip_GetType() <= CHIP_K32W041)
     {
         err = CHIP_ERROR_INTERNAL;
-        ChipLogError(DeviceLayer, "Invalid chip type, expected K32W061");
+        ChipLogError(DeviceLayer, "Invalid chip type, expected K32W0x1");
 
         goto exit;
     }
