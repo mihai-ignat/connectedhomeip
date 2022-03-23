@@ -71,7 +71,7 @@ index b66371d17..ac5460c28 100644
 +    Error                error;
 +    mbedtls_pk_context   pk;
 +    mbedtls_uecc_keypair *keyPair;
-+    int                  ret;
++//    int                  ret;
 +
 +    SuccessOrExit(error = Parse(&pk));
 +
