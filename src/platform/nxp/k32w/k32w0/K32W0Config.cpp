@@ -288,26 +288,20 @@ CHIP_ERROR K32WConfig::WriteConfigValueStr(Key key, const char * str, size_t str
 
     if (str != NULL)
     {
-        /* If last byte in string is string termination /0, write as it is,
-         * else add a termination to the string and save to PDM */
-        if (str[strLen - 1] == '\0')
+        pData = (uint8_t *) pvPortMalloc(strLen + 1);
+
+        if (pData != NULL)
         {
-            pdmStatus = PDM_eSaveRecordData((uint16_t) key, (void *) str, strLen);
+            memcpy(pData, str, strLen);
+            pData[strLen] = '\0';
+            pdmStatus = PDM_eSaveRecordData((uint16_t) key, (void *) pData, strLen + 1);
+            vPortFree((void *) pData);
+            SuccessOrExit(err = MapPdmStatus(pdmStatus));
         }
         else
         {
-            pData = (uint8_t *) pvPortMalloc(strLen + 1);
-
-            if (pData != NULL)
-            {
-                memcpy(pData, str, strLen);
-                pData[strLen] = '\0';
-                pdmStatus = PDM_eSaveRecordData((uint16_t) key, (void *) pData, strLen + 1);
-                vPortFree((void *) pData);
-            }
-
+           err = CHIP_ERROR_NO_MEMORY;
         }
-        SuccessOrExit(err = MapPdmStatus(pdmStatus));
     }
     else
     {
