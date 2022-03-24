@@ -34,7 +34,7 @@
 
 #include <openthread/platform/entropy.h>
 
-#include "K32W061.h"
+#include "fsl_device_registers.h"
 
 namespace chip {
 namespace DeviceLayer {
