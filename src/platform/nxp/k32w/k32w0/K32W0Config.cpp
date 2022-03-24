@@ -282,31 +282,12 @@ CHIP_ERROR K32WConfig::WriteConfigValueStr(Key key, const char * str, size_t str
 {
     CHIP_ERROR err;
     PDM_teStatus pdmStatus;
-    uint8_t * pData = NULL;
 
     VerifyOrExit(ValidConfigKey(key), err = CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND); // Verify key id.
 
     if (str != NULL)
     {
-        /* If last byte in string is string termination /0, write as it is,
-         * else add a termination to the string and save to PDM */
-        if (str[strLen - 1] == '\0')
-        {
-            pdmStatus = PDM_eSaveRecordData((uint16_t) key, (void *) str, strLen);
-        }
-        else
-        {
-            pData = (uint8_t *) pvPortMalloc(strLen + 1);
-
-            if (pData != NULL)
-            {
-                memcpy(pData, str, strLen);
-                pData[strLen] = '\0';
-                pdmStatus = PDM_eSaveRecordData((uint16_t) key, (void *) pData, strLen + 1);
-                vPortFree((void *) pData);
-            }
-
-        }
+        pdmStatus = PDM_eSaveRecordData((uint16_t) key, (void *) str, strLen);
         SuccessOrExit(err = MapPdmStatus(pdmStatus));
     }
     else
