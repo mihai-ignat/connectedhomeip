@@ -53,15 +53,9 @@ using namespace ::chip::Logging;
 #include "radio.h"
 #endif
 
-#include "RNG_Interface.h"
-#include "MemManager.h"
-#include "TimersManager.h"
-
 typedef void (*InitFunc)(void);
 extern InitFunc __init_array_start;
 extern InitFunc __init_array_end;
-
-extern "C" void boardFwkInit(void);
 
 /* low power requirements */
 #if defined(cPWR_UsePowerDownMode) && (cPWR_UsePowerDownMode)
@@ -93,13 +87,8 @@ static sDualModeAppStates dualModeStates;
 /* needed for FreeRtos Heap 4 */
 uint8_t __attribute__((section(".heap"))) ucHeap[HEAP_SIZE];
 
-static char initString[] = "app";
-
 extern "C" void main_task(void const * argument)
 {
-    char *argv[1] = {0};
-    argv[0] = &initString[0];
-
     /* Call C++ constructors */
     InitFunc * pFunc = &__init_array_start;
     for (; pFunc < &__init_array_end; ++pFunc)
@@ -121,11 +110,8 @@ extern "C" void main_task(void const * argument)
 
     mbedtls_platform_set_calloc_free(CHIPPlatformMemoryCalloc, CHIPPlatformMemoryFree);
 
-    /* Initialize board framework services */
-    boardFwkInit();
-
-    /* Used for OT initializations */
-    otSysInit(1, argv);
+    /* Used for HW initializations */
+    otSysInit(0, NULL);
 
     K32W_LOG("Welcome to NXP ELock Demo App");
 
@@ -339,14 +325,3 @@ static void BOARD_SetClockForWakeup(void)
     CLOCK_EnableClock(kCLOCK_Gpio0);
 }
 #endif
-
-extern "C" void boardFwkInit(void)
-{
-    MEM_Init();
-
-    /* RNG initialization and PRNG initial seeding */
-    (void) RNG_Init();
-    RNG_SetPseudoRandomNoSeed(NULL);
-
-    TMR_Init();
-}
