@@ -85,7 +85,7 @@ extern "C" void main_task(void const * argument)
     K32W_LOG("Welcome to NXP Plug Demo App");
 
     /* Mbedtls Threading support is needed because both
-     * Thread and Matter tasks are using it */
+     * Thread and Weave tasks are using it */
     freertos_mbedtls_mutex_init();
 
     // Init Chip memory management before the stack
@@ -94,7 +94,7 @@ extern "C" void main_task(void const * argument)
     CHIP_ERROR ret = PlatformMgr().InitChipStack();
     if (ret != CHIP_NO_ERROR)
     {
-        K32W_LOG("Error during PlatformMgr().InitChipStack()");
+        K32W_LOG("Error during PlatformMgr().InitWeaveStack()");
         goto exit;
     }
 
