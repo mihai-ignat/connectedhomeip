@@ -28,7 +28,6 @@
 
 #include <platform/internal/CHIPDeviceLayerInternal.h>
 
-#include "MemManager.h"
 #include "PDM.h"
 
 namespace chip {
