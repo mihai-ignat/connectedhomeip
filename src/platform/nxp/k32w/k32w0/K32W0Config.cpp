@@ -282,7 +282,6 @@ CHIP_ERROR K32WConfig::WriteConfigValueStr(Key key, const char * str, size_t str
 {
     CHIP_ERROR err;
     PDM_teStatus pdmStatus;
-    uint8_t * pData = NULL;
 
     VerifyOrExit(ValidConfigKey(key), err = CHIP_DEVICE_ERROR_CONFIG_NOT_FOUND); // Verify key id.
 

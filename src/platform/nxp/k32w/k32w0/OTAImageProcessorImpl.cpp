@@ -17,6 +17,7 @@
  */
 
 #include <src/app/clusters/ota-requestor/OTADownloader.h>
+#include <platform/OTARequestorInterface.h>
 
 #include "OTAImageProcessorImpl.h"
 #include "OtaSupport.h"
@@ -24,7 +25,7 @@
 
 #include "AppTask.h"
 
-extern "C" void ResetMCU(void);
+bool shouldReset = 0;
 
 namespace chip {
 
@@ -49,6 +50,12 @@ CHIP_ERROR OTAImageProcessorImpl::Finalize()
 
 CHIP_ERROR OTAImageProcessorImpl::Apply()
 {
+	OTARequestorInterface * requestor = chip::GetRequestorInstance();
+
+	// TODO: Update this after rebase to latest codebase
+	requestor->NotifyUpdateApplied(this->mSoftwareVersion);
+
+    DeviceLayer::PlatformMgr().ScheduleWork(HandleApply, reinterpret_cast<intptr_t>(this));
     return CHIP_NO_ERROR;
 }
 
@@ -120,6 +127,7 @@ CHIP_ERROR OTAImageProcessorImpl::ProcessHeader(ByteSpan & block)
     ReturnErrorCodeIf(error == CHIP_ERROR_BUFFER_TOO_SMALL, CHIP_NO_ERROR);
     ReturnErrorOnFailure(error);
     mParams.totalFileBytes = header.mPayloadSize;
+    mSoftwareVersion = header.mSoftwareVersion;
     mHeaderParser.Clear();
 
     return CHIP_NO_ERROR;
@@ -243,19 +251,29 @@ void OTAImageProcessorImpl::HandleFinalize(intptr_t context)
         return;
     }
 
+    imageProcessor->ReleaseBlock();
+}
+
+void OTAImageProcessorImpl::HandleApply(intptr_t context)
+{
+    auto * imageProcessor = reinterpret_cast<OTAImageProcessorImpl *>(context);
+    if (imageProcessor == nullptr)
+	{
+	    return;
+    }
+
     OTA_CommitImage(NULL);
     if (OTA_ImageAuthenticate() == gOtaImageAuthPass_c)
     {
         /* Set the necessary information to inform the SSBL that a new image is available */
+        ChipLogProgress(SoftwareUpdate, "OTA image authentication success. Device will reboot with the new image!");
         OTA_SetNewImageFlag();
-        ResetMCU();
+        shouldReset = 1;
     }
     else
     {
         ChipLogError(SoftwareUpdate, "Image authentication error");
     }
-
-    imageProcessor->ReleaseBlock();
 }
 
 CHIP_ERROR OTAImageProcessorImpl::ReleaseBlock()

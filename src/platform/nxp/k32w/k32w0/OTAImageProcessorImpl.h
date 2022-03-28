@@ -43,6 +43,7 @@ private:
     static void HandlePrepareDownload(intptr_t context);
     CHIP_ERROR ProcessHeader(ByteSpan & block);
     static void HandleFinalize(intptr_t context);
+    static void HandleApply(intptr_t context);
     static void HandleAbort(intptr_t context);
     static void HandleProcessBlock(intptr_t context);
     static void HandleBlockEraseComplete(uint32_t);
@@ -60,6 +61,7 @@ private:
     OTADownloader * mDownloader;
     OTAImageHeaderParser mHeaderParser;
     MutableByteSpan mBlock;
+    uint32_t mSoftwareVersion;
 };
 
 } // namespace chip

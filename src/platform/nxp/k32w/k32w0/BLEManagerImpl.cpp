@@ -39,6 +39,8 @@
 #include "stdio.h"
 #include "timers.h"
 
+#include "RNG_Interface.h"
+
 #if defined(cPWR_UsePowerDownMode) && (cPWR_UsePowerDownMode)
 #include "PWR_Configuration.h"
 #endif
@@ -155,6 +157,9 @@ CHIP_ERROR BLEManagerImpl::_Init()
     // Initialize the Chip BleLayer.
     err = BleLayer::Init(this, this, &DeviceLayer::SystemLayer());
     SuccessOrExit(err);
+
+    (void) RNG_Init();
+    RNG_SetPseudoRandomNoSeed(NULL);
 
     /* Initialization of message wait events -
      * used for receiving BLE Stack events */

@@ -21,7 +21,7 @@ import("${chip_root}/src/platform/nxp/k32w/k32w0/args.gni")
 declare_args() {
   # Location of the k32w0 SDK.
   k32w0_sdk_root = getenv("NXP_K32W061_SDK_ROOT")
-  chip_with_DK6 = 1
+  chip_with_DK6 = true
   chip_with_OM15082 = 0
   chip_with_ot_cli = 0
   chip_with_low_power = 0
@@ -40,7 +40,13 @@ template("k32w0_sdk") {
     k32w0_sdk_root = invoker.k32w0_sdk_root
   }
 
+  if (defined(invoker.override_is_DK6)) {
+    chip_with_DK6 = invoker.override_is_DK6
+  }
+
   assert(k32w0_sdk_root != "", "k32w0_sdk_root must be specified")
+  assert(chip_with_OM15082 == 0 || chip_with_DK6,
+      "OM15082 expansion board is only supported on DK6 board")
   assert(
       chip_with_low_power == 0 ||
           (chip_with_low_power == 1 && chip_with_OM15082 == 0 &&
@@ -60,7 +66,7 @@ template("k32w0_sdk") {
     # we will add them to cflags below instead.
     _sdk_include_dirs = []
 
-    if (chip_with_DK6 != 0) {
+    if (chip_with_DK6) {
       if (chip_with_low_power != 0) {
         _sdk_include_dirs += [
           "${k32w0_sdk_root}/boards/k32w061dk6/wireless_examples/openthread/lped/bm",
@@ -158,9 +164,6 @@ template("k32w0_sdk") {
       "gUartDebugConsole_d=1",
       "DEBUG_SERIAL_INTERFACE_INSTANCE=0",
       "APP_SERIAL_INTERFACE_INSTANCE=1",
-      "gUsePdm_d=1",
-      "PDM_EXT_FLASH=1",
-      "gEepromType_d=gEepromDevice_MX25R8035F_c",
       "gOTA_externalFlash_d=1",
       "gEepromPostedOperations_d=1",
       "gOtaEepromPostedOperations_d=1",
@@ -168,12 +171,8 @@ template("k32w0_sdk") {
       "gExternalFlashIsCiphered_d=1",
       "gBootData_None_c=1",
       "PROGRAM_PAGE_SZ=256",
-      "gKeyBoardSupported_d",
-      "gPdmNbSegments=63",
       "configFRTOS_MEMORY_SCHEME=4",
       "osCustomStartup=1",
-      "gLEDsOnTargetBoardCnt_c=2",
-      "gLED_InvertedMode_d=1",
       "ENABLE_RAM_VECTOR_TABLE=1",
       "gTMR_Enabled_d=1",
       "gTimestamp_Enabled_d=0",
@@ -213,13 +212,33 @@ template("k32w0_sdk") {
       ]
     }
 
-    if (chip_with_OM15082 == 1) {
+    if (chip_with_DK6) {
       defines += [
-        "gKBD_KeysCount_c=4",
-        "OM15082=1",
+        "gUsePdm_d=1",
+        "PDM_EXT_FLASH=1",
+        "gEepromType_d=gEepromDevice_MX25R8035F_c",
+        "gPdmNbSegments=63",
       ]
-    } else {
-      defines += [ "gKBD_KeysCount_c=1" ]
+      if (chip_with_OM15082 != 0) {
+        defines += [
+          "OM15082=1",
+          "gKeyBoardSupported_d=1",
+          "gKBD_KeysCount_c=4",
+        ]
+      } else {
+        defines += [
+          "gKeyBoardSupported_d=1",
+          "gKBD_KeysCount_c=1",
+        ]
+      }
+
+      if (chip_with_low_power == 0) {
+        defines += [
+          "gLEDSupported_d=1",
+          "gLEDsOnTargetBoardCnt_c=2",
+          "gLED_InvertedMode_d=1",
+        ]
+      }
     }
 
     if (chip_with_ot_cli == 1) {
@@ -239,9 +258,6 @@ template("k32w0_sdk") {
       ]
     } else {
       defines += [
-        "gLEDSupported_d",
-        "gLED_InvertedMode_d=1",
-        "gLEDsOnTargetBoardCnt_c=2",
         "cPWR_UsePowerDownMode=0",
         "cPWR_FullPowerDownMode=0",
       ]
@@ -350,7 +366,7 @@ template("k32w0_sdk") {
       "${k32w0_sdk_root}/rtos/amazon-freertos/lib/FreeRTOS/timers.c",
     ]
 
-    if (chip_with_DK6 != 0) {
+    if (chip_with_DK6) {
 
       if (chip_with_low_power != 0) {
         sources += [

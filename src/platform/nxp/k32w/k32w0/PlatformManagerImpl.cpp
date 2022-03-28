@@ -34,7 +34,7 @@
 
 #include <openthread/platform/entropy.h>
 
-#include "K32W061.h"
+#include "fsl_device_registers.h"
 
 namespace chip {
 namespace DeviceLayer {
@@ -57,15 +57,18 @@ static int app_entropy_source(void * data, unsigned char * output, size_t len, s
 CHIP_ERROR PlatformManagerImpl::_InitChipStack(void)
 {
     CHIP_ERROR err;
+    uint32_t chipType;
 
     // Initialize the configuration system.
     err = Internal::K32WConfig::Init();
     SuccessOrExit(err);
+    chipType = Chip_GetType();
 
-    if (Chip_GetType() != CHIP_K32W061)
+    /* Check that chip type is from K32W0x1 family: K32W041A, K32W041AM, K32W061 or K32W041 */
+    if ((chipType != CHIP_K32W061) && (chipType != CHIP_K32W041) && (chipType != CHIP_K32W041A) && (chipType != CHIP_K32W041AM))
     {
         err = CHIP_ERROR_INTERNAL;
-        ChipLogError(DeviceLayer, "Invalid chip type, expected K32W061");
+        ChipLogError(DeviceLayer, "Invalid chip type, expected K32W0x1");
 
         goto exit;
     }

@@ -45,6 +45,7 @@
 #include "Keyboard.h"
 #include "LED.h"
 #include "LEDWidget.h"
+#include "TimersManager.h"
 #include "app_config.h"
 
 #if CHIP_CRYPTO_HSM
@@ -89,8 +90,14 @@ static OTARequestor gRequestorCore;
 DeviceLayer::GenericOTARequestorDriver gRequestorUser;
 static BDXDownloader gDownloader;
 static OTAImageProcessorImpl gImageProcessor;
+
+static NodeId providerNodeId             = 2;
+static FabricIndex providerFabricIndex   = 1;
 constexpr uint16_t requestedOtaBlockSize  = 1024;
 #endif
+
+extern "C" void ResetMCU(void);
+extern bool shouldReset;
 
 CHIP_ERROR AppTask::StartAppTask()
 {
@@ -127,6 +134,8 @@ CHIP_ERROR AppTask::Init()
 
     // QR code will be used with CHIP Tool
     PrintOnboardingCodes(chip::RendezvousInformationFlags(chip::RendezvousInformationFlag::kBLE));
+
+    TMR_Init();
 
     /* HW init leds */
     LED_Init();
@@ -684,6 +693,11 @@ extern "C" void vApplicationIdleHook( void )
 {
 #if CHIP_DEVICE_CONFIG_ENABLE_OTA_REQUESTOR
             OTA_TransactionResume();
+
+            if (shouldReset)
+            {
+                ResetMCU();
+            }
 #endif
 }
 
