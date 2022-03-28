@@ -89,9 +89,6 @@ static OTARequestor gRequestorCore;
 DeviceLayer::GenericOTARequestorDriver gRequestorUser;
 static BDXDownloader gDownloader;
 static OTAImageProcessorImpl gImageProcessor;
-
-static NodeId providerNodeId             = 2;
-static FabricIndex providerFabricIndex   = 1;
 constexpr uint16_t requestedOtaBlockSize  = 1024;
 #endif
 
