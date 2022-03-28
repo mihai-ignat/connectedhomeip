@@ -12,8 +12,6 @@ SOURCE_DIR=$(cd "$(dirname "$SOURCE")" >/dev/null 2>&1 && pwd)
 
 patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/mbedtls/repo -p1 <"$SOURCE_DIR/fixes/mbedtls_check_config_h.patch"
 
-patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/mbedtls/repo -p1 <"$SOURCE_DIR/fixes/mbedtls_config_h.patch"
-
 patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/mbedtls/repo -p1 <"$SOURCE_DIR/fixes/mbedtls_oid_h.patch"
 
 patch -N --binary -d "$PW_PROJECT_ROOT"/third_party/mbedtls/repo -p1 <"$SOURCE_DIR/fixes/mbedtls_pk_h.patch"

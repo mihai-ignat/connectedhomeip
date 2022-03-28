@@ -941,7 +941,6 @@ CHIP_ERROR P256Keypair::Deserialize(P256SerializedKeypair & input)
 	keypair			= nullptr;
 	mInitialized	= true;
 
-exit:
 	_log_mbedTLS_error(result);
 	return error;
 
